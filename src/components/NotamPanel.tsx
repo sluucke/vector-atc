@@ -17,7 +17,7 @@ export default function NotamPanel({ icao }: { icao: string }) {
   return (
     <div className="flex flex-col min-h-0">
       <div className="shrink-0 p-3 border-b border-line">
-        <div className="flex gap-1 p-0.5 rounded-lg bg-black/25">
+        <div className="flex gap-1 p-0.5 rounded-lg bg-inset">
           {(
             [
               ["DECEA", decea.length],
@@ -76,14 +76,14 @@ export default function NotamPanel({ icao }: { icao: string }) {
           decea.map((n) => (
             <div
               key={n.id}
-              className="rounded-lg border-l-2 border-warn/60 bg-white/[0.03] p-2.5"
+              className="rounded-lg border-l-2 border-warn/60 bg-hover-soft p-2.5"
             >
               <div className="flex items-center gap-2">
                 <span className="font-mono text-[11px] font-medium text-ink">
                   {n.number}
                 </span>
                 {n.code && (
-                  <span className="font-mono text-[9px] px-1 rounded bg-white/[0.06] text-ink-faint">
+                  <span className="font-mono text-[9px] px-1 rounded bg-hover text-ink-faint">
                     {n.code}
                   </span>
                 )}
@@ -109,7 +109,7 @@ export default function NotamPanel({ icao }: { icao: string }) {
           ivao.map((n) => (
             <div
               key={n.id}
-              className="rounded-lg border-l-2 border-signal/60 bg-white/[0.03] p-2.5"
+              className="rounded-lg border-l-2 border-signal/60 bg-hover-soft p-2.5"
             >
               <div className="flex items-center gap-2">
                 <span className="font-mono text-[11px] font-medium text-ink">

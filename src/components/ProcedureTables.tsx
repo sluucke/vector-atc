@@ -24,7 +24,7 @@ function Th({
 
 function Fix({ children }: { children: React.ReactNode }) {
   return (
-    <span className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-white/[0.06] text-ink">
+    <span className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-hover text-ink">
       {children}
     </span>
   );
@@ -41,11 +41,12 @@ export default function ProcedureTables({
   charts: Chart[];
   type: Procedure["type"];
 }) {
-  const { runways: activeRunways } = useAirportContext();
+  const { runways: activeRunways, onlyActiveRunway } = useAirportContext();
 
   // Procedures for the runway in use are listed first.
   const rows = procedures
     .filter((p) => p.type === type)
+    .filter((p) => !onlyActiveRunway || servesRunway(p.runway, activeRunways))
     .sort((a, b) => {
       const rank = (r: string) => (servesRunway(r, activeRunways) ? 0 : 1);
       return (
@@ -55,7 +56,11 @@ export default function ProcedureTables({
   // Published charts whose coding table we could not parse have no procedure
   // record, but must stay reachable from the briefing.
   const covered = new Set(rows.map((p) => p.chartKey));
-  const orphans = charts.filter((c) => c.type === type && !covered.has(c.key));
+  const orphans = charts
+    .filter((c) => c.type === type && !covered.has(c.key))
+    .filter(
+      (c) => !onlyActiveRunway || servesRunway(c.name.toUpperCase(), activeRunways)
+    );
 
   if (rows.length === 0 && orphans.length === 0) return null;
 
@@ -92,7 +97,7 @@ export default function ProcedureTables({
             {rows.map((p) => (
               <tr
                 key={p.id}
-                className="border-b border-line last:border-0 hover:bg-white/[0.02] transition-colors duration-150"
+                className="border-b border-line last:border-0 hover:bg-hover-soft transition-colors duration-150"
               >
                 <td className="px-3 py-2.5 align-top whitespace-nowrap">
                   <Link

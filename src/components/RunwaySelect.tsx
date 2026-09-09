@@ -39,7 +39,7 @@ export default function RunwaySelect({ runways }: { runways: string[] }) {
         className={`flex items-center gap-1.5 px-2 py-1 rounded-full transition-colors duration-150 ${
           label
             ? "bg-ok/12 hover:bg-ok/20"
-            : "bg-white/[0.06] hover:bg-white/[0.1]"
+            : "bg-hover hover:bg-hover-strong"
         }`}
       >
         <span
@@ -77,7 +77,7 @@ export default function RunwaySelect({ runways }: { runways: string[] }) {
                     setOpen(false);
                   }}
                   className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-left transition-colors duration-150 ${
-                    active ? "bg-signal/11 text-signal" : "hover:bg-white/[0.04]"
+                    active ? "bg-signal/11 text-signal" : "hover:bg-hover"
                   }`}
                 >
                   <span className="font-mono text-[12px] font-medium">

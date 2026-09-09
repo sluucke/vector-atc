@@ -1,21 +1,9 @@
 import "server-only";
 import { aiswebFetch, createCache } from "./aisweb";
 export { formatNotamTime } from "./notam-format";
+import type { Notam } from "./notam-format";
+export type { Notam };
 
-export interface Notam {
-  id: string;
-  number: string;
-  /** Q-code, e.g. QMRTT (runway closed). */
-  code: string | null;
-  category: string | null;
-  status: string | null;
-  text: string;
-  /** Raw AISWEB validity groups, YYMMDDHHMM. */
-  validFrom: string | null;
-  validTo: string | null;
-  lower: string | null;
-  upper: string | null;
-}
 
 export interface NotamReport {
   icao: string;

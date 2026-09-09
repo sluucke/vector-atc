@@ -1,26 +1,90 @@
 @import "tailwindcss";
 
+/* Dark is the console's native mode — the tactical default. */
+:root {
+  --base: #080d13;
+  --panel: #0a1017;
+  --content: #0b1118;
+  --raised: #10161b;
+  --canvas: #131b20;
+
+  --line: rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.13);
+
+  --hover: rgba(255, 255, 255, 0.06);
+  --hover-soft: rgba(255, 255, 255, 0.03);
+  --hover-strong: rgba(255, 255, 255, 0.1);
+  --inset: rgba(0, 0, 0, 0.25);
+
+  --ink: #e2e8f0;
+  --ink-dim: #94a3b8;
+  --ink-faint: #475569;
+
+  --signal: #22d3ee;
+  --warn: #fbbf24;
+  --ok: #34d399;
+
+  --grid-dot: rgba(255, 255, 255, 0.055);
+}
+
+/*
+ * Light theme. The accents shift darker because cyan-400 and amber-400 read
+ * fine on #080d13 but fail contrast on a light ground; the roles are unchanged.
+ */
+:root[data-theme="light"] {
+  --base: #eef1f5;
+  --panel: #ffffff;
+  --content: #f7f9fb;
+  --raised: #ffffff;
+  --canvas: #e6eaef;
+
+  --line: rgba(15, 23, 42, 0.1);
+  --line-strong: rgba(15, 23, 42, 0.2);
+
+  --hover: rgba(15, 23, 42, 0.06);
+  --hover-soft: rgba(15, 23, 42, 0.035);
+  --hover-strong: rgba(15, 23, 42, 0.1);
+  --inset: rgba(15, 23, 42, 0.05);
+
+  --ink: #0f172a;
+  --ink-dim: #475569;
+  --ink-faint: #94a3b8;
+
+  --signal: #0e7490;
+  --warn: #b45309;
+  --ok: #047857;
+
+  --grid-dot: rgba(15, 23, 42, 0.09);
+}
+
+
 @theme {
-  /* Tiered dark surfaces */
-  --color-base: #080d13;
-  --color-panel: #0a1017;
-  --color-content: #0b1118;
-  --color-raised: #10161b;
-  --color-canvas: #131b20;
+  /* Tiered surfaces — values live in :root so a theme can swap them */
+  --color-base: var(--base);
+  --color-panel: var(--panel);
+  --color-content: var(--content);
+  --color-raised: var(--raised);
+  --color-canvas: var(--canvas);
 
   /* Hairline separation */
-  --color-line: rgba(255, 255, 255, 0.07);
-  --color-line-strong: rgba(255, 255, 255, 0.13);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  /* Interactive surfaces — inverted by the light theme */
+  --color-hover: var(--hover);
+  --color-hover-soft: var(--hover-soft);
+  --color-hover-strong: var(--hover-strong);
+  --color-inset: var(--inset);
 
   /* Typographic ink */
-  --color-ink: #e2e8f0;
-  --color-ink-dim: #94a3b8;
-  --color-ink-faint: #475569;
+  --color-ink: var(--ink);
+  --color-ink-dim: var(--ink-dim);
+  --color-ink-faint: var(--ink-faint);
 
   /* Semantic accents */
-  --color-signal: #22d3ee;
-  --color-warn: #fbbf24;
-  --color-ok: #34d399;
+  --color-signal: var(--signal);
+  --color-warn: var(--warn);
+  --color-ok: var(--ok);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
@@ -58,7 +122,7 @@ body {
   background-color: var(--color-canvas);
   background-image: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.055) 1px,
+    var(--grid-dot) 1px,
     transparent 1px
   );
   background-size: 22px 22px;

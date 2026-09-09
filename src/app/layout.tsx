@@ -24,8 +24,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="pt-BR"
       className={`${inter.variable} ${plexMono.variable} h-full`}
+      // The inline script below sets data-theme before hydration, so React is
+      // expected to see an attribute the server did not render.
+      suppressHydrationWarning
     >
-      <body className="font-sans min-h-full bg-base text-ink">{children}</body>
+      <body className="font-sans min-h-full bg-base text-ink">
+        <script
+          // Runs before the rest of the body paints, so the dark default
+          // never flashes for someone who chose the light theme.
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('vector:theme');if(t==='light')document.documentElement.dataset.theme='light'}catch(e){}",
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

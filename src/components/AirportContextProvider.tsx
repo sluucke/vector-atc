@@ -22,6 +22,9 @@ interface AirportContextValue {
   /** True while following automatic detection. */
   auto: boolean;
   setRunway: (runway: string | null) => void;
+  /** Hide procedures that do not serve the runway in use. */
+  onlyActiveRunway: boolean;
+  setOnlyActiveRunway: (only: boolean) => void;
 }
 
 const Ctx = createContext<AirportContextValue>({
@@ -31,6 +34,8 @@ const Ctx = createContext<AirportContextValue>({
   runways: [],
   auto: true,
   setRunway: () => {},
+  onlyActiveRunway: false,
+  setOnlyActiveRunway: () => {},
 });
 
 /**
@@ -84,6 +89,7 @@ export function AirportContextProvider({
   icao: string;
   children: React.ReactNode;
 }) {
+  const [onlyActiveRunway, setOnlyActiveRunway] = useState(false);
   const [data, setData] = useState<AirportDynamicContext | null>(null);
   const [error, setError] = useState(false);
 
@@ -128,8 +134,10 @@ export function AirportContextProvider({
       runways: override ? [override] : (data?.runwayInUse.runways ?? []),
       auto: override === null,
       setRunway: store.set,
+      onlyActiveRunway,
+      setOnlyActiveRunway,
     }),
-    [data, error, override, store]
+    [data, error, override, store, onlyActiveRunway]
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

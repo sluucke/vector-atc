@@ -48,7 +48,7 @@ function NavItem({
       className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150 ${
         active
           ? "bg-signal/11 text-signal"
-          : "text-ink-dim hover:bg-white/[0.04] hover:text-ink"
+          : "text-ink-dim hover:bg-hover hover:text-ink"
       }`}
     >
       <Icon className="size-4 shrink-0" />
@@ -141,7 +141,7 @@ export default function Sidebar({
 
       <div className="shrink-0 border-t border-line p-3 space-y-3">
         {active && (
-          <div className="rounded-lg bg-white/[0.03] border border-line p-3">
+          <div className="rounded-lg bg-hover-soft border border-line p-3">
             <div className="flex items-center gap-2">
               <span className="size-1.5 rounded-full bg-ok shadow-[0_0_6px_var(--color-ok)]" />
               <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">

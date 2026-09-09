@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import CommandPalette from "./CommandPalette";
 import IvaoStatus from "./IvaoStatus";
+import ThemeToggle from "./ThemeToggle";
 import type { SearchEntry } from "@/lib/content";
 
 export default function TopBar({
@@ -37,7 +38,7 @@ export default function TopBar({
       <header className="h-16 shrink-0 flex items-center gap-4 px-4 bg-panel border-b border-line">
         <button
           onClick={() => setOpen(true)}
-          className="group flex items-center gap-2.5 w-full max-w-md px-3 py-2 rounded-lg bg-black/25 border border-line hover:border-line-strong transition-colors duration-150 text-left"
+          className="group flex items-center gap-2.5 w-full max-w-md px-3 py-2 rounded-lg bg-inset border border-line hover:border-line-strong transition-colors duration-150 text-left"
         >
           <Search className="size-4 text-ink-faint" />
           <span className="flex-1 text-sm text-ink-faint">
@@ -59,6 +60,7 @@ export default function TopBar({
               )}
             </div>
           )}
+          <ThemeToggle />
           <IvaoStatus
             availableIcaos={availableIcaos}
             currentIcao={currentIcao}

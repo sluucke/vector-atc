@@ -11,7 +11,7 @@ import {
   type TransitionLevelResult,
 } from "@/lib/ops/transition";
 import type { MetarReport } from "@/lib/ops/metar";
-import type { Notam } from "@/lib/ops/notam";
+import type { Notam } from "@/lib/ops/notam-format";
 
 export const dynamic = "force-dynamic";
 

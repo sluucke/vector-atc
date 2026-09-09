@@ -61,7 +61,7 @@ export default function IvaoStatus({
 
   return (
     <div className="flex items-center gap-2.5">
-      <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white/[0.04] border border-line">
+      <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-hover border border-line">
         <span className={`size-1.5 rounded-full shrink-0 ${dotClass}`} />
         {controller ? (
           <span className="leading-tight">
@@ -96,7 +96,7 @@ export default function IvaoStatus({
         }}
         aria-label="Desconectar IVAO"
         title="Desconectar IVAO"
-        className="grid place-items-center size-7 rounded-md text-ink-faint hover:bg-white/[0.06] hover:text-ink transition-colors duration-150"
+        className="grid place-items-center size-7 rounded-md text-ink-faint hover:bg-hover hover:text-ink transition-colors duration-150"
       >
         <LogOut className="size-3.5" />
       </button>

@@ -12,10 +12,13 @@ const MAX_ZOOM = 6;
 export default function PdfCanvas({
   src,
   zoom,
+  rotation = 0,
   onZoomChange,
 }: {
   src: string;
   zoom: number;
+  /** Degrees clockwise; pdf.js rotates the page itself, keeping it crisp. */
+  rotation?: number;
   onZoomChange: (zoom: number) => void;
 }) {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -60,14 +63,14 @@ export default function PdfCanvas({
     if (!doc || !canvas || !viewport) return;
 
     const page = await doc.getPage(1);
-    const base = page.getViewport({ scale: 1 });
+    const base = page.getViewport({ scale: 1, rotation });
     const fit = Math.min(
       viewport.clientWidth / base.width,
       viewport.clientHeight / base.height
     );
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const scaled = page.getViewport({ scale: fit * zoom });
+    const scaled = page.getViewport({ scale: fit * zoom, rotation });
 
     taskRef.current?.cancel();
     canvas.width = Math.floor(scaled.width * dpr);
@@ -86,7 +89,7 @@ export default function PdfCanvas({
     } catch {
       // Cancelled by a newer render — expected while zooming.
     }
-  }, [zoom]);
+  }, [zoom, rotation]);
 
   useEffect(() => {
     if (status === "ready") void render();

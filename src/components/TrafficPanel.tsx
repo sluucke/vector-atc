@@ -160,7 +160,7 @@ export default function TrafficPanel({
   return (
     <div className="flex flex-col min-h-0">
       <div className="shrink-0 p-3 space-y-2 border-b border-line">
-        <div className="flex gap-1 p-0.5 rounded-lg bg-black/25">
+        <div className="flex gap-1 p-0.5 rounded-lg bg-inset">
           {TABS.map((t) => (
             <button
               key={t}
@@ -180,7 +180,7 @@ export default function TrafficPanel({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Filtrar por SID/STAR, fixo, RWY, destino…"
-          className="w-full px-2.5 py-1.5 rounded-md bg-black/25 border border-line text-[11px] outline-none focus:border-signal/50 placeholder:text-ink-faint"
+          className="w-full px-2.5 py-1.5 rounded-md bg-inset border border-line text-[11px] outline-none focus:border-signal/50 placeholder:text-ink-faint"
         />
       </div>
 
@@ -217,12 +217,12 @@ export default function TrafficPanel({
           return (
             <div
               key={`${flight.kind}-${flight.callsign}`}
-              className={`border-b border-line ${open ? "bg-white/[0.05]" : ""}`}
+              className={`border-b border-line ${open ? "bg-hover" : ""}`}
             >
               <button
                 onClick={() => setOpenCallsign(open ? null : flight.callsign)}
                 className={`w-full text-left px-3 py-2 transition-colors duration-150 ${
-                  open ? "" : "hover:bg-white/[0.03]"
+                  open ? "" : "hover:bg-hover-soft"
                 }`}
               >
               <div className="flex items-center gap-2">

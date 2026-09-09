@@ -1,3 +1,18 @@
+export interface Notam {
+  id: string;
+  number: string;
+  /** Q-code, e.g. QMRTT (runway closed). */
+  code: string | null;
+  category: string | null;
+  status: string | null;
+  text: string;
+  /** Raw AISWEB validity groups, YYMMDDHHMM. */
+  validFrom: string | null;
+  validTo: string | null;
+  lower: string | null;
+  upper: string | null;
+}
+
 const MONTHS = [
   "JAN", "FEV", "MAR", "ABR", "MAI", "JUN",
   "JUL", "AGO", "SET", "OUT", "NOV", "DEZ",

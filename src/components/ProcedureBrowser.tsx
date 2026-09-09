@@ -52,7 +52,8 @@ export default function ProcedureBrowser({
 }) {
   const pathname = usePathname();
   const session = useIvaoSession();
-  const { runways: activeRunways } = useAirportContext();
+  const { runways: activeRunways, onlyActiveRunway, setOnlyActiveRunway } =
+    useAirportContext();
   const activeRef = useRef<HTMLAnchorElement>(null);
   const [manual, setManual] = useState<string[] | null>(null);
 
@@ -86,9 +87,22 @@ export default function ProcedureBrowser({
         (c) => available.includes(c) && active.includes(c)
       ).map((category) => ({
         category,
-        entries: categoryEntries(icao, charts, procedures, category),
+        entries: categoryEntries(icao, charts, procedures, category).filter(
+          (entry) =>
+            !onlyActiveRunway ||
+            !entry.group ||
+            servesRunway(entry.group.replace(/^RWY /, ""), activeRunways)
+        ),
       })),
-    [available, active, procedures, charts, icao]
+    [
+      available,
+      active,
+      procedures,
+      charts,
+      icao,
+      onlyActiveRunway,
+      activeRunways,
+    ]
   );
 
   useEffect(() => {
@@ -109,7 +123,7 @@ export default function ProcedureBrowser({
                 className={`px-2 py-1 rounded-md font-mono text-[10px] font-medium transition-colors duration-150 ${
                   on
                     ? "bg-signal/15 text-signal"
-                    : "bg-black/25 text-ink-faint hover:text-ink-dim"
+                    : "bg-inset text-ink-faint hover:text-ink-dim"
                 }`}
               >
                 {category}
@@ -120,6 +134,20 @@ export default function ProcedureBrowser({
             );
           })}
         </div>
+
+        {activeRunways.length > 0 && (
+          <label className="flex items-center gap-1.5 text-[10px] text-ink-dim cursor-pointer">
+            <input
+              type="checkbox"
+              checked={onlyActiveRunway}
+              onChange={(e) => setOnlyActiveRunway(e.target.checked)}
+              className="size-3 accent-[var(--color-signal)]"
+            />
+            <span className="font-mono">
+              só a pista em uso ({activeRunways.join("/")})
+            </span>
+          </label>
+        )}
 
         {isAuto && (
           <div className="flex items-center gap-1.5 text-[10px] text-ink-faint">
@@ -196,7 +224,7 @@ export default function ProcedureBrowser({
                             className={`block px-2.5 py-2 rounded-lg border-l-2 transition-colors duration-150 ${
                               on
                                 ? "border-signal bg-signal/11"
-                                : "border-transparent hover:bg-white/[0.04]"
+                                : "border-transparent hover:bg-hover"
                             }`}
                           >
                             <div className="flex items-center gap-2">

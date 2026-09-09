@@ -12,6 +12,7 @@ import {
   Minus,
   Plus,
   RotateCcw,
+  RotateCw,
 } from "lucide-react";
 import PdfCanvas from "./PdfCanvas";
 import BackToAirport from "./BackToAirport";
@@ -52,6 +53,7 @@ export default function ChartWorkspace({
   );
   const [chartKey, setChartKey] = useState(initialChartKey);
   const [zoom, setZoom] = useState(1);
+  const [rotation, setRotation] = useState(0);
   const [pickerOpen, setPickerOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -85,7 +87,7 @@ export default function ChartWorkspace({
         <BackToAirport icao={icao} label="Cartas" />
         <span className="w-px h-4 bg-line shrink-0" />
 
-        <div className="flex gap-0.5 p-0.5 rounded-lg bg-black/30 shrink-0">
+        <div className="flex gap-0.5 p-0.5 rounded-lg bg-inset shrink-0">
           {(
             [
               ["chart", "CARTA", FileText],
@@ -114,7 +116,7 @@ export default function ChartWorkspace({
               onClick={() => setPickerOpen((o) => !o)}
               className="flex items-center gap-2 max-w-md px-2.5 py-1.5 rounded-lg border border-line hover:border-line-strong transition-colors duration-150"
             >
-              <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-white/[0.06] text-ink-dim shrink-0">
+              <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-hover text-ink-dim shrink-0">
                 {chart.type}
               </span>
               <span className="font-mono text-[11px] text-ink truncate">
@@ -146,12 +148,13 @@ export default function ChartWorkspace({
                           onClick={() => {
                             setChartKey(item.key);
                             setZoom(1);
+                            setRotation(0);
                             setPickerOpen(false);
                           }}
                           className={`w-full flex items-center gap-2 px-3 py-1.5 text-left transition-colors duration-150 ${
                             item.key === chartKey
                               ? "bg-signal/11 text-signal"
-                              : "hover:bg-white/[0.04]"
+                              : "hover:bg-hover"
                           }`}
                         >
                           <span className="font-mono text-[11px] truncate flex-1">
@@ -188,7 +191,7 @@ export default function ChartWorkspace({
               <button
                 onClick={() => step(1 / 1.25)}
                 aria-label="Reduzir zoom"
-                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-white/[0.06] hover:text-ink transition-colors duration-150"
+                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
               >
                 <Minus className="size-4" />
               </button>
@@ -198,15 +201,26 @@ export default function ChartWorkspace({
               <button
                 onClick={() => step(1.25)}
                 aria-label="Aumentar zoom"
-                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-white/[0.06] hover:text-ink transition-colors duration-150"
+                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
               >
                 <Plus className="size-4" />
               </button>
               <button
-                onClick={() => setZoom(1)}
+                onClick={() => setRotation((r) => (r + 90) % 360)}
+                aria-label="Girar 90°"
+                title="Girar 90° — cartas em paisagem"
+                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
+              >
+                <RotateCw className="size-3.5" />
+              </button>
+              <button
+                onClick={() => {
+                  setZoom(1);
+                  setRotation(0);
+                }}
                 aria-label="Ajustar à tela"
                 title="Ajustar à tela"
-                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-white/[0.06] hover:text-ink transition-colors duration-150"
+                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
               >
                 <RotateCcw className="size-3.5" />
               </button>
@@ -216,7 +230,7 @@ export default function ChartWorkspace({
           <button
             onClick={toggleFullscreen}
             aria-label="Tela cheia"
-            className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-white/[0.06] hover:text-ink transition-colors duration-150"
+            className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
           >
             <Maximize2 className="size-3.5" />
           </button>
@@ -224,7 +238,7 @@ export default function ChartWorkspace({
             href={chart.file}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-ink-dim hover:bg-white/[0.06] hover:text-ink transition-colors duration-150"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
           >
             <ExternalLink className="size-3.5" />
             PDF
@@ -237,6 +251,7 @@ export default function ChartWorkspace({
           key={chart.file}
           src={chart.file}
           zoom={zoom}
+          rotation={rotation}
           onZoomChange={setZoom}
         />
       ) : procedure && geometry ? (

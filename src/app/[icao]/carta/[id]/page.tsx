@@ -99,7 +99,7 @@ export default async function CartaPage(
               {(procedure.transitions ?? []).map((t) => (
                 <li
                   key={t.fix}
-                  className="rounded-md bg-white/[0.03] border border-line px-2.5 py-1.5"
+                  className="rounded-md bg-hover-soft border border-line px-2.5 py-1.5"
                 >
                   <p className="font-mono text-[12px] font-medium text-ink">
                     {t.fix}
@@ -119,7 +119,7 @@ export default async function CartaPage(
               {(procedure.entryFixes ?? []).map((f) => (
                 <span
                   key={f}
-                  className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-white/[0.06] text-ink"
+                  className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-hover text-ink"
                 >
                   {f}
                 </span>
@@ -140,7 +140,7 @@ export default async function CartaPage(
               {procedure.fixes.map((f) => (
                 <span
                   key={f}
-                  className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-white/[0.04] text-ink-dim"
+                  className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-hover text-ink-dim"
                 >
                   {f}
                 </span>

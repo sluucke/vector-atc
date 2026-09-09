@@ -63,7 +63,7 @@ export default function OperationalPanel({
             {notes.map((note, i) => (
               <div
                 key={i}
-                className="rounded-lg border-l-2 border-signal/50 bg-white/[0.03] p-3"
+                className="rounded-lg border-l-2 border-signal/50 bg-hover-soft p-3"
               >
                 <p className="text-[11px] leading-relaxed text-ink-dim">
                   {note}
