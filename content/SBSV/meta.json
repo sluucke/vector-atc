@@ -5,6 +5,13 @@
   "ta": "10000'",
   "msa": "2000' (25NM ARP)",
   "fir": "Recife (ACC-RE)",
+  "operational": {
+    "transitionAltitude": 7000,
+    "transitionAltitudeSource": "MOPS IVAO — TMA Salvador",
+    "chartTransitionAltitude": 10000,
+    "chartTransitionAltitudeNote": "As cartas DECEA do AIRAC 2608A1 publicam TA 10000 ft (harmonização das TMA em curso). Para controle na rede IVAO vale o MOPS: TA 7000 ft.",
+    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbre/sbxs"
+  },
   "airac": {
     "cycle": "AMDT 2608A1",
     "effective": "2026-08-06",

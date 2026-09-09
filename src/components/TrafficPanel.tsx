@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { PlaneLanding, PlaneTakeoff, RefreshCw, TriangleAlert } from "lucide-react";
+import Link from "next/link";
+import {
+  MapPin,
+  PlaneLanding,
+  PlaneTakeoff,
+  RefreshCw,
+  TriangleAlert,
+} from "lucide-react";
 import type { AirportTraffic, LiveFlight } from "@/lib/ivao/types";
 import type { Procedure } from "@/lib/types";
 
@@ -193,15 +200,16 @@ export default function TrafficPanel({
               : flight.departureDistance;
 
           return (
-            <button
+            <div
               key={`${flight.kind}-${flight.callsign}`}
-              onClick={() =>
-                setOpenCallsign(open ? null : flight.callsign)
-              }
-              className={`w-full text-left px-3 py-2 border-b border-line transition-colors duration-150 ${
-                open ? "bg-white/[0.05]" : "hover:bg-white/[0.03]"
-              }`}
+              className={`border-b border-line ${open ? "bg-white/[0.05]" : ""}`}
             >
+              <button
+                onClick={() => setOpenCallsign(open ? null : flight.callsign)}
+                className={`w-full text-left px-3 py-2 transition-colors duration-150 ${
+                  open ? "" : "hover:bg-white/[0.03]"
+                }`}
+              >
               <div className="flex items-center gap-2">
                 {flight.kind === "arrival" ? (
                   <PlaneLanding className="size-3.5 shrink-0 text-warn" />
@@ -233,29 +241,48 @@ export default function TrafficPanel({
               <div className="mt-1">
                 <ProcedureTag flight={flight} names={names} />
               </div>
+              </button>
 
               {open && (
-                <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 font-mono text-[10px] text-ink-faint">
-                  <dt>Nível</dt>
-                  <dd className="text-ink-dim">{flight.flightLevel ?? "—"}</dd>
-                  <dt>Regras</dt>
-                  <dd className="text-ink-dim">{flight.flightRules ?? "—"}</dd>
-                  <dt>Altitude</dt>
-                  <dd className="text-ink-dim">
-                    {flight.altitude !== null
-                      ? `${flight.altitude} ft`
-                      : "—"}{" "}
-                    {flight.groundSpeed !== null && `· ${flight.groundSpeed} kt`}
-                  </dd>
-                  <dt>Alternativa</dt>
-                  <dd className="text-ink-dim">{flight.alternate ?? "—"}</dd>
-                  <dt className="col-span-2 pt-1 text-ink-faint">Rota</dt>
-                  <dd className="col-span-2 text-ink-dim break-words leading-relaxed">
-                    {flight.route ?? "—"}
-                  </dd>
-                </dl>
+                <div className="px-3 pb-2.5">
+                  <dl className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 font-mono text-[10px] text-ink-faint">
+                    <dt>Nível</dt>
+                    <dd className="text-ink-dim">{flight.flightLevel ?? "—"}</dd>
+                    <dt>Regras</dt>
+                    <dd className="text-ink-dim">{flight.flightRules ?? "—"}</dd>
+                    <dt>Altitude</dt>
+                    <dd className="text-ink-dim">
+                      {flight.altitude !== null ? `${flight.altitude} ft` : "—"}{" "}
+                      {flight.groundSpeed !== null &&
+                        `· ${flight.groundSpeed} kt`}
+                    </dd>
+                    <dt>Alternativa</dt>
+                    <dd className="text-ink-dim">{flight.alternate ?? "—"}</dd>
+                    <dt className="col-span-2 pt-1 text-ink-faint">Rota</dt>
+                    <dd className="col-span-2 text-ink-dim break-words leading-relaxed">
+                      {flight.route ?? "—"}
+                    </dd>
+                  </dl>
+
+                  {flight.procedure.procedureIds.length > 0 &&
+                  flight.latitude !== null ? (
+                    <Link
+                      href={`/${icao.toLowerCase()}/carta/${flight.procedure.procedureIds[0]}?view=map&focus=${flight.callsign}`}
+                      className="mt-2 flex items-center justify-center gap-1.5 py-1.5 rounded-md bg-signal/11 text-signal hover:bg-signal/20 font-mono text-[10px] font-medium transition-colors duration-150"
+                    >
+                      <MapPin className="size-3" />
+                      Ver no mapa
+                    </Link>
+                  ) : (
+                    <p className="mt-2 text-center font-mono text-[9px] text-ink-faint">
+                      {flight.latitude === null
+                        ? "sem posição na rede"
+                        : "sem procedimento associado para plotar"}
+                    </p>
+                  )}
+                </div>
               )}
-            </button>
+            </div>
           );
         })}
       </div>

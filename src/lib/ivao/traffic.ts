@@ -1,7 +1,7 @@
 import "server-only";
 import { getProcedures } from "@/lib/content";
-import type { Procedure } from "@/lib/types";
 import { getWhazzup } from "./whazzup";
+import { matchProcedure } from "./procedure-match";
 import type {
   AirportTraffic,
   LiveFlight,
@@ -11,70 +11,6 @@ import type {
 
 /** Beyond this a departure is en route and no longer the field's problem. */
 const DEPARTURE_RANGE_NM = 250;
-
-const UNKNOWN: ProcedureMatch = {
-  confidence: "unknown",
-  procedureIds: [],
-  designator: null,
-  fix: null,
-};
-
-const normalize = (value: string) => value.replace(/[\s-]/g, "").toUpperCase();
-
-/** Fixes a flight can join a SID at (its transitions) or leave a STAR from. */
-function boundaryFixes(procedure: Procedure): string[] {
-  return procedure.type === "SID"
-    ? (procedure.transitions ?? []).map((t) => t.fix)
-    : (procedure.entryFixes ?? []);
-}
-
-/**
- * IVAO publishes no structured SID/STAR field, so the association is derived
- * from the filed route:
- *   confirmed — the route names the procedure designator outright;
- *   inferred  — the route's first/last fix is a published boundary fix, which
- *               can match several procedures (usually one per runway);
- *   unknown   — neither.
- */
-export function matchProcedure(
-  route: string | null,
-  procedures: Procedure[],
-  kind: "SID" | "STAR"
-): ProcedureMatch {
-  if (!route) return UNKNOWN;
-
-  const tokens = route.trim().toUpperCase().split(/\s+/).filter(Boolean);
-  if (tokens.length === 0) return UNKNOWN;
-
-  const candidates = procedures.filter((p) => p.type === kind);
-
-  for (const token of tokens) {
-    const hit = candidates.find((p) => normalize(p.name) === normalize(token));
-    if (hit) {
-      return {
-        confidence: "confirmed",
-        procedureIds: [hit.id],
-        designator: token,
-        fix: null,
-      };
-    }
-  }
-
-  // A departure joins the airway structure at its first filed fix; an arrival
-  // leaves it at its last.
-  const edge = kind === "SID" ? tokens[0] : tokens[tokens.length - 1];
-  const viaFix = candidates.filter((p) => boundaryFixes(p).includes(edge));
-  if (viaFix.length > 0) {
-    return {
-      confidence: "inferred",
-      procedureIds: viaFix.map((p) => p.id),
-      designator: null,
-      fix: edge,
-    };
-  }
-
-  return UNKNOWN;
-}
 
 function toLiveFlight(
   pilot: WhazzupPilot,

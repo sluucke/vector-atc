@@ -90,6 +90,17 @@ export interface AirportFrequencies {
   accExtended?: string[];
 }
 
+/** Static, slowly-changing operational data kept in our own dataset. */
+export interface AirportOperationalData {
+  /** Feet. The value controllers use on the network. */
+  transitionAltitude: number;
+  transitionAltitudeSource: string;
+  /** Set when the published chart disagrees with the operational value. */
+  chartTransitionAltitude?: number;
+  chartTransitionAltitudeNote?: string;
+  ivaoWikiUrl?: string;
+}
+
 export interface AirportMeta {
   icao: string;
   name: string;
@@ -97,6 +108,7 @@ export interface AirportMeta {
   ta: string;
   msa: string;
   fir: string;
+  operational?: AirportOperationalData;
   airac: AiracInfo;
   frequencies: AirportFrequencies;
   runways: string[];

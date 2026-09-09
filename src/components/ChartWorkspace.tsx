@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
 import {
   ChevronDown,
   ExternalLink,
@@ -39,7 +40,12 @@ export default function ChartWorkspace({
   charts: Chart[];
   geometry: AirportGeometry | null;
 }) {
-  const [view, setView] = useState<"chart" | "map">("chart");
+  // Deep links from the traffic panel open straight into the map on a flight.
+  const params = useSearchParams();
+  const focus = params.get("focus");
+  const [view, setView] = useState<"chart" | "map">(
+    params.get("view") === "map" ? "map" : "chart"
+  );
   const [chartKey, setChartKey] = useState(procedure.chartKey);
   const [zoom, setZoom] = useState(1);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -224,7 +230,12 @@ export default function ChartWorkspace({
           onZoomChange={setZoom}
         />
       ) : geometry ? (
-        <ProcedureMap icao={icao} procedure={procedure} geometry={geometry} />
+        <ProcedureMap
+          icao={icao}
+          procedure={procedure}
+          geometry={geometry}
+          focusCallsign={focus}
+        />
       ) : (
         <div className="dot-grid flex-1 min-h-0 grid place-items-center">
           <p className="font-mono text-xs text-ink-faint">

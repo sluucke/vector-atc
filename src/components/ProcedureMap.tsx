@@ -73,18 +73,33 @@ function MapControls({ bounds }: { bounds: LatLngBoundsExpression | null }) {
   );
 }
 
-function aircraftIcon(heading: number | null) {
+function aircraftIcon(heading: number | null, focused: boolean) {
+  const size = focused ? 30 : 22;
   return L.divIcon({
     className: "",
-    iconSize: [22, 22],
-    iconAnchor: [11, 11],
-    html: `<svg viewBox="0 0 24 24" width="22" height="22" style="transform: rotate(${
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    html: `<svg viewBox="0 0 24 24" width="${size}" height="${size}" style="transform: rotate(${
       heading ?? 0
-    }deg)">
+    }deg)${focused ? "; filter: drop-shadow(0 0 5px #22d3ee)" : ""}">
       <path d="M12 2 L14.4 11 L22 14.2 L22 16 L13.6 14.2 L13 20 L15.4 21.6 L15.4 22.6 L12 21.8 L8.6 22.6 L8.6 21.6 L11 20 L10.4 14.2 L2 16 L2 14.2 L9.6 11 Z"
-        fill="#e2e8f0" stroke="#080d13" stroke-width="0.8" stroke-linejoin="round"/>
+        fill="${focused ? "#22d3ee" : "#e2e8f0"}" stroke="#080d13" stroke-width="0.8" stroke-linejoin="round"/>
     </svg>`,
   });
+}
+
+/** Pans to a flight opened from the traffic panel, once its position arrives. */
+function FocusFlight({ flight }: { flight: LiveFlight | null }) {
+  const map = useMap();
+  const lat = flight?.latitude ?? null;
+  const lon = flight?.longitude ?? null;
+
+  useEffect(() => {
+    if (lat === null || lon === null) return;
+    map.setView([lat, lon], Math.max(map.getZoom(), 7));
+  }, [map, lat, lon]);
+
+  return null;
 }
 
 /** Live aircraft the network says are flying this procedure. */
@@ -128,13 +143,17 @@ export default function ProcedureMap({
   icao,
   procedure,
   geometry,
+  focusCallsign,
 }: {
   icao: string;
   procedure: Procedure;
   geometry: AirportGeometry;
+  focusCallsign?: string | null;
 }) {
   const color = procedure.type === "SID" ? SID_COLOR : STAR_COLOR;
   const flights = useProcedureTraffic(icao, procedure.id);
+  const focused =
+    flights.find((f) => f.callsign === focusCallsign?.toUpperCase()) ?? null;
 
   const { paths, runway, bounds } = useMemo(() => {
     const geo = procedure.geometryKey
@@ -284,7 +303,10 @@ export default function ProcedureMap({
           <Marker
             key={flight.callsign}
             position={[flight.latitude as number, flight.longitude as number]}
-            icon={aircraftIcon(flight.heading)}
+            icon={aircraftIcon(
+              flight.heading,
+              flight.callsign === focused?.callsign
+            )}
           >
             <Tooltip
               permanent
@@ -320,6 +342,7 @@ export default function ProcedureMap({
           </Marker>
         ))}
 
+        <FocusFlight flight={focused} />
         <MapControls bounds={bounds} />
       </MapContainer>
 

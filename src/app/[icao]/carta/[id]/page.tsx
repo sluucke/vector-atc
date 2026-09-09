@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { TriangleAlert, Route, Waypoints, Target } from "lucide-react";
 import ChartWorkspace from "@/components/ChartWorkspace";
@@ -50,13 +51,19 @@ export default async function CartaPage(
 
   return (
     <>
-      <ChartWorkspace
-        key={procedure.id}
-        icao={meta.icao}
-        procedure={procedure}
-        charts={getCharts(icao)}
-        geometry={getGeometry(icao)}
-      />
+      {/* Reads ?view/?focus from the traffic panel, so it needs a boundary to
+          keep the route statically prerendered. */}
+      <Suspense
+        fallback={<div className="flex-1 min-w-0 bg-content dot-grid" />}
+      >
+        <ChartWorkspace
+          key={procedure.id}
+          icao={meta.icao}
+          procedure={procedure}
+          charts={getCharts(icao)}
+          geometry={getGeometry(icao)}
+        />
+      </Suspense>
 
       <aside className="w-72 shrink-0 hidden lg:flex flex-col bg-panel border-l border-line overflow-y-auto">
         <div className="shrink-0 p-3 border-b border-line">
