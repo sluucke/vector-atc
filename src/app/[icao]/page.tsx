@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { TriangleAlert } from "lucide-react";
+import OperationalPanel from "@/components/OperationalPanel";
 import ProcedureTables from "@/components/ProcedureTables";
 import { getAirportCodes, getAirportMeta, getProcedures } from "@/lib/content";
 
@@ -53,40 +53,13 @@ export default async function AirportBriefingPage(
         <ProcedureTables icao={meta.icao} procedures={procedures} type="STAR" />
       </div>
 
-      <aside className="w-72 shrink-0 hidden xl:flex flex-col bg-panel border-l border-line">
-        <div className="shrink-0 px-4 h-11 flex items-center gap-2 border-b border-line">
-          <TriangleAlert className="size-3.5 text-warn" />
-          <h2 className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
-            Notas operacionais
-          </h2>
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
-          {meta.runwaysNote && (
-            <div className="rounded-lg border-l-2 border-warn bg-warn/[0.06] p-3">
-              <p className="text-[11px] leading-relaxed text-ink-dim">
-                {meta.runwaysNote}
-              </p>
-            </div>
-          )}
-          {meta.observations.map((obs, i) => (
-            <div
-              key={i}
-              className="rounded-lg border-l-2 border-signal/50 bg-white/[0.03] p-3"
-            >
-              <p className="text-[11px] leading-relaxed text-ink-dim">{obs}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="shrink-0 border-t border-line p-3">
-          <p className="font-mono text-[10px] text-ink-faint leading-relaxed">
-            Dados extraídos das cartas oficiais DECEA/AISWEB.
-            <br />
-            Verificado em {meta.airac.checkedAt}.
-          </p>
-        </div>
-      </aside>
+      <OperationalPanel
+        icao={meta.icao}
+        procedures={procedures}
+        notes={meta.observations}
+        runwaysNote={meta.runwaysNote}
+        checkedAt={meta.airac.checkedAt}
+      />
     </>
   );
 }

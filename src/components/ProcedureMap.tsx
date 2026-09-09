@@ -1,18 +1,21 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   MapContainer,
   TileLayer,
   Polyline,
   CircleMarker,
+  Marker,
+  Popup,
   Tooltip,
   useMap,
 } from "react-leaflet";
-import type { LatLngExpression, LatLngBoundsExpression } from "leaflet";
+import L, { type LatLngExpression, type LatLngBoundsExpression } from "leaflet";
 import { Frame, Minus, Plus } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import type { AirportGeometry, Procedure } from "@/lib/types";
+import type { AirportTraffic, LiveFlight } from "@/lib/ivao/types";
 
 const SID_COLOR = "#22d3ee";
 const STAR_COLOR = "#fbbf24";
@@ -70,14 +73,68 @@ function MapControls({ bounds }: { bounds: LatLngBoundsExpression | null }) {
   );
 }
 
+function aircraftIcon(heading: number | null) {
+  return L.divIcon({
+    className: "",
+    iconSize: [22, 22],
+    iconAnchor: [11, 11],
+    html: `<svg viewBox="0 0 24 24" width="22" height="22" style="transform: rotate(${
+      heading ?? 0
+    }deg)">
+      <path d="M12 2 L14.4 11 L22 14.2 L22 16 L13.6 14.2 L13 20 L15.4 21.6 L15.4 22.6 L12 21.8 L8.6 22.6 L8.6 21.6 L11 20 L10.4 14.2 L2 16 L2 14.2 L9.6 11 Z"
+        fill="#e2e8f0" stroke="#080d13" stroke-width="0.8" stroke-linejoin="round"/>
+    </svg>`,
+  });
+}
+
+/** Live aircraft the network says are flying this procedure. */
+function useProcedureTraffic(icao: string, procedureId: string) {
+  const [flights, setFlights] = useState<LiveFlight[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function poll() {
+      try {
+        const res = await fetch(`/api/ivao/traffic?icao=${icao}`, {
+          cache: "no-store",
+        });
+        if (!res.ok) return;
+        const data = (await res.json()) as AirportTraffic;
+        const relevant = [...data.arrivals, ...data.departures].filter(
+          (flight) =>
+            flight.procedure.procedureIds.includes(procedureId) &&
+            flight.latitude !== null &&
+            flight.longitude !== null
+        );
+        if (!cancelled) setFlights(relevant);
+      } catch {
+        // Keep the last known positions rather than clearing the map.
+      }
+    }
+
+    void poll();
+    const timer = setInterval(poll, 20_000);
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [icao, procedureId]);
+
+  return flights;
+}
+
 export default function ProcedureMap({
+  icao,
   procedure,
   geometry,
 }: {
+  icao: string;
   procedure: Procedure;
   geometry: AirportGeometry;
 }) {
   const color = procedure.type === "SID" ? SID_COLOR : STAR_COLOR;
+  const flights = useProcedureTraffic(icao, procedure.id);
 
   const { paths, runway, bounds } = useMemo(() => {
     const geo = procedure.geometryKey
@@ -223,8 +280,54 @@ export default function ProcedureMap({
           })
         )}
 
+        {flights.map((flight) => (
+          <Marker
+            key={flight.callsign}
+            position={[flight.latitude as number, flight.longitude as number]}
+            icon={aircraftIcon(flight.heading)}
+          >
+            <Tooltip
+              permanent
+              direction="top"
+              offset={[0, -10]}
+              className="!bg-raised !border-0 !text-ink !font-mono !text-[10px] !shadow-lg !px-1.5 !py-0.5"
+            >
+              {flight.callsign}
+            </Tooltip>
+            <Popup>
+              <div className="font-mono text-[11px] leading-relaxed">
+                <p className="font-semibold text-[12px]">{flight.callsign}</p>
+                <p>
+                  {flight.aircraftIcao ?? "—"} · {flight.departure ?? "????"} →{" "}
+                  {flight.destination ?? "????"}
+                </p>
+                <p>
+                  {flight.altitude !== null && `${flight.altitude} ft`}
+                  {flight.groundSpeed !== null && ` · ${flight.groundSpeed} kt`}
+                  {flight.heading !== null && ` · ${flight.heading}°`}
+                </p>
+                <p>
+                  {flight.state ?? "—"}
+                  {flight.flightLevel ? ` · ${flight.flightLevel}` : ""}
+                </p>
+                <p className="italic">
+                  {flight.procedure.confidence === "confirmed"
+                    ? `${procedure.name} declarada no plano`
+                    : `${procedure.name} inferida por ${flight.procedure.fix}`}
+                </p>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+
         <MapControls bounds={bounds} />
       </MapContainer>
+
+      {flights.length > 0 && (
+        <p className="absolute top-2 right-2 z-[400] font-mono text-[10px] px-2 py-1 rounded bg-raised/90 border border-line text-ink-dim">
+          {flights.length} na rede
+        </p>
+      )}
 
       <p className="absolute bottom-1 right-2 z-[400] font-mono text-[9px] text-ink-faint/70">
         Esri · HERE · Garmin · © OpenStreetMap

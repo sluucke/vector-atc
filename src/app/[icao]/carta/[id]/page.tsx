@@ -52,6 +52,7 @@ export default async function CartaPage(
     <>
       <ChartWorkspace
         key={procedure.id}
+        icao={meta.icao}
         procedure={procedure}
         charts={getCharts(icao)}
         geometry={getGeometry(icao)}

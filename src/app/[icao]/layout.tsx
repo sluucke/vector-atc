@@ -31,6 +31,8 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
           entries={getSearchIndex()}
           station={`APP ${meta.icao}`}
           frequency={meta.frequencies.app[0]}
+          availableIcaos={getAirportCodes()}
+          currentIcao={meta.icao}
         />
         <AirportContextHeader meta={meta} />
 

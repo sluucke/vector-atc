@@ -3,16 +3,21 @@
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import CommandPalette from "./CommandPalette";
+import IvaoStatus from "./IvaoStatus";
 import type { SearchEntry } from "@/lib/content";
 
 export default function TopBar({
   entries,
   station,
   frequency,
+  availableIcaos,
+  currentIcao,
 }: {
   entries: SearchEntry[];
   station?: string;
   frequency?: string;
+  availableIcaos: string[];
+  currentIcao?: string;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -43,16 +48,22 @@ export default function TopBar({
           </kbd>
         </button>
 
-        {station && (
-          <div className="ml-auto hidden sm:flex items-center gap-3 shrink-0">
-            <span className="font-mono text-xs text-ink-dim">{station}</span>
-            {frequency && (
-              <span className="font-mono text-sm font-medium px-2.5 py-1 rounded bg-signal/11 text-signal">
-                {frequency}
-              </span>
-            )}
-          </div>
-        )}
+        <div className="ml-auto flex items-center gap-3 shrink-0">
+          {station && (
+            <div className="hidden xl:flex items-center gap-3">
+              <span className="font-mono text-xs text-ink-dim">{station}</span>
+              {frequency && (
+                <span className="font-mono text-sm font-medium px-2.5 py-1 rounded bg-signal/11 text-signal">
+                  {frequency}
+                </span>
+              )}
+            </div>
+          )}
+          <IvaoStatus
+            availableIcaos={availableIcaos}
+            currentIcao={currentIcao}
+          />
+        </div>
       </header>
 
       <CommandPalette entries={entries} open={open} onOpenChange={setOpen} />

@@ -29,10 +29,12 @@ const MIN_ZOOM = 0.4;
 const MAX_ZOOM = 6;
 
 export default function ChartWorkspace({
+  icao,
   procedure,
   charts,
   geometry,
 }: {
+  icao: string;
   procedure: Procedure;
   charts: Chart[];
   geometry: AirportGeometry | null;
@@ -222,7 +224,7 @@ export default function ChartWorkspace({
           onZoomChange={setZoom}
         />
       ) : geometry ? (
-        <ProcedureMap procedure={procedure} geometry={geometry} />
+        <ProcedureMap icao={icao} procedure={procedure} geometry={geometry} />
       ) : (
         <div className="dot-grid flex-1 min-h-0 grid place-items-center">
           <p className="font-mono text-xs text-ink-faint">
