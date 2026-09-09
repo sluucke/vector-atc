@@ -1,7 +1,16 @@
 import { notFound } from "next/navigation";
+import ChartCategorySection from "@/components/ChartCategorySection";
 import OperationalPanel from "@/components/OperationalPanel";
 import ProcedureTables from "@/components/ProcedureTables";
-import { getAirportCodes, getAirportMeta, getProcedures } from "@/lib/content";
+import {
+  getAirportCodes,
+  getAirportMeta,
+  getCharts,
+  getProcedures,
+} from "@/lib/content";
+
+/** Everything except SID/STAR, which render as detailed tables above. */
+const OTHER_CATEGORIES = ["IAC", "ADC", "VAC", "PDC", "AOC"];
 
 export function generateStaticParams() {
   return getAirportCodes().map((icao) => ({ icao: icao.toLowerCase() }));
@@ -27,6 +36,7 @@ export default async function AirportBriefingPage(
   const meta = getAirportMeta(icao);
   if (!meta) notFound();
   const procedures = getProcedures(icao);
+  const charts = getCharts(icao);
 
   return (
     <>
@@ -51,6 +61,15 @@ export default async function AirportBriefingPage(
 
         <ProcedureTables icao={meta.icao} procedures={procedures} type="SID" />
         <ProcedureTables icao={meta.icao} procedures={procedures} type="STAR" />
+
+        {OTHER_CATEGORIES.map((category) => (
+          <ChartCategorySection
+            key={category}
+            icao={meta.icao}
+            charts={charts}
+            category={category}
+          />
+        ))}
       </div>
 
       <OperationalPanel

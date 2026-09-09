@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAirportMeta } from "@/lib/content";
+import { getIvaoNotams, type IvaoNotam } from "@/lib/ivao/data-api";
 import { getMetar } from "@/lib/ops/metar";
 import { getNotams } from "@/lib/ops/notam";
 import {
@@ -16,9 +17,12 @@ export interface AirportDynamicContext {
   metar: MetarReport | null;
   metarError: boolean;
   transitionLevel: TransitionLevelResult | null;
+  /** Real-world NOTAMs from the official Brazilian AIS. */
   notams: Notam[];
   notamsUpdatedAt: string | null;
   notamsError: boolean;
+  /** IVAO network NOTAMs — division notices, not real-world AIS. */
+  ivaoNotams: IvaoNotam[];
   updatedAt: string;
 }
 
@@ -35,9 +39,10 @@ export async function GET(_: Request, ctx: RouteContext<"/api/airport/[icao]">) 
     return NextResponse.json({ error: "unknown_airport" }, { status: 404 });
   }
 
-  const [metarResult, notamResult] = await Promise.allSettled([
+  const [metarResult, notamResult, ivaoNotamResult] = await Promise.allSettled([
     getMetar(code),
     getNotams(code),
+    getIvaoNotams(code),
   ]);
 
   const metar =
@@ -61,6 +66,8 @@ export async function GET(_: Request, ctx: RouteContext<"/api/airport/[icao]">) 
     notamsUpdatedAt:
       notamResult.status === "fulfilled" ? notamResult.value.updatedAt : null,
     notamsError: notamResult.status === "rejected",
+    ivaoNotams:
+      ivaoNotamResult.status === "fulfilled" ? ivaoNotamResult.value : [],
     updatedAt: new Date().toISOString(),
   };
 

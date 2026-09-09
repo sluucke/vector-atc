@@ -23,11 +23,20 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
   if (!meta) notFound();
 
   const procedures = getProcedures(icao);
+  const charts = getCharts(icao);
+
+  const categories = ["SID", "STAR", "IAC", "ADC", "VAC", "PDC", "AOC"]
+    .map((type) => ({ type, count: charts.filter((c) => c.type === type).length }))
+    .filter((c) => c.count > 0);
 
   return (
     <IvaoSessionProvider>
       <div className="h-screen flex overflow-hidden">
-        <Sidebar airports={getAllAirports()} activeIcao={meta.icao} />
+        <Sidebar
+          airports={getAllAirports()}
+          activeIcao={meta.icao}
+          categories={categories}
+        />
 
         <div className="flex-1 flex flex-col min-w-0">
           <TopBar
@@ -43,7 +52,7 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
             <ProcedureBrowser
               icao={meta.icao}
               procedures={procedures}
-              charts={getCharts(icao)}
+              charts={charts}
             />
             {props.children}
           </div>

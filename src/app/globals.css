@@ -33,6 +33,20 @@ body {
   height: 100%;
 }
 
+/* Tailwind v4 drops the browser's pointer cursor on buttons, which leaves the
+   whole console looking inert. Put it back for anything actionable. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+label[for],
+summary,
+a[href] {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
 body {
   background: var(--color-base);
   color: var(--color-ink);

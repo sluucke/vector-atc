@@ -1,4 +1,5 @@
 import "server-only";
+import { getIvaoMetar } from "@/lib/ivao/data-api";
 import { aiswebFetch, createCache, xmlTag } from "./aisweb";
 
 export interface MetarReport {
@@ -9,6 +10,8 @@ export interface MetarReport {
   /** Day-of-month + UTC time from the report's own timestamp group. */
   observedAt: string | null;
   taf: string | null;
+  /** Which provider the report came from — they can differ by a cycle. */
+  source: "IVAO" | "AISWEB";
   fetchedAt: string;
 }
 
@@ -37,10 +40,28 @@ export function parseObservedAt(raw: string): string | null {
   return raw.match(/\b(\d{6}Z)\b/)?.[1] ?? null;
 }
 
+/**
+ * IVAO's own report is what pilots on the network are given, so it wins when a
+ * key is configured; AISWEB (official, keyless) covers everything else.
+ */
 export async function getMetar(icao: string): Promise<MetarReport | null> {
   const code = icao.toUpperCase();
 
   return cache(code, async () => {
+    const fromIvao = await getIvaoMetar(code).catch(() => null);
+    if (fromIvao?.metar) {
+      const raw = fromIvao.metar.replace(/=$/, "").trim();
+      return {
+        icao: code,
+        raw,
+        qnh: parseQnh(raw),
+        observedAt: parseObservedAt(raw),
+        taf: null,
+        source: "IVAO" as const,
+        fetchedAt: new Date().toISOString(),
+      };
+    }
+
     const xml = await aiswebFetch("met", code);
     const raw = xmlTag(xml, "metar")?.replace(/=$/, "").trim();
     if (!raw) return null;
@@ -51,6 +72,7 @@ export async function getMetar(icao: string): Promise<MetarReport | null> {
       qnh: parseQnh(raw),
       observedAt: parseObservedAt(raw),
       taf: xmlTag(xml, "taf")?.replace(/=$/, "").trim() ?? null,
+      source: "AISWEB" as const,
       fetchedAt: new Date().toISOString(),
     };
   });

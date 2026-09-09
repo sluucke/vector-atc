@@ -9,8 +9,25 @@ import {
   PlaneLanding,
   Radio,
   ExternalLink,
+  Building2,
+  Eye,
+  ParkingSquare,
+  FileText,
 } from "lucide-react";
+import { CATEGORY_LABELS } from "@/lib/chart-relevance";
 import type { AirportMeta } from "@/lib/types";
+
+const CATEGORY_ICONS: Record<
+  string,
+  React.ComponentType<{ className?: string }>
+> = {
+  SID: PlaneTakeoff,
+  STAR: PlaneLanding,
+  IAC: PlaneLanding,
+  ADC: Building2,
+  VAC: Eye,
+  PDC: ParkingSquare,
+};
 
 function NavItem({
   href,
@@ -56,9 +73,12 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function Sidebar({
   airports,
   activeIcao,
+  categories = [],
 }: {
   airports: AirportMeta[];
   activeIcao?: string;
+  /** Chart categories the active aerodrome actually publishes. */
+  categories?: { type: string; count: number }[];
 }) {
   const pathname = usePathname();
   const active = airports.find((a) => a.icao === activeIcao);
@@ -102,21 +122,19 @@ export default function Sidebar({
           />
         ))}
 
-        {active && (
+        {active && categories.length > 0 && (
           <>
-            <SectionLabel>{active.icao} · Procedimentos</SectionLabel>
-            <NavItem
-              href={`/${active.icao.toLowerCase()}#sid`}
-              icon={PlaneTakeoff}
-              label="Saídas (SID)"
-              active={false}
-            />
-            <NavItem
-              href={`/${active.icao.toLowerCase()}#star`}
-              icon={PlaneLanding}
-              label="Chegadas (STAR)"
-              active={false}
-            />
+            <SectionLabel>{active.icao} · Cartas</SectionLabel>
+            {categories.map(({ type, count }) => (
+              <NavItem
+                key={type}
+                href={`/${active.icao.toLowerCase()}#${type.toLowerCase()}`}
+                icon={CATEGORY_ICONS[type] ?? FileText}
+                label={`${CATEGORY_LABELS[type] ?? type} (${type})`}
+                badge={String(count)}
+                active={false}
+              />
+            ))}
           </>
         )}
       </nav>
