@@ -96,17 +96,52 @@ export function parseAtisRunway(
 }
 
 /**
+ * True direction the runway points, in degrees.
+ *
+ * The published course wins: some aerodromes describe the whole strip with a
+ * single coordinate, so both ends land on the same point and the geometry says
+ * nothing. A runway's reciprocal is exactly 180° away, so one published course
+ * covers both ends.
+ */
+export function runwayBearing(
+  runway: string,
+  thresholds: Record<string, { point: GeoPoint; kind: "thr" | "der" } | undefined>,
+  courses: Record<string, number> = {}
+): number | null {
+  const published = courses[runway];
+  if (published !== undefined) return published;
+
+  const opposite = courses[reciprocal(runway)];
+  if (opposite !== undefined) return (opposite + 180) % 360;
+
+  const here = thresholds[runway];
+  const there = thresholds[reciprocal(runway)];
+  if (!here || !there) return null;
+  if (here.point.lat === there.point.lat && here.point.lon === there.point.lon)
+    return null;
+
+  // Thresholds sit at the start of their own runway; departure ends sit at the
+  // far end, so the pair is read in the opposite order.
+  return here.kind === "thr"
+    ? trueBearing(here.point, there.point)
+    : trueBearing(there.point, here.point);
+}
+
+/**
  * A controller's ATIS is authoritative; without one the wind decides, which is
  * a guess and is labelled as such.
  */
 export function detectRunwayInUse({
   runways,
   thresholds,
+  courses = {},
   metar,
   atis,
 }: {
   runways: string[];
   thresholds: Record<string, { point: GeoPoint; kind: "thr" | "der" } | undefined>;
+  /** True courses published in the coding tables, keyed by runway. */
+  courses?: Record<string, number>;
   metar: string | null;
   atis: string | null;
 }): RunwayInUse {
@@ -134,18 +169,8 @@ export function detectRunwayInUse({
 
   const scored = runways
     .map((runway) => {
-      const other = reciprocal(runway);
-      const here = thresholds[runway];
-      const there = thresholds[other];
-      if (!here || !there) return null;
-
-      // Thresholds sit at the start of their own runway; departure ends sit
-      // at the far end, so the pair is read in the opposite order.
-      const bearing =
-        here.kind === "thr"
-          ? trueBearing(here.point, there.point)
-          : trueBearing(there.point, here.point);
-
+      const bearing = runwayBearing(runway, thresholds, courses);
+      if (bearing === null) return null;
       return { runway, headwind: headwind(bearing, wind) };
     })
     .filter((entry): entry is { runway: string; headwind: number } =>

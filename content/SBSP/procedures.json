@@ -1,0 +1,277 @@
+[
+  {
+    "id": "sid-baian3a",
+    "type": "SID",
+    "runway": "17R/17L",
+    "name": "BAIAN 3A",
+    "category": "RNAV",
+    "chartKey": "SP02K",
+    "geometryKey": "SID|BAIAN3A|17R/17L",
+    "notes": "",
+    "fixes": [
+      "SP102",
+      "BAIAN",
+      "SP103",
+      "ISOXO",
+      "ORIMU",
+      "VUMEV",
+      "NUXEL",
+      "NIBRU",
+      "UREMI"
+    ],
+    "commonRoute": null,
+    "transitions": [
+      {
+        "fix": "RWY17R",
+        "desc": "conforme coding table"
+      },
+      {
+        "fix": "RWY17L",
+        "desc": "conforme coding table"
+      },
+      {
+        "fix": "COMMON",
+        "desc": "20.3 NM"
+      },
+      {
+        "fix": "VUMEV",
+        "desc": "22.56 NM · via SP103 → ISOXO → ORIMU"
+      },
+      {
+        "fix": "NUXEL",
+        "desc": "37.12 NM · via SP103 → ISOXO → ORIMU → VUMEV"
+      },
+      {
+        "fix": "NIBRU",
+        "desc": "36.79 NM"
+      },
+      {
+        "fix": "UREMI",
+        "desc": "37.83 NM"
+      }
+    ]
+  },
+  {
+    "id": "sid-ubram1a",
+    "type": "SID",
+    "runway": "17R/17L",
+    "name": "UBRAM 1A",
+    "category": "RNAV",
+    "chartKey": "SP02A",
+    "geometryKey": "SID|UBRAM1A|17R/17L",
+    "notes": "",
+    "fixes": [
+      "SP053",
+      "SP081",
+      "SP066",
+      "SP039",
+      "SP038",
+      "XOGOD",
+      "UMRAR",
+      "UBRAM",
+      "ASETA",
+      "EGEVA"
+    ],
+    "commonRoute": null,
+    "transitions": [
+      {
+        "fix": "RWY17R",
+        "desc": "conforme coding table"
+      },
+      {
+        "fix": "RWY17L",
+        "desc": "conforme coding table"
+      },
+      {
+        "fix": "COMMOM",
+        "desc": "4.51 NM · ≥12000 ft · via SP081 → SP066 → SP039 → SP038 → XOGOD → UMRAR"
+      },
+      {
+        "fix": "ASETA",
+        "desc": "20.39 NM · @15000 ft"
+      },
+      {
+        "fix": "EGEVA",
+        "desc": "27.18 NM · via ASETA"
+      }
+    ]
+  },
+  {
+    "id": "sid-utkom1a",
+    "type": "SID",
+    "runway": "17R/17L",
+    "name": "UTKOM 1A",
+    "category": "RNAV",
+    "chartKey": "SP02L",
+    "geometryKey": "SID|UTKOM1A|17R/17L",
+    "notes": "",
+    "fixes": [
+      "SP104",
+      "SP106",
+      "UTKOM",
+      "MADNI",
+      "UBSOD",
+      "NIBGA",
+      "SOVSI"
+    ],
+    "commonRoute": null,
+    "transitions": [
+      {
+        "fix": "RW17L",
+        "desc": "conforme coding table"
+      },
+      {
+        "fix": "RW17R",
+        "desc": "conforme coding table"
+      },
+      {
+        "fix": "COMMON",
+        "desc": "9.37 NM · via SP106"
+      },
+      {
+        "fix": "MADNI",
+        "desc": "44.31 NM"
+      },
+      {
+        "fix": "UBSOD",
+        "desc": "27.27 NM"
+      },
+      {
+        "fix": "NIBGA",
+        "desc": "23.23 NM"
+      },
+      {
+        "fix": "SOVSI",
+        "desc": "35.36 NM"
+      }
+    ]
+  },
+  {
+    "id": "sid-ubram1b",
+    "type": "SID",
+    "runway": "35R/35L",
+    "name": "UBRAM 1B",
+    "category": "RNAV",
+    "chartKey": "SP02B",
+    "geometryKey": "SID|UBRAM1B|35R/35L",
+    "notes": "",
+    "fixes": [
+      "SP074",
+      "SP079",
+      "SP038",
+      "XOGOD",
+      "UMRAR",
+      "UBRAM",
+      "ASETA",
+      "EGEVA"
+    ],
+    "commonRoute": null,
+    "transitions": [
+      {
+        "fix": "RW35L",
+        "desc": "conforme coding table"
+      },
+      {
+        "fix": "RW35R",
+        "desc": "conforme coding table"
+      },
+      {
+        "fix": "COMMON",
+        "desc": "4.51 NM · ≥12000 ft · via SP079 → SP038 → XOGOD → UMRAR"
+      },
+      {
+        "fix": "ASETA",
+        "desc": "20.39 NM · @15000 ft"
+      },
+      {
+        "fix": "EGEVA",
+        "desc": "27.18 NM · via ASETA"
+      }
+    ]
+  },
+  {
+    "id": "sid-ugtix1b",
+    "type": "SID",
+    "runway": "35R/35L",
+    "name": "UGTIX 1B",
+    "category": "RNAV",
+    "chartKey": "SP02F",
+    "geometryKey": "SID|UGTIX1B|35R/35L",
+    "notes": "",
+    "fixes": [
+      "SP082",
+      "SP083",
+      "SEDLO",
+      "SP084",
+      "SP086",
+      "UGTIX",
+      "LESSA",
+      "VURDU",
+      "EGEVA",
+      "ASETA",
+      "SP087",
+      "SP088",
+      "GERTU"
+    ],
+    "commonRoute": null,
+    "transitions": [
+      {
+        "fix": "RW35R",
+        "desc": "conforme coding table"
+      },
+      {
+        "fix": "RW35L",
+        "desc": "conforme coding table"
+      },
+      {
+        "fix": "COMMON",
+        "desc": "18.88 NM · ≥24000 ft · via SP083 → SEDLO → SP084 → SP086"
+      },
+      {
+        "fix": "VURDU",
+        "desc": "21.41 NM · via LESSA"
+      },
+      {
+        "fix": "EGEVA",
+        "desc": "30.24 NM · via LESSA → VURDU"
+      },
+      {
+        "fix": "ASETA",
+        "desc": "26.64 NM · via LESSA"
+      },
+      {
+        "fix": "GERTU",
+        "desc": "18.22 NM · via SP087 → SP088"
+      }
+    ]
+  },
+  {
+    "id": "star-oresu1a",
+    "type": "STAR",
+    "runway": "17L/17R",
+    "name": "ORESU 1A",
+    "category": "RNAV",
+    "chartKey": "SP01Y",
+    "geometryKey": "STAR|ORESU1A|17L/17R",
+    "notes": "",
+    "fixes": [
+      "UTLOT",
+      "RUSTE",
+      "ORESU",
+      "ENTIT",
+      "OTAGA",
+      "NEKIG",
+      "MAVKA",
+      "SP031",
+      "PRUMO",
+      "IROPU",
+      "LUVDI"
+    ],
+    "entryFixes": [
+      "UTLOT",
+      "ENTIT"
+    ],
+    "route": null,
+    "iaf": "ORESU"
+  }
+]

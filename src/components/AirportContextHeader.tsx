@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { MapPin } from "lucide-react";
+import { MapPin, BookOpen } from "lucide-react";
 import RunwaySelect from "./RunwaySelect";
+import Tooltip from "./Tooltip";
 import type { AirportMeta } from "@/lib/types";
 
 function Stat({ label, value }: { label: string; value: string }) {
@@ -30,6 +31,20 @@ export default function AirportContextHeader({ meta }: { meta: AirportMeta }) {
       </Link>
 
       <RunwaySelect runways={meta.runways} />
+
+      {meta.operational?.ivaoWikiUrl && (
+        <Tooltip label="Abrir o MOPS desta TMA na wiki da IVAO">
+          <a
+            href={meta.operational.ivaoWikiUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 shrink-0 px-2 py-1 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
+          >
+            <BookOpen className="size-3.5" />
+            <span className="font-mono text-[10px]">MOPS</span>
+          </a>
+        </Tooltip>
+      )}
 
       <div className="ml-auto flex items-center gap-6">
         <Stat label="AD ELEV" value={meta.elevation} />

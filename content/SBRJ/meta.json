@@ -1,0 +1,39 @@
+{
+  "icao": "SBRJ",
+  "name": "Rio de Janeiro / Santos Dumont",
+  "elevation": "10'",
+  "ta": "7000'",
+  "msa": "6300' (25NM ARP)",
+  "fir": "Curitiba (SBCW)",
+  "operational": {
+    "transitionAltitude": 7000,
+    "transitionAltitudeSource": "Carta DECEA 2605A1 — confirmar com o MOPS da TMA",
+    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbbs"
+  },
+  "airac": {
+    "cycle": "2605A1",
+    "effective": "2026-05-14",
+    "checkedAt": "2026-09-09",
+    "source": "https://aisweb.decea.mil.br/api/?area=cartas&icaoCode=SBRJ"
+  },
+  "frequencies": {
+    "dAtis": [
+      "132.650"
+    ],
+    "twr": [
+      "118.700"
+    ],
+    "app": [],
+    "acc": []
+  },
+  "runways": [
+    "02L",
+    "20R",
+    "02R",
+    "20L"
+  ],
+  "runwaysNote": "",
+  "observations": [
+    "Pistas 02L/20R e 02R/20L. Proximidade com SBGL exige coordenação — verificar o MOPS da TMA Rio de Janeiro."
+  ]
+}

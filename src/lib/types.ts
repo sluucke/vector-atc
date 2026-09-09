@@ -72,6 +72,8 @@ export interface AirportGeometry {
   syncedAt: string;
   fixes: Record<string, GeoPoint>;
   runwayPoints: Record<string, { thr?: GeoPoint; der?: GeoPoint }>;
+  /** True course of each runway, as published on the departure's first leg. */
+  runwayCourses?: Record<string, number>;
   procedures: Record<string, ProcedureGeometry>;
 }
 

@@ -91,6 +91,7 @@ export async function GET(_: Request, ctx: RouteContext<"/api/airport/[icao]">) 
   const runwayInUse = detectRunwayInUse({
     runways: meta.runways,
     thresholds,
+    courses: geometry?.runwayCourses ?? {},
     metar: metar?.raw ?? null,
     atis,
   });

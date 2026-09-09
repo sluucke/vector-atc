@@ -86,6 +86,7 @@ function parseCodingTable(rows) {
   const procedures = [];
   const fixes = {};
   const runwayPoints = {};
+  const runwayCourses = {};
   let current = null;
 
   for (const row of rows) {
@@ -134,6 +135,25 @@ function parseCodingTable(rows) {
 
     const altitude = rest.find((v) => /^[+\-@]\d{3,5}$/.test(v)) ?? null;
     const distance = rest.find((v) => /^\d{1,3}\.\d{2}$/.test(v)) ?? null;
+    // Courses come as two cells, "161.79° True" and "183.22° Mag", in either
+    // order. True is the one comparable with geographic bearings.
+    const trueCourse =
+      rest.find((v) => /^\d{1,3}(\.\d+)?\s*°?\s*True$/i.test(v))?.match(/[\d.]+/)?.[0] ??
+      null;
+
+    // A departure's first leg flies the runway centreline, so its course is the
+    // runway's own. That is the only bearing available at an aerodrome whose
+    // coding tables publish a single point for the strip.
+    if (
+      trueCourse &&
+      transition === "RWY" &&
+      Number(first) === 10 &&
+      /^(CA|CF|VA|FA)$/.test(pathTerminator) &&
+      current.type === "SID" &&
+      /^\d{2}[LRC]?$/.test(current.runway)
+    ) {
+      runwayCourses[current.runway] ??= Number(trueCourse);
+    }
 
     (current.transitions[transition] ??= []).push({
       seq: Number(first),
@@ -141,6 +161,7 @@ function parseCodingTable(rows) {
       pathTerminator,
       altitude,
       distance: distance ? Number(distance) : null,
+      course: trueCourse ? Number(trueCourse) : null,
     });
   }
 
@@ -150,7 +171,7 @@ function parseCodingTable(rows) {
     }
   }
 
-  return { procedures, fixes, runwayPoints };
+  return { procedures, fixes, runwayPoints, runwayCourses };
 }
 
 async function download(url) {
@@ -180,6 +201,7 @@ fs.mkdirSync(contentDir, { recursive: true });
 const charts = [];
 const allFixes = {};
 const allRunwayPoints = {};
+const allRunwayCourses = {};
 const geometry = {};
 
 for (const item of items) {
@@ -191,8 +213,11 @@ for (const item of items) {
   const key = code || slug(name);
   const file = `${slug(type)}-${slug(key)}-${slug(name)}.pdf`;
 
-  const pdfUrl = tag(item, "link").replace(/&amp;/g, "&");
-  fs.writeFileSync(path.join(chartsDir, file), await download(pdfUrl));
+  const pdfPath = path.join(chartsDir, file);
+  if (!fs.existsSync(pdfPath) || process.env.REFRESH_CHARTS) {
+    const pdfUrl = tag(item, "link").replace(/&amp;/g, "&");
+    fs.writeFileSync(pdfPath, await download(pdfUrl));
+  }
 
   charts.push({
     key,
@@ -213,6 +238,7 @@ for (const item of items) {
   const parsed = parseCodingTable(await pdfRows(await download(tabUrl)));
   Object.assign(allFixes, parsed.fixes);
   Object.assign(allRunwayPoints, parsed.runwayPoints);
+  Object.assign(allRunwayCourses, parsed.runwayCourses);
 
   for (const proc of parsed.procedures) {
     const geoKey = `${proc.type}|${proc.name.replace(/\s+/g, "")}|${proc.runway}`;
@@ -255,6 +281,7 @@ fs.writeFileSync(
         Object.entries(allFixes).sort(([a], [b]) => a.localeCompare(b))
       ),
       runwayPoints: allRunwayPoints,
+      runwayCourses: allRunwayCourses,
       procedures: geometry,
     },
     null,

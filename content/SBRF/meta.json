@@ -1,0 +1,39 @@
+{
+  "icao": "SBRF",
+  "name": "Recife / Guararapes — Gilberto Freyre, INTL",
+  "elevation": "33'",
+  "ta": "4000'",
+  "msa": "3000' (25NM ARP)",
+  "fir": "Recife (SBRE)",
+  "operational": {
+    "transitionAltitude": 4000,
+    "transitionAltitudeSource": "Carta DECEA 2603A1 — confirmar com o MOPS da TMA",
+    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbre"
+  },
+  "airac": {
+    "cycle": "2603A1",
+    "effective": "2026-03-19",
+    "checkedAt": "2026-09-09",
+    "source": "https://aisweb.decea.mil.br/api/?area=cartas&icaoCode=SBRF"
+  },
+  "frequencies": {
+    "dAtis": [
+      "127.650"
+    ],
+    "twr": [
+      "118.350",
+      "122.800"
+    ],
+    "app": [],
+    "acc": []
+  },
+  "runways": [
+    "36",
+    "18"
+  ],
+  "runwaysNote": "",
+  "observations": [
+    "Pista única 18/36.",
+    "TA 4000 ft — bem mais baixa que a dos demais aeródromos do dataset; conferir o nível de transição com atenção."
+  ]
+}
