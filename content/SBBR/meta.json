@@ -1,0 +1,47 @@
+{
+  "icao": "SBBR",
+  "name": "Brasília / Presidente Juscelino Kubitschek, INTL",
+  "elevation": "3498'",
+  "ta": "7000'",
+  "msa": "6000' (25NM ARP)",
+  "fir": "Brasília (SBBS)",
+  "operational": {
+    "transitionAltitude": 7000,
+    "transitionAltitudeSource": "Carta DECEA AIRAC 2609A1 — confirmar com o MOPS da TMA Brasília",
+    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbbs/sbbr"
+  },
+  "airac": {
+    "cycle": "2609A1",
+    "effective": "2026-09-03",
+    "checkedAt": "2026-09-09",
+    "source": "https://aisweb.decea.mil.br/api/?area=cartas&icaoCode=SBBR"
+  },
+  "frequencies": {
+    "dAtis": [
+      "127.80"
+    ],
+    "twr": [
+      "118.10",
+      "118.45"
+    ],
+    "app": [
+      "124.50",
+      "124.70"
+    ],
+    "acc": [
+      "120.00",
+      "120.30"
+    ]
+  },
+  "runways": [
+    "11L",
+    "11R",
+    "29L",
+    "29R"
+  ],
+  "runwaysNote": "",
+  "observations": [
+    "FIR/ACC: Brasília (SBBS). Pistas paralelas 11L/11R e 29L/29R — atenção às operações independentes e à pista correta ao autorizar procedimento.",
+    "TA 7000 ft conforme carta DECEA do AIRAC 2609A1. Confirmar o valor operacional no MOPS da TMA Brasília antes de usar em controle."
+  ]
+}

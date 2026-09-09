@@ -9,6 +9,16 @@ export interface RunwayInUse {
   detail: string | null;
 }
 
+/** 11L and 29R are the two ends of one strip; 10 pairs with 28. */
+export function reciprocal(runway: string): string {
+  const digits = runway.slice(0, 2);
+  const side = runway.slice(2).toUpperCase();
+  const n = Number(digits);
+  if (!Number.isFinite(n) || n < 1 || n > 36) return runway;
+  const opposite = ((n + 17) % 36) + 1;
+  const flipped = side === "L" ? "R" : side === "R" ? "L" : side;
+  return String(opposite).padStart(2, "0") + flipped;
+}
 /** Initial true bearing from one threshold to the other, in degrees. */
 export function trueBearing(from: GeoPoint, to: GeoPoint): number {
   const toRad = Math.PI / 180;
@@ -86,7 +96,7 @@ export function detectRunwayInUse({
   atis,
 }: {
   runways: string[];
-  thresholds: Record<string, GeoPoint | undefined>;
+  thresholds: Record<string, { point: GeoPoint; kind: "thr" | "der" } | undefined>;
   metar: string | null;
   atis: string | null;
 }): RunwayInUse {
@@ -112,18 +122,24 @@ export function detectRunwayInUse({
 
   const scored = runways
     .map((runway) => {
-      const from = thresholds[runway];
-      const opposite = runways.find((r) => r !== runway && thresholds[r]);
-      if (!from || !opposite) return null;
-      const to = thresholds[opposite];
-      if (!to) return null;
-      return { runway, headwind: headwind(trueBearing(from, to), wind) };
+      const other = reciprocal(runway);
+      const here = thresholds[runway];
+      const there = thresholds[other];
+      if (!here || !there) return null;
+
+      // Thresholds sit at the start of their own runway; departure ends sit
+      // at the far end, so the pair is read in the opposite order.
+      const bearing =
+        here.kind === "thr"
+          ? trueBearing(here.point, there.point)
+          : trueBearing(there.point, here.point);
+
+      return { runway, headwind: headwind(bearing, wind) };
     })
     .filter((entry): entry is { runway: string; headwind: number } =>
       Boolean(entry)
     )
     .sort((a, b) => b.headwind - a.headwind);
-
   if (scored.length === 0 || scored[0].headwind <= 0) {
     return {
       runway: null,

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useIvaoSession } from "./IvaoSessionProvider";
 import { useAirportContext } from "./AirportContextProvider";
+import { servesRunway } from "@/lib/runway-match";
 import { CATEGORY_LABELS, relevantCategories } from "@/lib/chart-relevance";
 import type { Chart, Procedure } from "@/lib/types";
 
@@ -188,7 +189,7 @@ export default function ProcedureBrowser({
           const groups = Array.from(new Set(entries.map((e) => e.group))).sort(
             (a, b) => {
               const rank = (g: string | null) =>
-                activeRunway && g === `RWY ${activeRunway}` ? 0 : 1;
+                g && servesRunway(g.replace(/^RWY /, ""), activeRunway) ? 0 : 1;
               return rank(a) - rank(b) || (a ?? "").localeCompare(b ?? "");
             }
           );
@@ -210,7 +211,7 @@ export default function ProcedureBrowser({
                   {group && (
                     <p className="px-2 py-1 flex items-center gap-1.5 font-mono text-[9px] text-ink-faint">
                       {group}
-                      {activeRunway && group === `RWY ${activeRunway}` && (
+                      {group && servesRunway(group.replace(/^RWY /, ""), activeRunway) && (
                         <span className="px-1 rounded bg-ok/12 text-ok">
                           em uso
                         </span>

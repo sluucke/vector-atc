@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { PlaneTakeoff, PlaneLanding } from "lucide-react";
 import { useAirportContext } from "./AirportContextProvider";
+import { servesRunway } from "@/lib/runway-match";
 import type { Procedure } from "@/lib/types";
 
 function Th({
@@ -44,7 +45,7 @@ export default function ProcedureTables({
   const rows = procedures
     .filter((p) => p.type === type)
     .sort((a, b) => {
-      const rank = (r: string) => (activeRunway && r === activeRunway ? 0 : 1);
+      const rank = (r: string) => (servesRunway(r, activeRunway) ? 0 : 1);
       return (
         rank(a.runway) - rank(b.runway) || a.runway.localeCompare(b.runway)
       );
@@ -105,7 +106,7 @@ export default function ProcedureTables({
                 <td className="px-3 py-2.5 align-top font-mono text-xs whitespace-nowrap">
                   <span
                     className={
-                      activeRunway && p.runway === activeRunway
+                      servesRunway(p.runway, activeRunway)
                         ? "px-1.5 py-0.5 rounded bg-ok/12 text-ok font-medium"
                         : "text-ink-dim"
                     }

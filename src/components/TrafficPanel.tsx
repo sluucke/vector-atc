@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import type { AirportTraffic, LiveFlight } from "@/lib/ivao/types";
 import { useAirportContext } from "./AirportContextProvider";
+import { servesRunway } from "@/lib/runway-match";
 import type { Procedure } from "@/lib/types";
 
 const POLL_MS = 20_000;
@@ -41,7 +42,7 @@ function ProcedureTag({
   // An inferred fix usually matches one procedure per runway; the runway in use
   // is what settles which one the aircraft will actually fly.
   const matching = procedure.procedureIds.filter(
-    (id) => names.get(id)?.runway === activeRunway
+    (id) => servesRunway(names.get(id)?.runway ?? "", activeRunway)
   );
   const narrowed = activeRunway !== null && matching.length > 0;
   const shown = narrowed ? matching : procedure.procedureIds;

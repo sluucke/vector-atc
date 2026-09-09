@@ -75,10 +75,16 @@ export async function GET(_: Request, ctx: RouteContext<"/api/airport/[icao]">) 
       : null;
 
   const geometry = getGeometry(code);
+  // Prefer a published threshold; the departure end describes the same strip
+  // from the other side, so it works too once the direction is accounted for.
   const thresholds = Object.fromEntries(
     Object.entries(geometry?.runwayPoints ?? {}).map(([rwy, point]) => [
       rwy,
-      point.thr,
+      point.thr
+        ? { point: point.thr, kind: "thr" as const }
+        : point.der
+          ? { point: point.der, kind: "der" as const }
+          : undefined,
     ])
   );
 
