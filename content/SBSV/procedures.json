@@ -5,13 +5,21 @@
     "runway": "10",
     "name": "MEVUP 1A",
     "category": "RNAV",
-    "chart": "/charts/SBSV/sid-rnav-arvor1a-mevup1a-rwy10.pdf",
     "commonRoute": "SV021 → SV079",
     "transitions": [
-      { "fix": "MEVUP", "desc": "fim da SID (3000'/6000'), sem transição adicional" }
+      {
+        "fix": "MEVUP",
+        "desc": "fim da SID (3000'/6000'), sem transição adicional"
+      }
     ],
     "notes": "Compartilha rota comum com a ARVOR1A.",
-    "fixes": ["MEVUP", "SV021", "SV079"]
+    "fixes": [
+      "MEVUP",
+      "SV021",
+      "SV079"
+    ],
+    "chartKey": "SV03L",
+    "geometryKey": "SID|MEVUP1A|10"
   },
   {
     "id": "sid-arvor1a",
@@ -19,15 +27,32 @@
     "runway": "10",
     "name": "ARVOR 1A",
     "category": "RNAV",
-    "chart": "/charts/SBSV/sid-rnav-arvor1a-mevup1a-rwy10.pdf",
     "commonRoute": "SV021 → SV079 → ARVOR",
     "transitions": [
-      { "fix": "ASGIK", "desc": "TRNS ASGIK 042°, direto de ARVOR" },
-      { "fix": "ARURU", "desc": "TRNS ARURU 060°" },
-      { "fix": "ILTAT", "desc": "TRNS ILTAT 053°, via ARURU" }
+      {
+        "fix": "ASGIK",
+        "desc": "TRNS ASGIK 042°, direto de ARVOR"
+      },
+      {
+        "fix": "ARURU",
+        "desc": "TRNS ARURU 060°"
+      },
+      {
+        "fix": "ILTAT",
+        "desc": "TRNS ILTAT 053°, via ARURU"
+      }
     ],
     "notes": "ARURU é fixo intermediário rumo a ILTAT.",
-    "fixes": ["ARVOR", "ASGIK", "ARURU", "ILTAT", "SV021", "SV079"]
+    "fixes": [
+      "ARVOR",
+      "ASGIK",
+      "ARURU",
+      "ILTAT",
+      "SV021",
+      "SV079"
+    ],
+    "chartKey": "SV03L",
+    "geometryKey": "SID|ARVOR1A|10"
   },
   {
     "id": "sid-pabuk1a",
@@ -35,14 +60,28 @@
     "runway": "10",
     "name": "PABUK 1A",
     "category": "RNAV",
-    "chart": "/charts/SBSV/sid-rnav-pabuk1a-rwy10.pdf",
     "commonRoute": "102° → MEVUP → 020° → PABUK",
     "transitions": [
-      { "fix": "FROTI", "desc": "TRNS FROTI 021°, direto de PABUK" },
-      { "fix": "BOGUT", "desc": "TRNS BOGUT 316°, via SV058 → VAMOT" }
+      {
+        "fix": "FROTI",
+        "desc": "TRNS FROTI 021°, direto de PABUK"
+      },
+      {
+        "fix": "BOGUT",
+        "desc": "TRNS BOGUT 316°, via SV058 → VAMOT"
+      }
     ],
     "notes": "Compartilha o fixo MEVUP com ARVOR1A/MEVUP1A.",
-    "fixes": ["MEVUP", "PABUK", "FROTI", "BOGUT", "VAMOT", "SV058"]
+    "fixes": [
+      "MEVUP",
+      "PABUK",
+      "FROTI",
+      "BOGUT",
+      "VAMOT",
+      "SV058"
+    ],
+    "chartKey": "SV03K",
+    "geometryKey": "SID|PABUK1A|10"
   },
   {
     "id": "sid-gedex3a",
@@ -50,15 +89,31 @@
     "runway": "10",
     "name": "GEDEX 3A",
     "category": "RNAV",
-    "chart": "/charts/SBSV/sid-rnav-gedex3a-umpel1a-rwy10.pdf",
     "commonRoute": "102° → 1800' → DIKIT → GEDEX",
     "transitions": [
-      { "fix": "OSENI", "desc": "TRNS OSENI 222°, direto de GEDEX" },
-      { "fix": "UKARU", "desc": "TRNS UKARU 208°, direto de GEDEX" },
-      { "fix": "IRUMI", "desc": "TRNS IRUMI 206°, direto de GEDEX" }
+      {
+        "fix": "OSENI",
+        "desc": "TRNS OSENI 222°, direto de GEDEX"
+      },
+      {
+        "fix": "UKARU",
+        "desc": "TRNS UKARU 208°, direto de GEDEX"
+      },
+      {
+        "fix": "IRUMI",
+        "desc": "TRNS IRUMI 206°, direto de GEDEX"
+      }
     ],
     "notes": "Transições diretas e independentes a partir de GEDEX. Fixos compartilhados com a MIMES1B (RWY28).",
-    "fixes": ["DIKIT", "GEDEX", "OSENI", "UKARU", "IRUMI"]
+    "fixes": [
+      "DIKIT",
+      "GEDEX",
+      "OSENI",
+      "UKARU",
+      "IRUMI"
+    ],
+    "chartKey": "SV02F",
+    "geometryKey": "SID|GEDEX3A|10"
   },
   {
     "id": "sid-umpel1a",
@@ -66,15 +121,31 @@
     "runway": "10",
     "name": "UMPEL 1A",
     "category": "RNAV",
-    "chart": "/charts/SBSV/sid-rnav-gedex3a-umpel1a-rwy10.pdf",
     "commonRoute": "102° → 1800' → DIKIT → UMPEL (FL120)",
     "transitions": [
-      { "fix": "ARNOX", "desc": "TRNS ARNOX 282°, direto de UMPEL" },
-      { "fix": "GILDO", "desc": "TRNS GILDO 261°" },
-      { "fix": "GEKEV", "desc": "TRNS GEKEV 261°, via GILDO" }
+      {
+        "fix": "ARNOX",
+        "desc": "TRNS ARNOX 282°, direto de UMPEL"
+      },
+      {
+        "fix": "GILDO",
+        "desc": "TRNS GILDO 261°"
+      },
+      {
+        "fix": "GEKEV",
+        "desc": "TRNS GEKEV 261°, via GILDO"
+      }
     ],
     "notes": "GILDO é fixo intermediário rumo a GEKEV. Fixos compartilhados com a KIBIX2B (RWY28).",
-    "fixes": ["DIKIT", "UMPEL", "ARNOX", "GILDO", "GEKEV"]
+    "fixes": [
+      "DIKIT",
+      "UMPEL",
+      "ARNOX",
+      "GILDO",
+      "GEKEV"
+    ],
+    "chartKey": "SV02F",
+    "geometryKey": "SID|UMPEL1A|10"
   },
   {
     "id": "sid-mimes1b",
@@ -82,15 +153,30 @@
     "runway": "28",
     "name": "MIMES 1B",
     "category": "RNAV",
-    "chart": "/charts/SBSV/sid-rnav-kibix2b-mimes1b-rwy28.pdf",
     "commonRoute": "282° → MIMES",
     "transitions": [
-      { "fix": "OSENI", "desc": "TRNS OSENI 212°, direto de MIMES" },
-      { "fix": "UKARU", "desc": "TRNS UKARU 204°, direto de MIMES" },
-      { "fix": "IRUMI", "desc": "TRNS IRUMI 202°, direto de MIMES" }
+      {
+        "fix": "OSENI",
+        "desc": "TRNS OSENI 212°, direto de MIMES"
+      },
+      {
+        "fix": "UKARU",
+        "desc": "TRNS UKARU 204°, direto de MIMES"
+      },
+      {
+        "fix": "IRUMI",
+        "desc": "TRNS IRUMI 202°, direto de MIMES"
+      }
     ],
     "notes": "Transições diretas e independentes a partir de MIMES. Fixos compartilhados com a GEDEX3A (RWY10).",
-    "fixes": ["MIMES", "OSENI", "UKARU", "IRUMI"]
+    "fixes": [
+      "MIMES",
+      "OSENI",
+      "UKARU",
+      "IRUMI"
+    ],
+    "chartKey": "SV03M",
+    "geometryKey": "SID|MIMES1B|28"
   },
   {
     "id": "sid-kibix2b",
@@ -98,15 +184,30 @@
     "runway": "28",
     "name": "KIBIX 2B",
     "category": "RNAV",
-    "chart": "/charts/SBSV/sid-rnav-kibix2b-mimes1b-rwy28.pdf",
     "commonRoute": "292° → KIBIX",
     "transitions": [
-      { "fix": "ARNOX", "desc": "TRNS ARNOX 277°, direto de KIBIX" },
-      { "fix": "GILDO", "desc": "TRNS GILDO 259°" },
-      { "fix": "GEKEV", "desc": "TRNS GEKEV 261°, via GILDO" }
+      {
+        "fix": "ARNOX",
+        "desc": "TRNS ARNOX 277°, direto de KIBIX"
+      },
+      {
+        "fix": "GILDO",
+        "desc": "TRNS GILDO 259°"
+      },
+      {
+        "fix": "GEKEV",
+        "desc": "TRNS GEKEV 261°, via GILDO"
+      }
     ],
     "notes": "GILDO é fixo intermediário rumo a GEKEV. Fixos compartilhados com a UMPEL1A (RWY10). Atenção: KIBIX também é IAF de uma STAR (RELOP1A) — não confundir.",
-    "fixes": ["KIBIX", "ARNOX", "GILDO", "GEKEV"]
+    "fixes": [
+      "KIBIX",
+      "ARNOX",
+      "GILDO",
+      "GEKEV"
+    ],
+    "chartKey": "SV03M",
+    "geometryKey": "SID|KIBIX2B|28"
   },
   {
     "id": "sid-utled1b",
@@ -114,18 +215,48 @@
     "runway": "28",
     "name": "UTLED 1B",
     "category": "RNAV",
-    "chart": "/charts/SBSV/sid-rnav-utled1b-rwy28.pdf",
     "commonRoute": "282° → 1800' → UTLED",
     "transitions": [
-      { "fix": "FROTI", "desc": "TRNS FROTI 021°, via SV031/ARVAT" },
-      { "fix": "ASGIK", "desc": "TRNS ASGIK 047°, direto de UTLED" },
-      { "fix": "ARURU", "desc": "TRNS ARURU 065°, direto de UTLED" },
-      { "fix": "ILTAT", "desc": "TRNS ILTAT 053°, via ARURU" },
-      { "fix": "ARVOR", "desc": "TRNS ARVOR 064°, via ARURU" },
-      { "fix": "BOGUT", "desc": "TRNS BOGUT 326°, via SV032" }
+      {
+        "fix": "FROTI",
+        "desc": "TRNS FROTI 021°, via SV031/ARVAT"
+      },
+      {
+        "fix": "ASGIK",
+        "desc": "TRNS ASGIK 047°, direto de UTLED"
+      },
+      {
+        "fix": "ARURU",
+        "desc": "TRNS ARURU 065°, direto de UTLED"
+      },
+      {
+        "fix": "ILTAT",
+        "desc": "TRNS ILTAT 053°, via ARURU"
+      },
+      {
+        "fix": "ARVOR",
+        "desc": "TRNS ARVOR 064°, via ARURU"
+      },
+      {
+        "fix": "BOGUT",
+        "desc": "TRNS BOGUT 326°, via SV032"
+      }
     ],
     "notes": "SID com o maior leque de transições (5 saídas possíveis) — atenção redobrada ao autorizar a transição correta conforme o plano de voo.",
-    "fixes": ["UTLED", "FROTI", "ASGIK", "ARURU", "ILTAT", "ARVOR", "BOGUT", "ARVAT", "SV031", "SV032"]
+    "fixes": [
+      "UTLED",
+      "FROTI",
+      "ASGIK",
+      "ARURU",
+      "ILTAT",
+      "ARVOR",
+      "BOGUT",
+      "ARVAT",
+      "SV031",
+      "SV032"
+    ],
+    "chartKey": "SV02L",
+    "geometryKey": "SID|UTLED1B|28"
   },
   {
     "id": "sid-omni",
@@ -133,11 +264,12 @@
     "runway": "10/28",
     "name": "OMNI",
     "category": "CONV",
-    "chart": "/charts/SBSV/sid-omni-rwy10-28.pdf",
     "commonRoute": "Subida em proa de pista (102°/282°)",
     "transitions": [],
     "notes": "Backup não-RNAV, comum a RWY 10 e RWY 28. Sem fixos nomeados — vira em 600' AGL.",
-    "fixes": []
+    "fixes": [],
+    "chartKey": "omni-rwy-10-28",
+    "geometryKey": null
   },
   {
     "id": "star-akpas1a",
@@ -145,12 +277,19 @@
     "runway": "10",
     "name": "AKPAS 1A",
     "category": "RNAV",
-    "chart": "/charts/SBSV/star-rnav-akpas1a-rwy10.pdf",
-    "entryFixes": ["AKPAS"],
+    "entryFixes": [
+      "AKPAS"
+    ],
     "route": "AKPAS → XOLUT →",
     "iaf": "TOGPA",
     "notes": "",
-    "fixes": ["AKPAS", "XOLUT", "TOGPA"]
+    "fixes": [
+      "AKPAS",
+      "XOLUT",
+      "TOGPA"
+    ],
+    "chartKey": "SV02D",
+    "geometryKey": "STAR|AKPAS1A|10"
   },
   {
     "id": "star-akpas1b",
@@ -158,12 +297,19 @@
     "runway": "28",
     "name": "AKPAS 1B",
     "category": "RNAV",
-    "chart": "/charts/SBSV/star-rnav-akpas1b-rwy28.pdf",
-    "entryFixes": ["AKPAS"],
+    "entryFixes": [
+      "AKPAS"
+    ],
     "route": "AKPAS → XOLUT →",
     "iaf": "TOGPA",
     "notes": "",
-    "fixes": ["AKPAS", "XOLUT", "TOGPA"]
+    "fixes": [
+      "AKPAS",
+      "XOLUT",
+      "TOGPA"
+    ],
+    "chartKey": "SV02H",
+    "geometryKey": "STAR|AKPAS1B|28"
   },
   {
     "id": "star-atexo1a",
@@ -171,12 +317,24 @@
     "runway": "10",
     "name": "ATEXO 1A",
     "category": "RNAV",
-    "chart": "/charts/SBSV/star-rnav-atexo1a-rwy10.pdf",
-    "entryFixes": ["EDNOB", "ZUMBA", "XUXUG"],
+    "entryFixes": [
+      "EDNOB",
+      "ZUMBA",
+      "XUXUG"
+    ],
     "route": "(entrada) → ATEXO → ASUGA →",
     "iaf": "GEVMO",
     "notes": "",
-    "fixes": ["EDNOB", "ZUMBA", "XUXUG", "ATEXO", "ASUGA", "GEVMO"]
+    "fixes": [
+      "EDNOB",
+      "ZUMBA",
+      "XUXUG",
+      "ATEXO",
+      "ASUGA",
+      "GEVMO"
+    ],
+    "chartKey": "SV02A",
+    "geometryKey": "STAR|ATEXO1A|10"
   },
   {
     "id": "star-atexo1b",
@@ -184,12 +342,25 @@
     "runway": "28",
     "name": "ATEXO 1B",
     "category": "RNAV",
-    "chart": "/charts/SBSV/star-rnav-atexo1b-rwy28.pdf",
-    "entryFixes": ["EDNOB", "ZUMBA", "XUXUG"],
+    "entryFixes": [
+      "EDNOB",
+      "ZUMBA",
+      "XUXUG"
+    ],
     "route": "(entrada) → ATEXO → ASUGA → GEVMO →",
     "iaf": "ASDUT",
     "notes": "",
-    "fixes": ["EDNOB", "ZUMBA", "XUXUG", "ATEXO", "ASUGA", "GEVMO", "ASDUT"]
+    "fixes": [
+      "EDNOB",
+      "ZUMBA",
+      "XUXUG",
+      "ATEXO",
+      "ASUGA",
+      "GEVMO",
+      "ASDUT"
+    ],
+    "chartKey": "SV02J",
+    "geometryKey": "STAR|ATEXO1B|28"
   },
   {
     "id": "star-relop1a",
@@ -197,12 +368,21 @@
     "runway": "10",
     "name": "RELOP 1A",
     "category": "RNAV",
-    "chart": "/charts/SBSV/star-rnav-relop1a-udesi2a-rwy10.pdf",
-    "entryFixes": ["DORMU", "DOTBI"],
+    "entryFixes": [
+      "DORMU",
+      "DOTBI"
+    ],
     "route": "(entrada) → RELOP →",
     "iaf": "KIBIX",
     "notes": "KIBIX é IAF desta STAR e também nome de uma SID (RWY28) — não confundir.",
-    "fixes": ["DORMU", "DOTBI", "RELOP", "KIBIX"]
+    "fixes": [
+      "DORMU",
+      "DOTBI",
+      "RELOP",
+      "KIBIX"
+    ],
+    "chartKey": "SV02B",
+    "geometryKey": "STAR|RELOP1A|10"
   },
   {
     "id": "star-udesi2a",
@@ -210,12 +390,19 @@
     "runway": "10",
     "name": "UDESI 2A",
     "category": "RNAV",
-    "chart": "/charts/SBSV/star-rnav-relop1a-udesi2a-rwy10.pdf",
-    "entryFixes": ["FROTI"],
+    "entryFixes": [
+      "FROTI"
+    ],
     "route": "FROTI → ILPIX →",
     "iaf": "UDESI",
     "notes": "",
-    "fixes": ["FROTI", "ILPIX", "UDESI"]
+    "fixes": [
+      "FROTI",
+      "ILPIX",
+      "UDESI"
+    ],
+    "chartKey": "SV02B",
+    "geometryKey": "STAR|UDESI2A|10"
   },
   {
     "id": "star-udesi2b",
@@ -223,11 +410,24 @@
     "runway": "28",
     "name": "UDESI 2B",
     "category": "RNAV",
-    "chart": "/charts/SBSV/star-rnav-udesi2b-rwy28.pdf",
-    "entryFixes": ["DORMU", "DOTBI", "FROTI"],
+    "entryFixes": [
+      "DORMU",
+      "DOTBI",
+      "FROTI"
+    ],
     "route": "DORMU/DOTBI → RELOP → UDESI  /  FROTI → ILPIX → UDESI →",
     "iaf": "TOGPA",
     "notes": "Perda de comunicação: squawk A7600, completar a chegada até TOGPA e seguir o procedimento em uso pelo ATC.",
-    "fixes": ["DORMU", "DOTBI", "FROTI", "RELOP", "ILPIX", "UDESI", "TOGPA"]
+    "fixes": [
+      "DORMU",
+      "DOTBI",
+      "FROTI",
+      "RELOP",
+      "ILPIX",
+      "UDESI",
+      "TOGPA"
+    ],
+    "chartKey": "SV02K",
+    "geometryKey": "STAR|UDESI2B|28"
   }
 ]

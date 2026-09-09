@@ -1,6 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { AirportMeta, Procedure } from "./types";
+import type {
+  AirportGeometry,
+  AirportMeta,
+  Chart,
+  ChartCatalog,
+  Procedure,
+} from "./types";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -27,6 +33,24 @@ export function getProcedures(icao: string): Procedure[] {
 export function getProcedure(icao: string, id: string): Procedure | null {
   const procedures = getProcedures(icao);
   return procedures.find((p) => p.id === id) ?? null;
+}
+
+function readJson<T>(icao: string, file: string): T | null {
+  const full = path.join(CONTENT_DIR, icao.toUpperCase(), file);
+  if (!fs.existsSync(full)) return null;
+  return JSON.parse(fs.readFileSync(full, "utf-8")) as T;
+}
+
+export function getCharts(icao: string): Chart[] {
+  return readJson<ChartCatalog>(icao, "charts.json")?.charts ?? [];
+}
+
+export function getChart(icao: string, key: string): Chart | null {
+  return getCharts(icao).find((c) => c.key === key) ?? null;
+}
+
+export function getGeometry(icao: string): AirportGeometry | null {
+  return readJson<AirportGeometry>(icao, "geometry.json");
 }
 
 export function getAllAirports(): AirportMeta[] {

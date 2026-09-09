@@ -1,0 +1,268 @@
+/**
+ * Syncs one aerodrome from the AISWEB (DECEA) public API.
+ *
+ *   node scripts/sync-airport.mjs SBSV
+ *
+ * Downloads every published chart into public/charts/<ICAO>/ and parses the
+ * coding tables into content/<ICAO>/{charts,geometry}.json. Coding tables are
+ * the authoritative source for waypoint coordinates and leg sequences — the
+ * graphic charts only draw them.
+ */
+import fs from "node:fs";
+import path from "node:path";
+import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
+
+const API = "https://aisweb.decea.mil.br/api/";
+const API_KEY = "1587263166";
+const API_PASS = "3199249e-755b-1033-a49b-72567f175e3a";
+
+// Parking (PDC) and obstacle (AOC) charts aren't used for procedure work and
+// would double the repo size for every aerodrome.
+const SKIP_TYPES = new Set(["AOC"]);
+
+const icao = (process.argv[2] ?? "").toUpperCase();
+if (!/^[A-Z]{4}$/.test(icao)) {
+  console.error("Usage: node scripts/sync-airport.mjs <ICAO>");
+  process.exit(1);
+}
+
+const chartsDir = path.join("public", "charts", icao);
+const contentDir = path.join("content", icao);
+
+const slug = (s) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+const tag = (xml, name) => {
+  const m = xml.match(
+    new RegExp(`<${name}>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${name}>`)
+  );
+  return m ? m[1].trim() : "";
+};
+
+/** "S 13:08:30.75" / "W 38:12:28.40" -> signed decimal degrees */
+function toDecimal(hemisphere, dms) {
+  const [d, m, s] = dms.split(":").map(Number);
+  const value = d + m / 60 + s / 3600;
+  return hemisphere === "S" || hemisphere === "W" ? -value : value;
+}
+
+async function pdfRows(buffer) {
+  const doc = await getDocument({
+    data: new Uint8Array(buffer),
+    useSystemFonts: true,
+  }).promise;
+  const pages = [];
+  for (let p = 1; p <= doc.numPages; p++) {
+    const content = await (await doc.getPage(p)).getTextContent();
+    const byY = new Map();
+    for (const item of content.items) {
+      if (!item.str.trim()) continue;
+      const y = Math.round(item.transform[5]);
+      const key = [...byY.keys()].find((k) => Math.abs(k - y) <= 4) ?? y;
+      if (!byY.has(key)) byY.set(key, []);
+      byY.get(key).push({ x: item.transform[4], s: item.str.trim() });
+    }
+    pages.push(
+      [...byY.entries()]
+        .sort((a, b) => b[0] - a[0])
+        .map(([, items]) =>
+          items.sort((a, b) => a.x - b.x).map((i) => i.s)
+        )
+    );
+  }
+  return pages.flat();
+}
+
+/**
+ * A coding table holds one or more procedures. Each starts with a header row
+ * ("SID RNAV UMPEL 1A RWY 10"), followed by leg rows keyed by transition.
+ */
+function parseCodingTable(rows) {
+  const procedures = [];
+  const fixes = {};
+  const runwayPoints = {};
+  let current = null;
+
+  for (const row of rows) {
+    const [first = "", ...rest] = row;
+
+    const header = first.match(
+      /^(SID|STAR|IAC)\s+(.+?)\s+RWY\s+([0-9]{2}[LRC]?(?:\/[0-9]{2}[LRC]?)?)$/
+    );
+    if (header) {
+      current = {
+        type: header[1],
+        title: first,
+        name: header[2].replace(/^RNAV\s+/, "").trim(),
+        runway: header[3],
+        transitions: {},
+      };
+      procedures.push(current);
+      continue;
+    }
+
+    // Coordinate rows: "GEDEX", "S 13:08:30.75W 38:12:28.40"
+    const joined = row.join(" ");
+    const coord = joined.match(
+      /^([A-Z0-9]{2,6})\s+([NS])\s*(\d{1,3}:\d{2}:\d{2}(?:\.\d+)?)\s*([EW])\s*(\d{1,3}:\d{2}:\d{2}(?:\.\d+)?)/
+    );
+    if (coord) {
+      const ident = coord[1];
+      const point = {
+        lat: toDecimal(coord[2], coord[3]),
+        lon: toDecimal(coord[4], coord[5]),
+      };
+      // IAC tables publish thresholds as "RWY10"; SID tables publish the
+      // departure end of the same runway as a bare "10".
+      const threshold = ident.match(/^RWY(\d{2}[LRC]?)$/);
+      const der = ident.match(/^(\d{2}[LRC]?)$/);
+      if (threshold) (runwayPoints[threshold[1]] ??= {}).thr = point;
+      else if (der) (runwayPoints[der[1]] ??= {}).der = point;
+      else fixes[ident] = point;
+      continue;
+    }
+
+    // Leg rows: seq | transition | flyOver | navaid | fix | pathTerminator | ...
+    if (!current || !/^\d+$/.test(first) || rest.length < 5) continue;
+    const [transition, , , fixIdent, pathTerminator] = rest;
+    if (!/^[A-Z0-9]{2,6}$/.test(transition) && transition !== "RWY") continue;
+
+    const altitude = rest.find((v) => /^[+\-@]\d{3,5}$/.test(v)) ?? null;
+    const distance = rest.find((v) => /^\d{1,3}\.\d{2}$/.test(v)) ?? null;
+
+    (current.transitions[transition] ??= []).push({
+      seq: Number(first),
+      fix: fixIdent === "N/A" ? null : fixIdent,
+      pathTerminator,
+      altitude,
+      distance: distance ? Number(distance) : null,
+    });
+  }
+
+  for (const proc of procedures) {
+    for (const legs of Object.values(proc.transitions)) {
+      legs.sort((a, b) => a.seq - b.seq);
+    }
+  }
+
+  return { procedures, fixes, runwayPoints };
+}
+
+async function download(url) {
+  const res = await fetch(url, {
+    headers: { "User-Agent": "Mozilla/5.0" },
+  });
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText} — ${url}`);
+  return Buffer.from(await res.arrayBuffer());
+}
+
+const xml = await (
+  await fetch(
+    `${API}?apiKey=${API_KEY}&apiPass=${API_PASS}&area=cartas&icaoCode=${icao}`,
+    { headers: { "User-Agent": "Mozilla/5.0" } }
+  )
+).text();
+
+const items = xml.split("<item ").slice(1);
+if (items.length === 0) {
+  console.error(`No charts returned for ${icao}.`);
+  process.exit(1);
+}
+
+fs.mkdirSync(chartsDir, { recursive: true });
+fs.mkdirSync(contentDir, { recursive: true });
+
+const charts = [];
+const allFixes = {};
+const allRunwayPoints = {};
+const geometry = {};
+
+for (const item of items) {
+  const type = tag(item, "tipo");
+  if (SKIP_TYPES.has(type)) continue;
+
+  const name = tag(item, "nome");
+  const code = tag(item, "icp");
+  const key = code || slug(name);
+  const file = `${slug(type)}-${slug(key)}-${slug(name)}.pdf`;
+
+  const pdfUrl = tag(item, "link").replace(/&amp;/g, "&");
+  fs.writeFileSync(path.join(chartsDir, file), await download(pdfUrl));
+
+  charts.push({
+    key,
+    type,
+    name,
+    code,
+    amdt: tag(item, "amdt"),
+    date: tag(item, "dt"),
+    file: `/charts/${icao}/${file}`,
+  });
+
+  const tabUrl = tag(item, "tabcode").replace(/&amp;/g, "&");
+  if (!tabUrl) {
+    console.log(`  ${type.padEnd(4)} ${name}  (sem coding table)`);
+    continue;
+  }
+
+  const parsed = parseCodingTable(await pdfRows(await download(tabUrl)));
+  Object.assign(allFixes, parsed.fixes);
+  Object.assign(allRunwayPoints, parsed.runwayPoints);
+
+  for (const proc of parsed.procedures) {
+    const geoKey = `${proc.type}|${proc.name.replace(/\s+/g, "")}|${proc.runway}`;
+    geometry[geoKey] = {
+      title: proc.title,
+      chartKey: key,
+      transitions: proc.transitions,
+    };
+  }
+
+  console.log(
+    `  ${type.padEnd(4)} ${name}  → ${parsed.procedures.length} proc, ` +
+      `${Object.keys(parsed.fixes).length} fixos`
+  );
+}
+
+fs.writeFileSync(
+  path.join(contentDir, "charts.json"),
+  JSON.stringify(
+    {
+      icao,
+      syncedAt: new Date().toISOString().slice(0, 10),
+      source: `${API}?area=cartas&icaoCode=${icao}`,
+      charts: charts.sort(
+        (a, b) => a.type.localeCompare(b.type) || a.name.localeCompare(b.name)
+      ),
+    },
+    null,
+    2
+  ) + "\n"
+);
+
+fs.writeFileSync(
+  path.join(contentDir, "geometry.json"),
+  JSON.stringify(
+    {
+      icao,
+      syncedAt: new Date().toISOString().slice(0, 10),
+      fixes: Object.fromEntries(
+        Object.entries(allFixes).sort(([a], [b]) => a.localeCompare(b))
+      ),
+      runwayPoints: allRunwayPoints,
+      procedures: geometry,
+    },
+    null,
+    2
+  ) + "\n"
+);
+
+console.log(
+  `\n${icao}: ${charts.length} cartas, ${Object.keys(allFixes).length} fixos, ` +
+    `${Object.keys(geometry).length} procedimentos com geometria.`
+);

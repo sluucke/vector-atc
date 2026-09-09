@@ -6,7 +6,7 @@ import {
   FileText,
   ArrowRight,
 } from "lucide-react";
-import { getAllAirports, getProcedures } from "@/lib/content";
+import { getAllAirports, getCharts, getProcedures } from "@/lib/content";
 
 export default function HomePage() {
   const airports = getAllAirports().map((meta) => {
@@ -15,7 +15,7 @@ export default function HomePage() {
       meta,
       sid: procedures.filter((p) => p.type === "SID").length,
       star: procedures.filter((p) => p.type === "STAR").length,
-      charts: new Set(procedures.map((p) => p.chart)).size,
+      charts: getCharts(meta.icao).length,
     };
   });
 

@@ -12,7 +12,10 @@ export interface Procedure {
   runway: string;
   name: string;
   category: ProcedureCategory;
-  chart: string;
+  /** Stable chart key from charts.json (AISWEB chart code, e.g. "SV02F"). */
+  chartKey: string;
+  /** Key into geometry.json procedures; null when no coding table is published. */
+  geometryKey: string | null;
   fixes: string[];
   notes?: string;
 
@@ -24,6 +27,52 @@ export interface Procedure {
   entryFixes?: string[];
   route?: string;
   iaf?: string;
+}
+
+export interface Chart {
+  key: string;
+  type: string;
+  name: string;
+  code: string;
+  amdt: string;
+  date: string;
+  file: string;
+}
+
+export interface ChartCatalog {
+  icao: string;
+  syncedAt: string;
+  source: string;
+  charts: Chart[];
+}
+
+export interface GeoPoint {
+  lat: number;
+  lon: number;
+}
+
+/** One coded leg of a procedure, as published in the DECEA coding table. */
+export interface Leg {
+  seq: number;
+  fix: string | null;
+  pathTerminator: string;
+  altitude: string | null;
+  distance: number | null;
+}
+
+export interface ProcedureGeometry {
+  title: string;
+  chartKey: string;
+  /** Transition name ("RWY" is the common segment) to its ordered legs. */
+  transitions: Record<string, Leg[]>;
+}
+
+export interface AirportGeometry {
+  icao: string;
+  syncedAt: string;
+  fixes: Record<string, GeoPoint>;
+  runwayPoints: Record<string, { thr?: GeoPoint; der?: GeoPoint }>;
+  procedures: Record<string, ProcedureGeometry>;
 }
 
 export interface AiracInfo {

@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import { TriangleAlert, Route, Waypoints, Target } from "lucide-react";
-import ChartViewer from "@/components/ChartViewer";
+import ChartWorkspace from "@/components/ChartWorkspace";
 import {
   getAirportCodes,
   getAirportMeta,
+  getCharts,
+  getGeometry,
   getProcedure,
   getProcedures,
 } from "@/lib/content";
@@ -48,9 +50,11 @@ export default async function CartaPage(
 
   return (
     <>
-      <ChartViewer
-        src={procedure.chart}
-        title={`Carta ${procedure.type} ${procedure.name}`}
+      <ChartWorkspace
+        key={procedure.id}
+        procedure={procedure}
+        charts={getCharts(icao)}
+        geometry={getGeometry(icao)}
       />
 
       <aside className="w-72 shrink-0 hidden lg:flex flex-col bg-panel border-l border-line overflow-y-auto">
