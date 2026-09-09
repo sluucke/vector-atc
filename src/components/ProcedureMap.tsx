@@ -64,7 +64,6 @@ function MapControls({ bounds }: { bounds: LatLngBoundsExpression | null }) {
       <button
         onClick={() => bounds && map.fitBounds(bounds, { padding: [48, 48] })}
         aria-label="Enquadrar procedimento"
-        title="Enquadrar procedimento"
         className={button}
       >
         <Frame className="size-3.5" />
@@ -216,8 +215,8 @@ export default function ProcedureMap({
     return (
       <div className="dot-grid flex-1 min-h-0 grid place-items-center">
         <p className="max-w-xs text-center text-xs text-ink-faint leading-relaxed">
-          Este procedimento não possui coding table publicada pelo DECEA, então
-          não há geometria codificada para plotar. Use a carta original.
+          Este procedimento não tem rota codificada disponível. Use a carta
+          original.
         </p>
       </div>
     );

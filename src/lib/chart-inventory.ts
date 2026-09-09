@@ -36,7 +36,9 @@ export function categoryEntries(
       label: c.name,
       sublabel: null,
       badge: null,
-      group: null,
+      // Approach and visual charts name their runway too, so they group and
+      // filter by it just like the procedures do.
+      group: runwayOf(c.name),
       procedure: null,
     }));
   }
@@ -64,7 +66,7 @@ export function categoryEntries(
       key: c.key,
       href: `/${base}/chart/${c.key}`,
       label: c.name,
-      sublabel: "sem coding table publicada",
+      sublabel: null,
       badge: null,
       group: runwayOf(c.name),
       procedure: null,

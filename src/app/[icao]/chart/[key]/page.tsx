@@ -71,12 +71,7 @@ export default async function ChartPage(
           </dl>
         </div>
 
-        <div className="p-3">
-          <p className="text-[11px] leading-relaxed text-ink-faint">
-            Esta carta não tem coding table publicada, então não há geometria
-            para plotar — apenas o documento original.
-          </p>
-        </div>
+
       </aside>
     </>
   );

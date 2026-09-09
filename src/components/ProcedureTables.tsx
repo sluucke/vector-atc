@@ -53,14 +53,25 @@ export default function ProcedureTables({
         rank(a.runway) - rank(b.runway) || a.runway.localeCompare(b.runway)
       );
     });
-  // Published charts whose coding table we could not parse have no procedure
-  // record, but must stay reachable from the briefing.
+  // Some published charts have no structured route data behind them. They are
+  // listed as ordinary rows — the distinction is ours, not the controller's.
   const covered = new Set(rows.map((p) => p.chartKey));
   const orphans = charts
     .filter((c) => c.type === type && !covered.has(c.key))
     .filter(
       (c) => !onlyActiveRunway || servesRunway(c.name.toUpperCase(), activeRunways)
     );
+
+  const RUNWAY_SUFFIX = /\s*RWY\s+[0-9]{2}[LRC]?(?:\s*\/\s*[0-9]{2}[LRC]?)*\s*$/i;
+
+  const runwayOf = (name: string) =>
+    name
+      .toUpperCase()
+      .match(/RWY\s+([0-9]{2}[LRC]?(?:\s*\/\s*[0-9]{2}[LRC]?)*)/)?.[1]
+      ?.replace(/\s*\/\s*/g, "/") ?? "—";
+
+  /** The runway has its own column, so drop it from the chart's title. */
+  const titleOf = (name: string) => name.replace(RUNWAY_SUFFIX, "").trim();
 
   if (rows.length === 0 && orphans.length === 0) return null;
 
@@ -76,7 +87,6 @@ export default function ProcedureTables({
         </h2>
         <span className="font-mono text-[10px] text-ink-faint">
           {rows.length + orphans.length} cartas
-          {orphans.length > 0 && ` · ${rows.length} com geometria`}
         </span>
       </div>
 
@@ -177,31 +187,51 @@ export default function ProcedureTables({
                 </td>
               </tr>
             ))}
+            {orphans.map((chart) => {
+              const rwy = runwayOf(chart.name);
+              return (
+                <tr
+                  key={chart.key}
+                  className="border-b border-line last:border-0 hover:bg-hover-soft transition-colors duration-150"
+                >
+                  <td className="px-3 py-2.5 align-top">
+                    <Link
+                      href={`/${icao.toLowerCase()}/chart/${chart.key}`}
+                      className="font-mono text-[13px] font-medium text-signal hover:underline"
+                    >
+                      {titleOf(chart.name)}
+                    </Link>
+                  </td>
+                  <td className="px-3 py-2.5 align-top font-mono text-xs whitespace-nowrap">
+                    <span
+                      className={
+                        servesRunway(rwy, activeRunways)
+                          ? "px-1.5 py-0.5 rounded bg-ok/12 text-ok font-medium"
+                          : "text-ink-dim"
+                      }
+                    >
+                      {rwy}
+                    </span>
+                  </td>
+                  <td className="px-3 py-2.5 align-top font-mono text-[11px] text-ink-faint">
+                    —
+                  </td>
+                  <td className="px-3 py-2.5 align-top font-mono text-[11px] text-ink-faint">
+                    —
+                  </td>
+                  <td
+                    className={`px-3 py-2.5 align-top font-mono text-[11px] text-ink-faint ${
+                      isSid ? "hidden 2xl:table-cell" : ""
+                    }`}
+                  >
+                    —
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
-
-      {orphans.length > 0 && (
-        <div className="mt-3">
-          <p className="mb-2 font-mono text-[10px] text-ink-faint">
-            Sem coding table publicada — apenas a carta original:
-          </p>
-          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-            {orphans.map((chart) => (
-              <Link
-                key={chart.key}
-                href={`/${icao.toLowerCase()}/chart/${chart.key}`}
-                className="rounded-lg border border-line bg-panel p-2.5 hover:border-signal/40 hover:bg-raised transition-colors duration-150"
-              >
-                <p className="font-mono text-[11px] text-ink">{chart.name}</p>
-                <p className="font-mono text-[9px] text-ink-faint">
-                  AIRAC {chart.amdt}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
     </section>
   );
 }

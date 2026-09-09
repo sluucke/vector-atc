@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useIvaoSession } from "./IvaoSessionProvider";
 import { useAirportContext } from "./AirportContextProvider";
+import RunwayFilterToggle from "./RunwayFilterToggle";
 import { servesRunway } from "@/lib/runway-match";
 import { CATEGORY_LABELS, relevantCategories } from "@/lib/chart-relevance";
 import { categoryEntries } from "@/lib/chart-inventory";
@@ -52,8 +53,7 @@ export default function ProcedureBrowser({
 }) {
   const pathname = usePathname();
   const session = useIvaoSession();
-  const { runways: activeRunways, onlyActiveRunway, setOnlyActiveRunway } =
-    useAirportContext();
+  const { runways: activeRunways, onlyActiveRunway } = useAirportContext();
   const activeRef = useRef<HTMLAnchorElement>(null);
   const [manual, setManual] = useState<string[] | null>(null);
 
@@ -135,19 +135,7 @@ export default function ProcedureBrowser({
           })}
         </div>
 
-        {activeRunways.length > 0 && (
-          <label className="flex items-center gap-1.5 text-[10px] text-ink-dim cursor-pointer">
-            <input
-              type="checkbox"
-              checked={onlyActiveRunway}
-              onChange={(e) => setOnlyActiveRunway(e.target.checked)}
-              className="size-3 accent-[var(--color-signal)]"
-            />
-            <span className="font-mono">
-              só a pista em uso ({activeRunways.join("/")})
-            </span>
-          </label>
-        )}
+        <RunwayFilterToggle />
 
         {isAuto && (
           <div className="flex items-center gap-1.5 text-[10px] text-ink-faint">

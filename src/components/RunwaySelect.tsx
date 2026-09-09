@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown, Radar, Wind, Wand2 } from "lucide-react";
 import { useAirportContext } from "./AirportContextProvider";
+import Tooltip from "./Tooltip";
 
 const SOURCE_ICON = {
   atis: Radar,
@@ -29,13 +30,15 @@ export default function RunwaySelect({ runways }: { runways: string[] }) {
 
   return (
     <div className="relative shrink-0">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        title={
+      <Tooltip
+        label={
           detected?.detail
             ? `Pista em uso — ${detected.detail}`
-            : "Selecionar pista em uso"
+            : "Selecionar a pista em uso"
         }
+      >
+      <button
+        onClick={() => setOpen((o) => !o)}
         className={`flex items-center gap-1.5 px-2 py-1 rounded-full transition-colors duration-150 ${
           label
             ? "bg-ok/12 hover:bg-ok/20"
@@ -57,6 +60,7 @@ export default function RunwaySelect({ runways }: { runways: string[] }) {
         )}
         <ChevronDown className="size-3 text-ink-faint" />
       </button>
+      </Tooltip>
 
       {open && (
         <>

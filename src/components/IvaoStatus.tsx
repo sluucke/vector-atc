@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Radio, LogOut, TriangleAlert } from "lucide-react";
 import { POSITION_LABELS } from "@/lib/ivao/callsign";
 import { useIvaoSession } from "./IvaoSessionProvider";
+import Tooltip from "./Tooltip";
 
 export default function IvaoStatus({
   availableIcaos,
@@ -37,6 +38,7 @@ export default function IvaoStatus({
 
   if (!session.connected) {
     return (
+      <Tooltip label="Entrar com a conta IVAO para detectar sua posição ATC">
       <button
         onClick={() => {
           // Not a Next.js page: this route handler 302s to IVAO's SSO, so it
@@ -49,6 +51,7 @@ export default function IvaoStatus({
         <Radio className="size-3.5" />
         <span className="font-mono text-[11px] font-medium">Conectar IVAO</span>
       </button>
+      </Tooltip>
     );
   }
 
@@ -89,17 +92,18 @@ export default function IvaoStatus({
         {session.error && <TriangleAlert className="size-3.5 text-warn" />}
       </div>
 
+      <Tooltip label="Desconectar a conta IVAO">
       <button
         onClick={async () => {
           await fetch("/api/ivao/logout", { method: "POST" });
           router.refresh();
         }}
         aria-label="Desconectar IVAO"
-        title="Desconectar IVAO"
         className="grid place-items-center size-7 rounded-md text-ink-faint hover:bg-hover hover:text-ink transition-colors duration-150"
       >
         <LogOut className="size-3.5" />
       </button>
+      </Tooltip>
     </div>
   );
 }

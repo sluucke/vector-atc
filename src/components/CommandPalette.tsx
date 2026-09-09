@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
 import { PlaneTakeoff, PlaneLanding, Search, CornerDownLeft } from "lucide-react";
@@ -56,6 +56,19 @@ function PaletteDialog({
       .slice(0, 12)
       .map((r) => r.item);
   }, [query, fuse, entries]);
+
+  // Escape must work wherever focus ended up — clicking a result or the list
+  // moves it off the input, and a handler bound there would never fire.
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   function go(entry: SearchEntry) {
     router.push(entry.href);

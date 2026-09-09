@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import PdfCanvas from "./PdfCanvas";
 import BackToAirport from "./BackToAirport";
+import Tooltip from "./Tooltip";
 import type { AirportGeometry, Chart, Procedure } from "@/lib/types";
 
 const ProcedureMap = dynamic(() => import("./ProcedureMap"), {
@@ -49,7 +50,7 @@ export default function ChartWorkspace({
   const params = useSearchParams();
   const focus = params.get("focus");
   const [view, setView] = useState<"chart" | "map">(
-    params.get("view") === "map" ? "map" : "chart"
+    params.get("view") === "map" ? "map" : "chart",
   );
   const [chartKey, setChartKey] = useState(initialChartKey);
   const [zoom, setZoom] = useState(1);
@@ -74,15 +75,12 @@ export default function ChartWorkspace({
 
   function step(factor: number) {
     setZoom((z) =>
-      Number(Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z * factor)).toFixed(3))
+      Number(Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z * factor)).toFixed(3)),
     );
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="flex-1 flex flex-col min-w-0 bg-content"
-    >
+    <div ref={containerRef} className="flex-1 flex flex-col min-w-0 bg-content">
       <div className="h-11 shrink-0 flex items-center gap-2 px-3 border-b border-line bg-panel">
         <BackToAirport icao={icao} label="Cartas" />
         <span className="w-px h-4 bg-line shrink-0" />
@@ -181,68 +179,78 @@ export default function ChartWorkspace({
         {view === "map" && procedure && (
           <p className="font-mono text-[11px] text-ink-dim truncate">
             {procedure.type} {procedure.name} · RWY {procedure.runway} ·{" "}
-            <span className="text-ink-faint">geometria da coding table</span>
+            <span className="text-ink-faint">rota publicada</span>
           </p>
         )}
 
         <div className="ml-auto flex items-center gap-1 shrink-0">
           {view === "chart" && (
             <>
-              <button
-                onClick={() => step(1 / 1.25)}
-                aria-label="Reduzir zoom"
-                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
-              >
-                <Minus className="size-4" />
-              </button>
+              <Tooltip label="Reduzir zoom">
+                <button
+                  onClick={() => step(1 / 1.25)}
+                  aria-label="Reduzir zoom"
+                  className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
+                >
+                  <Minus className="size-4" />
+                </button>
+              </Tooltip>
               <span className="font-mono text-xs text-ink-dim w-12 text-center tabular-nums">
                 {Math.round(zoom * 100)}%
               </span>
-              <button
-                onClick={() => step(1.25)}
-                aria-label="Aumentar zoom"
-                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
-              >
-                <Plus className="size-4" />
-              </button>
-              <button
-                onClick={() => setRotation((r) => (r + 90) % 360)}
-                aria-label="Girar 90°"
-                title="Girar 90° — cartas em paisagem"
-                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
-              >
-                <RotateCw className="size-3.5" />
-              </button>
-              <button
-                onClick={() => {
-                  setZoom(1);
-                  setRotation(0);
-                }}
-                aria-label="Ajustar à tela"
-                title="Ajustar à tela"
-                className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
-              >
-                <RotateCcw className="size-3.5" />
-              </button>
+              <Tooltip label="Aumentar zoom">
+                <button
+                  onClick={() => step(1.25)}
+                  aria-label="Aumentar zoom"
+                  className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
+                >
+                  <Plus className="size-4" />
+                </button>
+              </Tooltip>
+              <Tooltip label="Girar 90° — para cartas em paisagem">
+                <button
+                  onClick={() => setRotation((r) => (r + 90) % 360)}
+                  aria-label="Girar 90°"
+                  className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
+                >
+                  <RotateCw className="size-3.5" />
+                </button>
+              </Tooltip>
+              <Tooltip label="Ajustar à tela e à orientação original">
+                <button
+                  onClick={() => {
+                    setZoom(1);
+                    setRotation(0);
+                  }}
+                  aria-label="Ajustar à tela"
+                  className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
+                >
+                  <RotateCcw className="size-3.5" />
+                </button>
+              </Tooltip>
             </>
           )}
 
-          <button
-            onClick={toggleFullscreen}
-            aria-label="Tela cheia"
-            className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
-          >
-            <Maximize2 className="size-3.5" />
-          </button>
-          <a
-            href={chart.file}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
-          >
-            <ExternalLink className="size-3.5" />
-            PDF
-          </a>
+          <Tooltip label="Abrir em tela cheia">
+            <button
+              onClick={toggleFullscreen}
+              aria-label="Tela cheia"
+              className="grid place-items-center size-7 rounded-md text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
+            >
+              <Maximize2 className="size-3.5" />
+            </button>
+          </Tooltip>
+          <Tooltip label="Abrir o PDF original em nova aba">
+            <a
+              href={chart.file}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
+            >
+              <ExternalLink className="size-3.5" />
+              PDF
+            </a>
+          </Tooltip>
         </div>
       </div>
 
@@ -264,7 +272,7 @@ export default function ChartWorkspace({
       ) : (
         <div className="dot-grid flex-1 min-h-0 grid place-items-center">
           <p className="font-mono text-xs text-ink-faint">
-            Sem geometria publicada para este procedimento.
+            Mapa não disponível para este procedimento.
           </p>
         </div>
       )}
@@ -273,7 +281,7 @@ export default function ChartWorkspace({
         <span className="font-mono text-[10px] text-ink-faint truncate">
           {view === "chart"
             ? `${chart.type} · ${chart.name} · AIRAC ${chart.amdt} · ${chart.date}`
-            : `Fixos e pernas conforme coding table DECEA · ${geometry?.syncedAt ?? ""}`}
+            : `Fixos e altitudes conforme publicado pelo DECEA · ${geometry?.syncedAt ?? ""}`}
         </span>
         <span className="ml-auto font-mono text-[10px] text-ink-faint shrink-0 hidden sm:block">
           {view === "chart"

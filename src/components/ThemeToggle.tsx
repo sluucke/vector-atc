@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
+import Tooltip from "./Tooltip";
 
 const KEY = "vector:theme";
 type Theme = "dark" | "light";
@@ -37,13 +38,14 @@ export default function ThemeToggle() {
   const Icon = theme === "dark" ? Sun : Moon;
 
   return (
+    <Tooltip label={next === "light" ? "Mudar para tema claro" : "Mudar para tema escuro"}>
     <button
       onClick={() => store.set(next)}
       aria-label={next === "light" ? "Tema claro" : "Tema escuro"}
-      title={next === "light" ? "Mudar para tema claro" : "Mudar para tema escuro"}
       className="grid place-items-center size-7 rounded-md text-ink-faint hover:bg-hover hover:text-ink transition-colors duration-150"
     >
       <Icon className="size-3.5" />
     </button>
+    </Tooltip>
   );
 }
