@@ -7,7 +7,6 @@ import {
   LayoutGrid,
   PlaneTakeoff,
   PlaneLanding,
-  Radio,
   ExternalLink,
   Building2,
   Eye,
@@ -94,33 +93,25 @@ export default function Sidebar({
         </span>
         <span className="leading-tight">
           <span className="block text-sm font-semibold tracking-wide">
-            VECTOR
+            VECTOR ATC
           </span>
           <span className="block font-mono text-[10px] text-ink-faint">
-            CHARTS · IVAO
+            HELPER · IVAO
           </span>
         </span>
       </Link>
 
       <nav className="flex-1 overflow-y-auto px-2 pb-4">
         <SectionLabel>Workspace</SectionLabel>
+        {/* One entry, not a list: the sidebar belongs to the aerodrome being
+            worked, and switching happens from the front page. */}
         <NavItem
           href="/"
           icon={LayoutGrid}
-          label="Aeródromos"
-          badge={String(airports.length)}
+          label="Aeródromo"
+          badge={active?.icao ?? String(airports.length)}
           active={pathname === "/"}
         />
-        {airports.map((a) => (
-          <NavItem
-            key={a.icao}
-            href={`/${a.icao.toLowerCase()}`}
-            icon={Radio}
-            label={a.icao}
-            badge={a.fir.split(" ")[0]}
-            active={pathname.startsWith(`/${a.icao.toLowerCase()}`)}
-          />
-        ))}
 
         {active && categories.length > 0 && (
           <>

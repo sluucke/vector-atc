@@ -8,7 +8,7 @@
   "operational": {
     "transitionAltitude": 4000,
     "transitionAltitudeSource": "Carta DECEA 2603A1 — confirmar com o MOPS da TMA",
-    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbre"
+    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbre/sbwf"
   },
   "airac": {
     "cycle": "2603A1",

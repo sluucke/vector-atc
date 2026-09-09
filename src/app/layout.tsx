@@ -14,9 +14,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vector — Cartas SID/STAR",
+  title: "Vector ATC Helper",
   description:
-    "Console operacional de cartas SID/STAR para controladores e pilotos da rede IVAO.",
+    "Console operacional para controladores da rede IVAO: cartas oficiais, procedimentos, pista em uso, meteorologia, NOTAM e tráfego ao vivo.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

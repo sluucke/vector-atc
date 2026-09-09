@@ -19,13 +19,38 @@
     "source": "https://aisweb.decea.mil.br/?i=aerodromos&codigo=SBSV"
   },
   "frequencies": {
-    "dAtis": ["127.775"],
-    "twr": ["118.60", "118.95", "121.10"],
-    "app": ["119.35", "119.80", "120.80", "129.45"],
-    "acc": ["125.45", "126.85"],
-    "accExtended": ["123.80", "125.10", "126.00", "128.35", "128.80", "135.30", "135.65"]
+    "dAtis": [
+      "127.775"
+    ],
+    "twr": [
+      "118.60",
+      "118.95",
+      "121.10"
+    ],
+    "app": [
+      "119.35",
+      "119.80",
+      "120.80",
+      "129.45"
+    ],
+    "acc": [
+      "125.45",
+      "126.85"
+    ],
+    "accExtended": [
+      "123.80",
+      "125.10",
+      "126.00",
+      "128.35",
+      "128.80",
+      "135.30",
+      "135.65"
+    ]
   },
-  "runways": ["10", "28"],
+  "runways": [
+    "10",
+    "28"
+  ],
   "runwaysNote": "RWY 17/35 é de uso exclusivo da Base Aérea de Salvador (FAB) — sem SID/STAR civis publicadas.",
   "observations": [
     "FIR/ACC: Salvador está sob a FIR/ACC Recife (não Brasília/Atlântico) — coordenações de entrada/saída de área são feitas com o ACC-RE.",
