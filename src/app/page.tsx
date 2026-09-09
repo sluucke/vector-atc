@@ -59,10 +59,14 @@ export default function HomePage() {
           <AirportPicker airports={airports} />
         </div>
 
-        <footer className="mt-20 pt-6 border-t border-line">
-          <p className="font-mono text-[10px] text-ink-faint leading-relaxed">
+        <footer className="mt-20 pt-6 border-t border-line flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <p className="max-w-xl font-mono text-[10px] text-ink-faint leading-relaxed">
             Dados extraídos das cartas oficiais DECEA/AISWEB. Material de apoio
             para simulação na rede IVAO — não utilizar para navegação real.
+          </p>
+          <p className="font-mono text-[10px] text-ink-faint leading-relaxed shrink-0">
+            Desenvolvido por{" "}
+            <span className="text-ink-dim">The Duck Corporation</span>
           </p>
         </footer>
       </div>

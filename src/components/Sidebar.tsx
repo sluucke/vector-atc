@@ -156,6 +156,9 @@ export default function Sidebar({
           <ExternalLink className="size-3.5" />
           Fonte: AISWEB / DECEA
         </a>
+        <p className="px-3 font-mono text-[10px] text-ink-faint">
+          por The Duck Corporation
+        </p>
       </div>
     </aside>
   );

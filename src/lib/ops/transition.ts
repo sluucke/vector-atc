@@ -7,6 +7,9 @@
  *
  * Item 5.18.1 of the same regulation: the QNH passed to aircraft is rounded
  * down to the nearest whole hectopascal.
+ *
+ * Rows are added only from a published source — a MOPS or the regulation
+ * itself. None is ever extrapolated from the pattern of the rows around it.
  */
 
 /** QNH bands from Tabela 7, in hPa, ordered as published (lowest first). */
@@ -28,6 +31,7 @@ const TABLE: Record<number, number[]> = {
   6000: [85, 80, 75, 70, 65, 60],
   7000: [95, 90, 85, 80, 75, 70],
   8000: [105, 100, 95, 90, 85, 80],
+  9000: [115, 110, 105, 100, 95, 90],
 };
 
 export type TransitionLevelReason =

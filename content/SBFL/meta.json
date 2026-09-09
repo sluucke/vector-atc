@@ -7,7 +7,7 @@
   "fir": "Curitiba (SBCW)",
   "operational": {
     "transitionAltitude": 9000,
-    "transitionAltitudeSource": "Carta DECEA 2607A1 — confirmar com o MOPS da TMA",
+    "transitionAltitudeSource": "Carta DECEA 2607A1, coerente com a tabela de nível de transição do MOPS da TMA Florianópolis",
     "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbcw/sbxf"
   },
   "airac": {
