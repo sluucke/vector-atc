@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { MapPin } from "lucide-react";
+import RunwaySelect from "./RunwaySelect";
 import type { AirportMeta } from "@/lib/types";
 
 function Stat({ label, value }: { label: string; value: string }) {
@@ -28,10 +29,7 @@ export default function AirportContextHeader({ meta }: { meta: AirportMeta }) {
         </span>
       </Link>
 
-      <span className="flex items-center gap-1.5 shrink-0 px-2 py-0.5 rounded-full bg-ok/12">
-        <span className="size-1.5 rounded-full bg-ok" />
-        <span className="font-mono text-[10px] font-medium text-ok">ATIVO</span>
-      </span>
+      <RunwaySelect runways={meta.runways} />
 
       <div className="ml-auto flex items-center gap-6">
         <Stat label="AD ELEV" value={meta.elevation} />

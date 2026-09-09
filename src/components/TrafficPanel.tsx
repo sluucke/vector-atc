@@ -10,6 +10,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import type { AirportTraffic, LiveFlight } from "@/lib/ivao/types";
+import { useAirportContext } from "./AirportContextProvider";
 import type { Procedure } from "@/lib/types";
 
 const POLL_MS = 20_000;
@@ -21,9 +22,11 @@ type Row = LiveFlight & { kind: "arrival" | "departure" };
 function ProcedureTag({
   flight,
   names,
+  activeRunway,
 }: {
   flight: LiveFlight;
   names: Map<string, Procedure>;
+  activeRunway: string | null;
 }) {
   const { procedure } = flight;
 
@@ -35,9 +38,15 @@ function ProcedureTag({
     );
   }
 
-  const label = procedure.procedureIds
-    .map((id) => names.get(id)?.name ?? id)
-    .join(" / ");
+  // An inferred fix usually matches one procedure per runway; the runway in use
+  // is what settles which one the aircraft will actually fly.
+  const matching = procedure.procedureIds.filter(
+    (id) => names.get(id)?.runway === activeRunway
+  );
+  const narrowed = activeRunway !== null && matching.length > 0;
+  const shown = narrowed ? matching : procedure.procedureIds;
+
+  const label = shown.map((id) => names.get(id)?.name ?? id).join(" / ");
   const confirmed = procedure.confidence === "confirmed";
 
   return (
@@ -45,7 +54,9 @@ function ProcedureTag({
       title={
         confirmed
           ? `Designador ${procedure.designator} presente no plano de voo`
-          : `Inferido pelo fixo ${procedure.fix} — não declarado no plano`
+          : `Inferido pelo fixo ${procedure.fix} — não declarado no plano${
+              narrowed ? `; restrito à RWY ${activeRunway} em uso` : ""
+            }`
       }
       className={`font-mono text-[9px] px-1.5 py-0.5 rounded ${
         confirmed
@@ -65,6 +76,7 @@ export default function TrafficPanel({
   icao: string;
   procedures: Procedure[];
 }) {
+  const { runway: activeRunway } = useAirportContext();
   const [traffic, setTraffic] = useState<AirportTraffic | null>(null);
   const [error, setError] = useState(false);
   const [tab, setTab] = useState<Tab>("TODOS");
@@ -239,7 +251,11 @@ export default function TrafficPanel({
               </div>
 
               <div className="mt-1">
-                <ProcedureTag flight={flight} names={names} />
+                <ProcedureTag
+                  flight={flight}
+                  names={names}
+                  activeRunway={activeRunway}
+                />
               </div>
               </button>
 

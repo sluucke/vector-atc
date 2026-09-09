@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { getAirportMeta } from "@/lib/content";
+import { getAirportMeta, getGeometry } from "@/lib/content";
+import { parseController } from "@/lib/ivao/callsign";
+import { getWhazzup } from "@/lib/ivao/whazzup";
+import { detectRunwayInUse, type RunwayInUse } from "@/lib/ops/runway";
 import { getIvaoNotams, type IvaoNotam } from "@/lib/ivao/data-api";
 import { getMetar } from "@/lib/ops/metar";
 import { getNotams } from "@/lib/ops/notam";
@@ -23,6 +26,9 @@ export interface AirportDynamicContext {
   notamsError: boolean;
   /** IVAO network NOTAMs — division notices, not real-world AIS. */
   ivaoNotams: IvaoNotam[];
+  /** Detected only — the controller can always override in the UI. */
+  runwayInUse: RunwayInUse;
+  runways: string[];
   updatedAt: string;
 }
 
@@ -39,11 +45,13 @@ export async function GET(_: Request, ctx: RouteContext<"/api/airport/[icao]">) 
     return NextResponse.json({ error: "unknown_airport" }, { status: 404 });
   }
 
-  const [metarResult, notamResult, ivaoNotamResult] = await Promise.allSettled([
-    getMetar(code),
-    getNotams(code),
-    getIvaoNotams(code),
-  ]);
+  const [metarResult, notamResult, ivaoNotamResult, whazzupResult] =
+    await Promise.allSettled([
+      getMetar(code),
+      getNotams(code),
+      getIvaoNotams(code),
+      getWhazzup(),
+    ]);
 
   const metar =
     metarResult.status === "fulfilled" ? metarResult.value : null;
@@ -57,6 +65,30 @@ export async function GET(_: Request, ctx: RouteContext<"/api/airport/[icao]">) 
           qnh: metar?.qnh ?? null,
         });
 
+  // An ATIS from a controller working the field beats any wind guess.
+  const atis =
+    whazzupResult.status === "fulfilled"
+      ? (whazzupResult.value.clients.atcs
+          .filter((entry) => parseController(entry).airport === code)
+          .map((entry) => entry.atis?.lines?.join(" "))
+          .find(Boolean) ?? null)
+      : null;
+
+  const geometry = getGeometry(code);
+  const thresholds = Object.fromEntries(
+    Object.entries(geometry?.runwayPoints ?? {}).map(([rwy, point]) => [
+      rwy,
+      point.thr,
+    ])
+  );
+
+  const runwayInUse = detectRunwayInUse({
+    runways: meta.runways,
+    thresholds,
+    metar: metar?.raw ?? null,
+    atis,
+  });
+
   const body: AirportDynamicContext = {
     icao: code,
     metar,
@@ -68,6 +100,8 @@ export async function GET(_: Request, ctx: RouteContext<"/api/airport/[icao]">) 
     notamsError: notamResult.status === "rejected",
     ivaoNotams:
       ivaoNotamResult.status === "fulfilled" ? ivaoNotamResult.value : [],
+    runwayInUse,
+    runways: meta.runways,
     updatedAt: new Date().toISOString(),
   };
 

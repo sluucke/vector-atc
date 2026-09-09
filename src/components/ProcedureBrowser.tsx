@@ -14,6 +14,7 @@ import {
   Wand2,
 } from "lucide-react";
 import { useIvaoSession } from "./IvaoSessionProvider";
+import { useAirportContext } from "./AirportContextProvider";
 import { CATEGORY_LABELS, relevantCategories } from "@/lib/chart-relevance";
 import type { Chart, Procedure } from "@/lib/types";
 
@@ -57,6 +58,7 @@ export default function ProcedureBrowser({
 }) {
   const pathname = usePathname();
   const session = useIvaoSession();
+  const { runway: activeRunway } = useAirportContext();
   const activeRef = useRef<HTMLAnchorElement>(null);
   const [manual, setManual] = useState<string[] | null>(null);
 
@@ -182,9 +184,14 @@ export default function ProcedureBrowser({
       <div className="flex-1 overflow-y-auto p-2">
         {sections.map(({ category, entries }) => {
           const Icon = CATEGORY_ICONS[category] ?? FileText;
-          const groups = Array.from(
-            new Set(entries.map((e) => e.group))
-          ).sort();
+          // The runway in use comes first — it's what the controller is working.
+          const groups = Array.from(new Set(entries.map((e) => e.group))).sort(
+            (a, b) => {
+              const rank = (g: string | null) =>
+                activeRunway && g === `RWY ${activeRunway}` ? 0 : 1;
+              return rank(a) - rank(b) || (a ?? "").localeCompare(b ?? "");
+            }
+          );
 
           return (
             <div key={category} className="mb-3">
@@ -201,8 +208,13 @@ export default function ProcedureBrowser({
               {groups.map((group) => (
                 <div key={group ?? "all"}>
                   {group && (
-                    <p className="px-2 py-1 font-mono text-[9px] text-ink-faint">
+                    <p className="px-2 py-1 flex items-center gap-1.5 font-mono text-[9px] text-ink-faint">
                       {group}
+                      {activeRunway && group === `RWY ${activeRunway}` && (
+                        <span className="px-1 rounded bg-ok/12 text-ok">
+                          em uso
+                        </span>
+                      )}
                     </p>
                   )}
                   <div className="space-y-0.5">
