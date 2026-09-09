@@ -90,6 +90,8 @@ export interface AirportFrequencies {
   app: string[];
   acc: string[];
   accExtended?: string[];
+  /** Callsigns of the IVAO positions these frequencies belong to. */
+  network?: { source: string; app: string | null; acc: string };
 }
 
 /** Static, slowly-changing operational data kept in our own dataset. */

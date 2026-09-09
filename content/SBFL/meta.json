@@ -24,8 +24,27 @@
       "118.700",
       "122.800"
     ],
-    "app": [],
-    "acc": []
+    "app": [
+      "119.650",
+      "119.500"
+    ],
+    "acc": [
+      "124.000"
+    ],
+    "accExtended": [
+      "126.950",
+      "128.150",
+      "125.350",
+      "126.100",
+      "133.800",
+      "124.900",
+      "135.850"
+    ],
+    "network": {
+      "source": "Frequências das posições da divisão IVAO Brasil",
+      "app": "SBXF_APP",
+      "acc": "SBCW_CTR"
+    }
   },
   "runways": [
     "14",

@@ -16,15 +16,29 @@ export function generateStaticParams() {
   return getAirportCodes().map((icao) => ({ icao: icao.toLowerCase() }));
 }
 
-function FreqCard({ label, values }: { label: string; values: string[] }) {
+function FreqCard({
+  label,
+  values,
+  position,
+}: {
+  label: string;
+  values: string[];
+  /** IVAO callsign, when these are the network's frequencies. */
+  position?: string | null;
+}) {
   return (
     <div className="rounded-lg border border-line bg-panel p-3">
       <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
         {label}
       </p>
       <p className="mt-1.5 font-mono text-sm text-ink leading-relaxed">
-        {values.join("  ")}
+        {values.length > 0 ? values.join("  ") : "—"}
       </p>
+      {position && (
+        <p className="mt-1.5 font-mono text-[10px] text-ink-faint">
+          {position}
+        </p>
+      )}
     </div>
   );
 }
@@ -48,13 +62,25 @@ export default async function AirportBriefingPage(
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <FreqCard label="D-ATIS" values={meta.frequencies.dAtis} />
             <FreqCard label="TWR" values={meta.frequencies.twr} />
-            <FreqCard label="APP" values={meta.frequencies.app} />
-            <FreqCard label="ACC" values={meta.frequencies.acc} />
+            <FreqCard
+              label="APP"
+              values={meta.frequencies.app}
+              position={meta.frequencies.network?.app}
+            />
+            <FreqCard
+              label="ACC"
+              values={meta.frequencies.acc}
+              position={meta.frequencies.network?.acc}
+            />
           </div>
           {meta.frequencies.accExtended && (
             <p className="mt-2 font-mono text-[11px] text-ink-faint">
-              ACC (lista estendida em cartas antigas):{" "}
-              {meta.frequencies.accExtended.join("  ")}
+              Setores do ACC: {meta.frequencies.accExtended.join("  ")}
+            </p>
+          )}
+          {meta.frequencies.network && (
+            <p className="mt-1 font-mono text-[11px] text-ink-faint">
+              {meta.frequencies.network.source}
             </p>
           )}
         </section>
