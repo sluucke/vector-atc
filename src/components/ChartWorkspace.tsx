@@ -14,6 +14,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import PdfCanvas from "./PdfCanvas";
+import BackToAirport from "./BackToAirport";
 import type { AirportGeometry, Chart, Procedure } from "@/lib/types";
 
 const ProcedureMap = dynamic(() => import("./ProcedureMap"), {
@@ -81,6 +82,9 @@ export default function ChartWorkspace({
       className="flex-1 flex flex-col min-w-0 bg-content"
     >
       <div className="h-11 shrink-0 flex items-center gap-2 px-3 border-b border-line bg-panel">
+        <BackToAirport icao={icao} label="Cartas" />
+        <span className="w-px h-4 bg-line shrink-0" />
+
         <div className="flex gap-0.5 p-0.5 rounded-lg bg-black/30 shrink-0">
           {(
             [

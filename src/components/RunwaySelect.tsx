@@ -11,12 +11,21 @@ const SOURCE_ICON = {
 } as const;
 
 export default function RunwaySelect({ runways }: { runways: string[] }) {
-  const { data, runway, auto, setRunway } = useAirportContext();
+  const {
+    data,
+    runway,
+    runways: activeRunways,
+    auto,
+    setRunway,
+  } = useAirportContext();
   const [open, setOpen] = useState(false);
 
   const detected = data?.runwayInUse ?? null;
   const source = detected?.source ?? "unknown";
   const Icon = SOURCE_ICON[source];
+  // Parallels are in use together, so show them together.
+  const label =
+    activeRunways.length > 1 ? activeRunways.join("/") : (runway ?? null);
 
   return (
     <div className="relative shrink-0">
@@ -28,20 +37,20 @@ export default function RunwaySelect({ runways }: { runways: string[] }) {
             : "Selecionar pista em uso"
         }
         className={`flex items-center gap-1.5 px-2 py-1 rounded-full transition-colors duration-150 ${
-          runway
+          label
             ? "bg-ok/12 hover:bg-ok/20"
             : "bg-white/[0.06] hover:bg-white/[0.1]"
         }`}
       >
         <span
-          className={`size-1.5 rounded-full ${runway ? "bg-ok" : "bg-ink-faint"}`}
+          className={`size-1.5 rounded-full ${label ? "bg-ok" : "bg-ink-faint"}`}
         />
         <span
           className={`font-mono text-[10px] font-medium ${
-            runway ? "text-ok" : "text-ink-faint"
+            label ? "text-ok" : "text-ink-faint"
           }`}
         >
-          {runway ? `RWY ${runway}` : "PISTA —"}
+          {label ? "RWY " + label : "PISTA —"}
         </span>
         {!auto && (
           <span className="font-mono text-[9px] text-ink-faint">manual</span>
@@ -58,8 +67,8 @@ export default function RunwaySelect({ runways }: { runways: string[] }) {
             </p>
 
             {runways.map((option) => {
-              const active = runway === option;
-              const isDetected = detected?.runway === option;
+              const active = activeRunways.includes(option);
+              const isDetected = (detected?.runways ?? []).includes(option);
               return (
                 <button
                   key={option}

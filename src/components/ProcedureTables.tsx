@@ -4,7 +4,7 @@ import Link from "next/link";
 import { PlaneTakeoff, PlaneLanding } from "lucide-react";
 import { useAirportContext } from "./AirportContextProvider";
 import { servesRunway } from "@/lib/runway-match";
-import type { Procedure } from "@/lib/types";
+import type { Chart, Procedure } from "@/lib/types";
 
 function Th({
   children,
@@ -33,24 +33,31 @@ function Fix({ children }: { children: React.ReactNode }) {
 export default function ProcedureTables({
   icao,
   procedures,
+  charts,
   type,
 }: {
   icao: string;
   procedures: Procedure[];
+  charts: Chart[];
   type: Procedure["type"];
 }) {
-  const { runway: activeRunway } = useAirportContext();
+  const { runways: activeRunways } = useAirportContext();
 
   // Procedures for the runway in use are listed first.
   const rows = procedures
     .filter((p) => p.type === type)
     .sort((a, b) => {
-      const rank = (r: string) => (servesRunway(r, activeRunway) ? 0 : 1);
+      const rank = (r: string) => (servesRunway(r, activeRunways) ? 0 : 1);
       return (
         rank(a.runway) - rank(b.runway) || a.runway.localeCompare(b.runway)
       );
     });
-  if (rows.length === 0) return null;
+  // Published charts whose coding table we could not parse have no procedure
+  // record, but must stay reachable from the briefing.
+  const covered = new Set(rows.map((p) => p.chartKey));
+  const orphans = charts.filter((c) => c.type === type && !covered.has(c.key));
+
+  if (rows.length === 0 && orphans.length === 0) return null;
 
   const isSid = type === "SID";
   const Icon = isSid ? PlaneTakeoff : PlaneLanding;
@@ -63,7 +70,8 @@ export default function ProcedureTables({
           {isSid ? "SID · Saídas" : "STAR · Chegadas"}
         </h2>
         <span className="font-mono text-[10px] text-ink-faint">
-          {rows.length} procedimentos
+          {rows.length + orphans.length} cartas
+          {orphans.length > 0 && ` · ${rows.length} com geometria`}
         </span>
       </div>
 
@@ -106,7 +114,7 @@ export default function ProcedureTables({
                 <td className="px-3 py-2.5 align-top font-mono text-xs whitespace-nowrap">
                   <span
                     className={
-                      servesRunway(p.runway, activeRunway)
+                      servesRunway(p.runway, activeRunways)
                         ? "px-1.5 py-0.5 rounded bg-ok/12 text-ok font-medium"
                         : "text-ink-dim"
                     }
@@ -167,6 +175,28 @@ export default function ProcedureTables({
           </tbody>
         </table>
       </div>
+
+      {orphans.length > 0 && (
+        <div className="mt-3">
+          <p className="mb-2 font-mono text-[10px] text-ink-faint">
+            Sem coding table publicada — apenas a carta original:
+          </p>
+          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+            {orphans.map((chart) => (
+              <Link
+                key={chart.key}
+                href={`/${icao.toLowerCase()}/chart/${chart.key}`}
+                className="rounded-lg border border-line bg-panel p-2.5 hover:border-signal/40 hover:bg-raised transition-colors duration-150"
+              >
+                <p className="font-mono text-[11px] text-ink">{chart.name}</p>
+                <p className="font-mono text-[9px] text-ink-faint">
+                  AIRAC {chart.amdt}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

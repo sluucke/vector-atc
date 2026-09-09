@@ -24,10 +24,12 @@ function ProcedureTag({
   flight,
   names,
   activeRunway,
+  activeRunways,
 }: {
   flight: LiveFlight;
   names: Map<string, Procedure>;
   activeRunway: string | null;
+  activeRunways: string[];
 }) {
   const { procedure } = flight;
 
@@ -42,9 +44,9 @@ function ProcedureTag({
   // An inferred fix usually matches one procedure per runway; the runway in use
   // is what settles which one the aircraft will actually fly.
   const matching = procedure.procedureIds.filter(
-    (id) => servesRunway(names.get(id)?.runway ?? "", activeRunway)
+    (id) => servesRunway(names.get(id)?.runway ?? "", activeRunways)
   );
-  const narrowed = activeRunway !== null && matching.length > 0;
+  const narrowed = activeRunways.length > 0 && matching.length > 0;
   const shown = narrowed ? matching : procedure.procedureIds;
 
   const label = shown.map((id) => names.get(id)?.name ?? id).join(" / ");
@@ -77,7 +79,7 @@ export default function TrafficPanel({
   icao: string;
   procedures: Procedure[];
 }) {
-  const { runway: activeRunway } = useAirportContext();
+  const { runway: activeRunway, runways: activeRunways } = useAirportContext();
   const [traffic, setTraffic] = useState<AirportTraffic | null>(null);
   const [error, setError] = useState(false);
   const [tab, setTab] = useState<Tab>("TODOS");
@@ -256,6 +258,7 @@ export default function TrafficPanel({
                   flight={flight}
                   names={names}
                   activeRunway={activeRunway}
+                  activeRunways={activeRunways}
                 />
               </div>
               </button>

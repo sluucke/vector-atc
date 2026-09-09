@@ -1,5 +1,6 @@
 import "server-only";
 import { aiswebFetch, createCache } from "./aisweb";
+export { formatNotamTime } from "./notam-format";
 
 export interface Notam {
   id: string;
@@ -65,20 +66,4 @@ export async function getNotams(icao: string): Promise<NotamReport> {
       fetchedAt: new Date().toISOString(),
     };
   });
-}
-
-/** "2609030000" -> "03SEP26 00:00Z" */
-export function formatNotamTime(value: string | null): string | null {
-  if (!value || !/^\d{10}$/.test(value)) return null;
-  const months = [
-    "JAN", "FEV", "MAR", "ABR", "MAI", "JUN",
-    "JUL", "AGO", "SET", "OUT", "NOV", "DEZ",
-  ];
-  const year = value.slice(0, 2);
-  const month = Number(value.slice(2, 4));
-  const day = value.slice(4, 6);
-  const hour = value.slice(6, 8);
-  const minute = value.slice(8, 10);
-  if (month < 1 || month > 12) return null;
-  return `${day}${months[month - 1]}${year} ${hour}:${minute}Z`;
 }

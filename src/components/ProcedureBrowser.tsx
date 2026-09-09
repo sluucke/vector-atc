@@ -17,6 +17,7 @@ import { useIvaoSession } from "./IvaoSessionProvider";
 import { useAirportContext } from "./AirportContextProvider";
 import { servesRunway } from "@/lib/runway-match";
 import { CATEGORY_LABELS, relevantCategories } from "@/lib/chart-relevance";
+import { categoryEntries } from "@/lib/chart-inventory";
 import type { Chart, Procedure } from "@/lib/types";
 
 const CATEGORY_ORDER = ["SID", "STAR", "IAC", "ADC", "VAC", "PDC", "AOC"];
@@ -39,14 +40,6 @@ const CATEGORY_TINT: Record<string, string> = {
   IAC: "text-ok",
 };
 
-interface Entry {
-  key: string;
-  href: string;
-  label: string;
-  sublabel: string | null;
-  badge: string | null;
-  group: string | null;
-}
 
 export default function ProcedureBrowser({
   icao,
@@ -59,7 +52,7 @@ export default function ProcedureBrowser({
 }) {
   const pathname = usePathname();
   const session = useIvaoSession();
-  const { runway: activeRunway } = useAirportContext();
+  const { runways: activeRunways } = useAirportContext();
   const activeRef = useRef<HTMLAnchorElement>(null);
   const [manual, setManual] = useState<string[] | null>(null);
 
@@ -87,42 +80,16 @@ export default function ProcedureBrowser({
     setManual(next.length > 0 ? next : [category]);
   }
 
-  const sections = useMemo(() => {
-    return CATEGORY_ORDER.filter(
-      (c) => available.includes(c) && active.includes(c)
-    ).map((category) => {
-      // SID/STAR are browsed as procedures — they carry transitions and, when
-      // a coding table exists, a plottable geometry. Everything else is a chart.
-      const entries: Entry[] =
-        category === "SID" || category === "STAR"
-          ? procedures
-              .filter((p) => p.type === category)
-              .map((p) => ({
-                key: p.id,
-                href: `/${icao.toLowerCase()}/carta/${p.id}`,
-                label: p.name,
-                sublabel:
-                  (p.type === "SID"
-                    ? (p.transitions ?? []).map((t) => t.fix)
-                    : (p.entryFixes ?? [])
-                  ).join(" · ") || null,
-                badge: p.category,
-                group: `RWY ${p.runway}`,
-              }))
-          : charts
-              .filter((c) => c.type === category)
-              .map((c) => ({
-                key: c.key,
-                href: `/${icao.toLowerCase()}/chart/${c.key}`,
-                label: c.name,
-                sublabel: null,
-                badge: null,
-                group: null,
-              }));
-
-      return { category, entries };
-    });
-  }, [available, active, procedures, charts, icao]);
+  const sections = useMemo(
+    () =>
+      CATEGORY_ORDER.filter(
+        (c) => available.includes(c) && active.includes(c)
+      ).map((category) => ({
+        category,
+        entries: categoryEntries(icao, charts, procedures, category),
+      })),
+    [available, active, procedures, charts, icao]
+  );
 
   useEffect(() => {
     activeRef.current?.scrollIntoView({ block: "nearest" });
@@ -147,9 +114,7 @@ export default function ProcedureBrowser({
               >
                 {category}
                 <span className="ml-1 opacity-60">
-                  {category === "SID" || category === "STAR"
-                    ? procedures.filter((p) => p.type === category).length
-                    : charts.filter((c) => c.type === category).length}
+                  {categoryEntries(icao, charts, procedures, category).length}
                 </span>
               </button>
             );
@@ -189,7 +154,7 @@ export default function ProcedureBrowser({
           const groups = Array.from(new Set(entries.map((e) => e.group))).sort(
             (a, b) => {
               const rank = (g: string | null) =>
-                g && servesRunway(g.replace(/^RWY /, ""), activeRunway) ? 0 : 1;
+                g && servesRunway(g.replace(/^RWY /, ""), activeRunways) ? 0 : 1;
               return rank(a) - rank(b) || (a ?? "").localeCompare(b ?? "");
             }
           );
@@ -211,7 +176,7 @@ export default function ProcedureBrowser({
                   {group && (
                     <p className="px-2 py-1 flex items-center gap-1.5 font-mono text-[9px] text-ink-faint">
                       {group}
-                      {group && servesRunway(group.replace(/^RWY /, ""), activeRunway) && (
+                      {group && servesRunway(group.replace(/^RWY /, ""), activeRunways) && (
                         <span className="px-1 rounded bg-ok/12 text-ok">
                           em uso
                         </span>

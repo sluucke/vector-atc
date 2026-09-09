@@ -3,11 +3,21 @@ import type { GeoPoint } from "@/lib/types";
 export type RunwaySource = "atis" | "wind" | "unknown";
 
 export interface RunwayInUse {
+  /** Primary runway, for compact display. */
   runway: string | null;
+  /**
+   * Every runway in use. Parallels point the same way, so wind that favours
+   * 11 favours 11L and 11R equally — both are in use.
+   */
+  runways: string[];
   source: RunwaySource;
   /** Human-readable justification shown next to the selector. */
   detail: string | null;
 }
+
+/** Parallels differ only by side, so they share a direction. */
+const sameDirection = (a: string, b: string) =>
+  a.slice(0, 2) === b.slice(0, 2);
 
 /** 11L and 29R are the two ends of one strip; 10 pairs with 28. */
 export function reciprocal(runway: string): string {
@@ -105,6 +115,7 @@ export function detectRunwayInUse({
     if (fromAtis) {
       return {
         runway: fromAtis,
+        runways: runways.filter((r) => sameDirection(r, fromAtis)),
         source: "atis",
         detail: "informada no ATIS do controlador online",
       };
@@ -115,6 +126,7 @@ export function detectRunwayInUse({
   if (!wind || wind.direction === null || wind.speed < 1) {
     return {
       runway: null,
+      runways: [],
       source: "unknown",
       detail: wind ? "vento calmo ou variável" : "sem METAR",
     };
@@ -143,13 +155,16 @@ export function detectRunwayInUse({
   if (scored.length === 0 || scored[0].headwind <= 0) {
     return {
       runway: null,
+      runways: [],
       source: "unknown",
       detail: "sem cabeceiras publicadas para calcular o vento",
     };
   }
 
+  const best = scored[0].runway;
   return {
-    runway: scored[0].runway,
+    runway: best,
+    runways: runways.filter((r) => sameDirection(r, best)),
     source: "wind",
     detail: `estimada pelo vento ${String(wind.direction).padStart(3, "0")}°/${Math.round(wind.speed)}kt`,
   };

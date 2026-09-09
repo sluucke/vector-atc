@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import { IvaoSessionProvider } from "@/components/IvaoSessionProvider";
+import { categoryEntries } from "@/lib/chart-inventory";
 import { AirportContextProvider } from "@/components/AirportContextProvider";
 import TopBar from "@/components/TopBar";
 import AirportContextHeader from "@/components/AirportContextHeader";
+import AirportOpsStrip from "@/components/AirportOpsStrip";
 import ProcedureBrowser from "@/components/ProcedureBrowser";
 import {
   getAirportCodes,
@@ -29,7 +31,7 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
   const categories = ["SID", "STAR", "IAC", "ADC", "VAC", "PDC", "AOC"]
     .map((type) => ({
       type,
-      count: charts.filter((c) => c.type === type).length,
+      count: categoryEntries(meta.icao, charts, procedures, type).length,
     }))
     .filter((c) => c.count > 0);
 
@@ -52,6 +54,9 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
               currentIcao={meta.icao}
             />
             <AirportContextHeader meta={meta} />
+            <AirportOpsStrip
+              transitionAltitude={meta.operational?.transitionAltitude}
+            />
 
             <div className="flex-1 flex min-h-0">
               <ProcedureBrowser

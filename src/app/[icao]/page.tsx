@@ -59,8 +59,18 @@ export default async function AirportBriefingPage(
           )}
         </section>
 
-        <ProcedureTables icao={meta.icao} procedures={procedures} type="SID" />
-        <ProcedureTables icao={meta.icao} procedures={procedures} type="STAR" />
+        <ProcedureTables
+          icao={meta.icao}
+          procedures={procedures}
+          charts={charts}
+          type="SID"
+        />
+        <ProcedureTables
+          icao={meta.icao}
+          procedures={procedures}
+          charts={charts}
+          type="STAR"
+        />
 
         {OTHER_CATEGORIES.map((category) => (
           <ChartCategorySection

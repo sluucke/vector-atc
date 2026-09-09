@@ -15,8 +15,10 @@ const POLL_MS = 60_000;
 interface AirportContextValue {
   data: AirportDynamicContext | null;
   error: boolean;
-  /** Detected runway, or the controller's override when they set one. */
+  /** Primary runway — detected, or the controller's override. */
   runway: string | null;
+  /** Every runway in use; an override narrows this to the chosen one. */
+  runways: string[];
   /** True while following automatic detection. */
   auto: boolean;
   setRunway: (runway: string | null) => void;
@@ -26,6 +28,7 @@ const Ctx = createContext<AirportContextValue>({
   data: null,
   error: false,
   runway: null,
+  runways: [],
   auto: true,
   setRunway: () => {},
 });
@@ -121,6 +124,8 @@ export function AirportContextProvider({
       data,
       error,
       runway: override ?? data?.runwayInUse.runway ?? null,
+      // Choosing a runway by hand means exactly that one is in use.
+      runways: override ? [override] : (data?.runwayInUse.runways ?? []),
       auto: override === null,
       setRunway: store.set,
     }),

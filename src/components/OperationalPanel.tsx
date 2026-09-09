@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Radar, TriangleAlert } from "lucide-react";
+import { Radar, TriangleAlert, ScrollText } from "lucide-react";
 import TrafficPanel from "./TrafficPanel";
+import NotamPanel from "./NotamPanel";
 import type { Procedure } from "@/lib/types";
 
 export default function OperationalPanel({
@@ -18,7 +19,7 @@ export default function OperationalPanel({
   runwaysNote?: string;
   checkedAt: string;
 }) {
-  const [tab, setTab] = useState<"traffic" | "notes">("traffic");
+  const [tab, setTab] = useState<"traffic" | "notam" | "notes">("traffic");
 
   return (
     <aside className="w-72 shrink-0 hidden xl:flex flex-col bg-panel border-l border-line">
@@ -26,13 +27,14 @@ export default function OperationalPanel({
         {(
           [
             ["traffic", "Tráfego", Radar],
+            ["notam", "NOTAM", ScrollText],
             ["notes", "Notas", TriangleAlert],
           ] as const
         ).map(([id, label, Icon]) => (
           <button
             key={id}
             onClick={() => setTab(id)}
-            className={`flex-1 flex items-center justify-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors duration-150 ${
+            className={`flex-1 flex items-center justify-center gap-1 text-[9px] font-semibold uppercase tracking-[0.1em] transition-colors duration-150 ${
               tab === id
                 ? "text-signal border-b-2 border-signal"
                 : "text-ink-faint hover:text-ink-dim border-b-2 border-transparent"
@@ -46,6 +48,8 @@ export default function OperationalPanel({
 
       {tab === "traffic" ? (
         <TrafficPanel icao={icao} procedures={procedures} />
+      ) : tab === "notam" ? (
+        <NotamPanel icao={icao} />
       ) : (
         <>
           <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
