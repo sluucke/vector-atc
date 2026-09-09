@@ -1,5 +1,44 @@
 [
   {
+    "id": "sid-butob1a",
+    "type": "SID",
+    "runway": "18",
+    "name": "BUTOB 1A",
+    "category": "RNAV",
+    "chartKey": "RF01W",
+    "geometryKey": "SID|BUTOB1A|18",
+    "notes": "",
+    "fixes": [
+      "BUTOB",
+      "KUKES",
+      "RF129",
+      "RF131",
+      "RF132",
+      "IROSI",
+      "UDOSA",
+      "GAVAK"
+    ],
+    "commonRoute": "BUTOB",
+    "transitions": [
+      {
+        "fix": "KUKES",
+        "desc": "132.61 NM"
+      },
+      {
+        "fix": "IROSI",
+        "desc": "16.88 NM · via RF129 → RF131 → RF132"
+      },
+      {
+        "fix": "GAVAK",
+        "desc": "78.24 NM · via UDOSA"
+      },
+      {
+        "fix": "UDOSA",
+        "desc": "73.96 NM"
+      }
+    ]
+  },
+  {
     "id": "sid-munug1a",
     "type": "SID",
     "runway": "18",
@@ -204,6 +243,29 @@
     ],
     "route": null,
     "iaf": "RF011"
+  },
+  {
+    "id": "star-entiv1a",
+    "type": "STAR",
+    "runway": "18",
+    "name": "ENTIV 1A",
+    "category": "RNAV",
+    "chartKey": "RF01O",
+    "geometryKey": "STAR|ENTIV1A|18",
+    "notes": "",
+    "fixes": [
+      "ENTIV",
+      "RF098",
+      "RF066",
+      "RF067",
+      "RF068",
+      "RF009"
+    ],
+    "entryFixes": [
+      "ENTIV"
+    ],
+    "route": null,
+    "iaf": "RF009"
   },
   {
     "id": "star-espet1a",

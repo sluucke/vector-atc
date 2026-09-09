@@ -1,5 +1,73 @@
 [
   {
+    "id": "sid-migak1a",
+    "type": "SID",
+    "runway": "14",
+    "name": "MIGAK 1A",
+    "category": "RNAV",
+    "chartKey": "FL02C",
+    "geometryKey": "SID|MIGAK1A|14",
+    "notes": "",
+    "fixes": [
+      "MIGAK",
+      "UGREV",
+      "FL913",
+      "FL914",
+      "FL916",
+      "NESMI"
+    ],
+    "commonRoute": "MIGAK",
+    "transitions": [
+      {
+        "fix": "UGREV",
+        "desc": "30.05 NM"
+      },
+      {
+        "fix": "NESMI",
+        "desc": "41.21 NM · via FL913 → FL914 → FL916"
+      }
+    ]
+  },
+  {
+    "id": "sid-punod4a",
+    "type": "SID",
+    "runway": "14",
+    "name": "PUNOD 4A",
+    "category": "RNAV",
+    "chartKey": "FL02D",
+    "geometryKey": "SID|PUNOD4A|14",
+    "notes": "",
+    "fixes": [
+      "PUNOD",
+      "FL976",
+      "EGDED",
+      "FL911",
+      "ENSUG",
+      "FL912",
+      "UBROS",
+      "ILVOR"
+    ],
+    "commonRoute": "PUNOD",
+    "transitions": [
+      {
+        "fix": "EGDED",
+        "desc": "25.58 NM · via FL976"
+      },
+      {
+        "fix": "ENSUG",
+        "desc": "68.93 NM · via FL911"
+      },
+      {
+        "fix": "UBROS",
+        "desc": "49.79 NM · via FL912"
+      },
+      {
+        "fix": "ILVOR",
+        "desc": "49.74 NM · via FL911"
+      }
+    ]
+  },
+  {
     "id": "sid-bodop1b",
     "type": "SID",
     "runway": "32",
@@ -41,6 +109,35 @@
     ]
   },
   {
+    "id": "sid-mukal2b",
+    "type": "SID",
+    "runway": "32",
+    "name": "MUKAL 2B",
+    "category": "RNAV",
+    "chartKey": "FL02F",
+    "geometryKey": "SID|MUKAL2B|32",
+    "notes": "",
+    "fixes": [
+      "MUKAL",
+      "FL981",
+      "UGREV",
+      "UMKOT",
+      "FL921",
+      "NESMI"
+    ],
+    "commonRoute": "MUKAL",
+    "transitions": [
+      {
+        "fix": "UGREV",
+        "desc": "28.44 NM · via FL981"
+      },
+      {
+        "fix": "NESMI",
+        "desc": "32.75 NM · via UMKOT → FL921"
+      }
+    ]
+  },
+  {
     "id": "star-dadmo1a",
     "type": "STAR",
     "runway": "14",
@@ -61,6 +158,75 @@
     ],
     "route": null,
     "iaf": "ILRUK"
+  },
+  {
+    "id": "star-edrex1a",
+    "type": "STAR",
+    "runway": "14",
+    "name": "EDREX 1A",
+    "category": "RNAV",
+    "chartKey": "FL01Y",
+    "geometryKey": "STAR|EDREX1A|14",
+    "notes": "",
+    "fixes": [
+      "EDREX",
+      "UMPOV",
+      "PONLU",
+      "PUDNI",
+      "FL938",
+      "FL937",
+      "MUKAL"
+    ],
+    "entryFixes": [
+      "EDREX"
+    ],
+    "route": null,
+    "iaf": "MUKAL"
+  },
+  {
+    "id": "star-egded2a",
+    "type": "STAR",
+    "runway": "14",
+    "name": "EGDED 2A",
+    "category": "RNAV",
+    "chartKey": "FL01Y",
+    "geometryKey": "STAR|EGDED2A|14",
+    "notes": "",
+    "fixes": [
+      "EGDED",
+      "FL953",
+      "FL997",
+      "EPKON",
+      "MUGAB",
+      "DIMOG"
+    ],
+    "entryFixes": [
+      "EGDED"
+    ],
+    "route": null,
+    "iaf": "DIMOG"
+  },
+  {
+    "id": "star-pubis1a",
+    "type": "STAR",
+    "runway": "14",
+    "name": "PUBIS 1A",
+    "category": "RNAV",
+    "chartKey": "FL01Y",
+    "geometryKey": "STAR|PUBIS1A|14",
+    "notes": "",
+    "fixes": [
+      "PUBIS",
+      "FL928",
+      "FL927",
+      "FL939",
+      "DIMOG"
+    ],
+    "entryFixes": [
+      "PUBIS"
+    ],
+    "route": null,
+    "iaf": "DIMOG"
   },
   {
     "id": "star-vapap1a",

@@ -51,6 +51,33 @@ function toDecimal(hemisphere, dms) {
   return hemisphere === "S" || hemisphere === "W" ? -value : value;
 }
 
+/**
+ * Turns one line's text fragments into table cells.
+ *
+ * The generator splits words wherever it likes — a title can arrive as "S",
+ * "ID", "RNAV", "EVKOX", "4", "A" — so fragments are rejoined by how far apart
+ * they sit: touching means one word, a space's width means one phrase, and a
+ * column's width means a new cell. Columns that overlap in x, which happens
+ * where the true and magnetic courses are printed out of order, always start a
+ * new cell.
+ */
+function toCells(items) {
+  const GLUE = 0.5;
+  const COLUMN = 6;
+  const cells = [];
+  let end = null;
+
+  for (const item of items) {
+    const gap = end === null ? Infinity : item.x - end;
+    if (gap > COLUMN || gap < -GLUE) cells.push(item.s);
+    else if (gap < GLUE) cells[cells.length - 1] += item.s;
+    else cells[cells.length - 1] += ` ${item.s}`;
+    end = item.x + item.width;
+  }
+
+  return cells;
+}
+
 async function pdfRows(buffer) {
   const doc = await getDocument({
     data: new Uint8Array(buffer),
@@ -65,14 +92,16 @@ async function pdfRows(buffer) {
       const y = Math.round(item.transform[5]);
       const key = [...byY.keys()].find((k) => Math.abs(k - y) <= 4) ?? y;
       if (!byY.has(key)) byY.set(key, []);
-      byY.get(key).push({ x: item.transform[4], s: item.str.trim() });
+      byY.get(key).push({
+        x: item.transform[4],
+        width: item.width ?? 0,
+        s: item.str.trim(),
+      });
     }
     pages.push(
       [...byY.entries()]
         .sort((a, b) => b[0] - a[0])
-        .map(([, items]) =>
-          items.sort((a, b) => a.x - b.x).map((i) => i.s)
-        )
+        .map(([, items]) => toCells(items.sort((a, b) => a.x - b.x)))
     );
   }
   return pages.flat();
@@ -91,16 +120,24 @@ function parseCodingTable(rows) {
 
   for (const row of rows) {
     const [first = "", ...rest] = row;
+    const joined = row.join(" ");
 
-    const header = first.match(
-      /^(SID|STAR|IAC)\s+(.+?)\s+RWY\s+([0-9]{2}[LRC]?(?:\/[0-9]{2}[LRC]?)?)$/
-    );
+    // The title is one line on the page but reaches us split across anywhere
+    // from one cell to five, sometimes trailed by the aerodrome name and the
+    // sheet's own index, and "RWY 32" is as common as "RWY32". So match the
+    // whole row with the spacing normalised, and stop at the runway.
+    const header = joined
+      .replace(/\s+/g, " ")
+      .trim()
+      .match(
+        /^(SID|STAR|IAC)\s+(.+?)\s+RWY\s*([0-9]{2}[LRC]?(?:\s*\/\s*[0-9]{2}[LRC]?)?)(?![0-9A-Z])/
+      );
     if (header) {
       current = {
         type: header[1],
-        title: first,
+        title: `${header[1]} ${header[2]} RWY ${header[3]}`,
         name: header[2].replace(/^RNAV\s+/, "").trim(),
-        runway: header[3],
+        runway: header[3].replace(/\s*\/\s*/g, "/"),
         transitions: {},
       };
       procedures.push(current);
@@ -108,7 +145,6 @@ function parseCodingTable(rows) {
     }
 
     // Coordinate rows: "GEDEX", "S 13:08:30.75W 38:12:28.40"
-    const joined = row.join(" ");
     const coord = joined.match(
       /^([A-Z0-9]{2,6})\s+([NS])\s*(\d{1,3}:\d{2}:\d{2}(?:\.\d+)?)\s*([EW])\s*(\d{1,3}:\d{2}:\d{2}(?:\.\d+)?)/
     );

@@ -121,9 +121,17 @@ Confira na interface:
 
 ## Armadilhas conhecidas
 
-**Coding table que não parseia.** Algumas cartas combinadas usam um cabeçalho
-que o parser não reconhece e saem com `0 proc` no log do sync. A carta continua
-navegável, só não ganha geometria (sem aba `MAPA`). Dá para ver quais no log.
+**Carta sem coding table.** Só as OMNI. A saída omnidirecional não tem rota
+publicada — o piloto sobe na proa da pista e recebe vetoração — então não há o
+que plotar, e a carta aparece com `CARTA` apenas. O log marca `(sem coding
+table)`.
+
+**Coding table que não parseia.** Não deveria acontecer: o gerador do DECEA
+quebra o título em qualquer lugar (`"S" "ID" "RNAV" "EVKOX" "4" "A" "RWY"
+"02R"`) e às vezes cola o nome do aeródromo na mesma linha, e o parser remonta
+a linha pela distância entre os fragmentos. Se um cabeçalho novo escapar, o
+sync mostra `0 proc` e a carta segue navegável, só sem `MAPA`. Compare
+`content/<ICAO>/charts.json` com as chaves de `geometry.json` para achar quais.
 
 **Pistas paralelas.** Procedimentos podem servir várias pistas de uma vez
 (`11L/11R`). A comparação usa pertencimento, não igualdade — veja
