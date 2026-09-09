@@ -32,11 +32,14 @@ const MAX_ZOOM = 6;
 export default function ChartWorkspace({
   icao,
   procedure,
+  initialChartKey,
   charts,
   geometry,
 }: {
   icao: string;
-  procedure: Procedure;
+  /** Null when browsing a chart that is not tied to a procedure (IAC, ADC…). */
+  procedure: Procedure | null;
+  initialChartKey: string;
   charts: Chart[];
   geometry: AirportGeometry | null;
 }) {
@@ -46,13 +49,15 @@ export default function ChartWorkspace({
   const [view, setView] = useState<"chart" | "map">(
     params.get("view") === "map" ? "map" : "chart"
   );
-  const [chartKey, setChartKey] = useState(procedure.chartKey);
+  const [chartKey, setChartKey] = useState(initialChartKey);
   const [zoom, setZoom] = useState(1);
   const [pickerOpen, setPickerOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const chart = charts.find((c) => c.key === chartKey) ?? charts[0];
-  const isProcedureChart = chartKey === procedure.chartKey;
+  const isProcedureChart = chartKey === initialChartKey;
+
+  const hasMap = Boolean(procedure && geometry && procedure.geometryKey);
 
   const grouped = TYPE_ORDER.map((type) => ({
     type,
@@ -80,7 +85,8 @@ export default function ChartWorkspace({
           {(
             [
               ["chart", "CARTA", FileText],
-              ["map", "MAPA", MapIcon],
+              // Only offered when a coding table gives us something to plot.
+              ...(hasMap ? ([["map", "MAPA", MapIcon]] as const) : []),
             ] as const
           ).map(([id, label, Icon]) => (
             <button
@@ -147,7 +153,7 @@ export default function ChartWorkspace({
                           <span className="font-mono text-[11px] truncate flex-1">
                             {item.name}
                           </span>
-                          {item.key === procedure.chartKey && (
+                          {item.key === initialChartKey && (
                             <span className="font-mono text-[9px] text-ink-faint shrink-0">
                               deste proc.
                             </span>
@@ -165,7 +171,7 @@ export default function ChartWorkspace({
           </div>
         )}
 
-        {view === "map" && (
+        {view === "map" && procedure && (
           <p className="font-mono text-[11px] text-ink-dim truncate">
             {procedure.type} {procedure.name} · RWY {procedure.runway} ·{" "}
             <span className="text-ink-faint">geometria da coding table</span>
@@ -229,7 +235,7 @@ export default function ChartWorkspace({
           zoom={zoom}
           onZoomChange={setZoom}
         />
-      ) : geometry ? (
+      ) : procedure && geometry ? (
         <ProcedureMap
           icao={icao}
           procedure={procedure}
@@ -239,7 +245,7 @@ export default function ChartWorkspace({
       ) : (
         <div className="dot-grid flex-1 min-h-0 grid place-items-center">
           <p className="font-mono text-xs text-ink-faint">
-            Sem geometria publicada para este aeródromo.
+            Sem geometria publicada para este procedimento.
           </p>
         </div>
       )}

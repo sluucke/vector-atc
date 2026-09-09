@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Radio, LogOut, TriangleAlert } from "lucide-react";
 import { POSITION_LABELS } from "@/lib/ivao/callsign";
-import type { IvaoSessionView } from "@/lib/ivao/types";
-
-const POLL_MS = 30_000;
+import { useIvaoSession } from "./IvaoSessionProvider";
 
 export default function IvaoStatus({
   availableIcaos,
@@ -16,37 +14,8 @@ export default function IvaoStatus({
   currentIcao?: string;
 }) {
   const router = useRouter();
-  const [session, setSession] = useState<IvaoSessionView | null>(null);
+  const session = useIvaoSession();
   const autoSwitched = useRef<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function poll() {
-      try {
-        const res = await fetch("/api/ivao/session", { cache: "no-store" });
-        const data = (await res.json()) as IvaoSessionView;
-        if (!cancelled) setSession(data);
-      } catch {
-        if (!cancelled)
-          setSession({
-            connected: false,
-            vid: null,
-            name: null,
-            online: false,
-            controller: null,
-            error: "unreachable",
-          });
-      }
-    }
-
-    void poll();
-    const timer = setInterval(poll, POLL_MS);
-    return () => {
-      cancelled = true;
-      clearInterval(timer);
-    };
-  }, []);
 
   // Follow the controller onto the aerodrome they're working, but only once per
   // position — so manual navigation afterwards isn't yanked back.
@@ -123,7 +92,6 @@ export default function IvaoStatus({
       <button
         onClick={async () => {
           await fetch("/api/ivao/logout", { method: "POST" });
-          setSession(null);
           router.refresh();
         }}
         aria-label="Desconectar IVAO"

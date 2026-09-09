@@ -1,124 +1,264 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { PlaneTakeoff, PlaneLanding } from "lucide-react";
-import type { Procedure } from "@/lib/types";
+import {
+  PlaneTakeoff,
+  PlaneLanding,
+  PlaneLanding as ApproachIcon,
+  Building2,
+  Eye,
+  ParkingSquare,
+  FileText,
+  Wand2,
+} from "lucide-react";
+import { useIvaoSession } from "./IvaoSessionProvider";
+import { CATEGORY_LABELS, relevantCategories } from "@/lib/chart-relevance";
+import type { Chart, Procedure } from "@/lib/types";
 
-const TABS = ["TODOS", "SID", "STAR"] as const;
-type Tab = (typeof TABS)[number];
+const CATEGORY_ORDER = ["SID", "STAR", "IAC", "ADC", "VAC", "PDC", "AOC"];
+
+const CATEGORY_ICONS: Record<
+  string,
+  React.ComponentType<{ className?: string }>
+> = {
+  SID: PlaneTakeoff,
+  STAR: PlaneLanding,
+  IAC: ApproachIcon,
+  ADC: Building2,
+  VAC: Eye,
+  PDC: ParkingSquare,
+};
+
+const CATEGORY_TINT: Record<string, string> = {
+  SID: "text-signal",
+  STAR: "text-warn",
+  IAC: "text-ok",
+};
+
+interface Entry {
+  key: string;
+  href: string;
+  label: string;
+  sublabel: string | null;
+  badge: string | null;
+  group: string | null;
+}
 
 export default function ProcedureBrowser({
   icao,
   procedures,
+  charts,
 }: {
   icao: string;
   procedures: Procedure[];
+  charts: Chart[];
 }) {
-  const [tab, setTab] = useState<Tab>("TODOS");
   const pathname = usePathname();
+  const session = useIvaoSession();
   const activeRef = useRef<HTMLAnchorElement>(null);
+  const [manual, setManual] = useState<string[] | null>(null);
+
+  const available = useMemo(
+    () =>
+      CATEGORY_ORDER.filter((c) => charts.some((chart) => chart.type === c)),
+    [charts]
+  );
+
+  const auto = useMemo(() => {
+    const suggested = relevantCategories(session?.controller?.position);
+    if (!suggested) return null;
+    const usable = suggested.filter((c) => available.includes(c));
+    return usable.length > 0 ? usable : null;
+  }, [session, available]);
+
+  const active = manual ?? auto ?? available;
+  const isAuto = manual === null && auto !== null;
+
+  function toggle(category: string) {
+    const base = active;
+    const next = base.includes(category)
+      ? base.filter((c) => c !== category)
+      : [...base, category];
+    setManual(next.length > 0 ? next : [category]);
+  }
+
+  const sections = useMemo(() => {
+    return CATEGORY_ORDER.filter(
+      (c) => available.includes(c) && active.includes(c)
+    ).map((category) => {
+      // SID/STAR are browsed as procedures — they carry transitions and, when
+      // a coding table exists, a plottable geometry. Everything else is a chart.
+      const entries: Entry[] =
+        category === "SID" || category === "STAR"
+          ? procedures
+              .filter((p) => p.type === category)
+              .map((p) => ({
+                key: p.id,
+                href: `/${icao.toLowerCase()}/carta/${p.id}`,
+                label: p.name,
+                sublabel:
+                  (p.type === "SID"
+                    ? (p.transitions ?? []).map((t) => t.fix)
+                    : (p.entryFixes ?? [])
+                  ).join(" · ") || null,
+                badge: p.category,
+                group: `RWY ${p.runway}`,
+              }))
+          : charts
+              .filter((c) => c.type === category)
+              .map((c) => ({
+                key: c.key,
+                href: `/${icao.toLowerCase()}/chart/${c.key}`,
+                label: c.name,
+                sublabel: null,
+                badge: null,
+                group: null,
+              }));
+
+      return { category, entries };
+    });
+  }, [available, active, procedures, charts, icao]);
 
   useEffect(() => {
     activeRef.current?.scrollIntoView({ block: "nearest" });
   }, [pathname]);
 
-  const visible = procedures.filter((p) => tab === "TODOS" || p.type === tab);
-  const runways = Array.from(new Set(visible.map((p) => p.runway))).sort();
-
   return (
     <div className="w-[21rem] shrink-0 hidden md:flex flex-col bg-panel border-r border-line">
-      <div className="shrink-0 p-3 border-b border-line">
-        <div className="flex gap-1 p-1 rounded-lg bg-black/25">
-          {TABS.map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`flex-1 py-1.5 rounded-md font-mono text-[11px] font-medium transition-colors duration-150 ${
-                tab === t
-                  ? "bg-signal/15 text-signal"
-                  : "text-ink-faint hover:text-ink-dim"
-              }`}
-            >
-              {t}
-              <span className="ml-1.5 opacity-60">
-                {t === "TODOS"
-                  ? procedures.length
-                  : procedures.filter((p) => p.type === t).length}
-              </span>
-            </button>
-          ))}
+      <div className="shrink-0 p-3 border-b border-line space-y-2">
+        <div className="flex flex-wrap gap-1">
+          {available.map((category) => {
+            const on = active.includes(category);
+            return (
+              <button
+                key={category}
+                onClick={() => toggle(category)}
+                title={CATEGORY_LABELS[category] ?? category}
+                className={`px-2 py-1 rounded-md font-mono text-[10px] font-medium transition-colors duration-150 ${
+                  on
+                    ? "bg-signal/15 text-signal"
+                    : "bg-black/25 text-ink-faint hover:text-ink-dim"
+                }`}
+              >
+                {category}
+                <span className="ml-1 opacity-60">
+                  {category === "SID" || category === "STAR"
+                    ? procedures.filter((p) => p.type === category).length
+                    : charts.filter((c) => c.type === category).length}
+                </span>
+              </button>
+            );
+          })}
         </div>
+
+        {isAuto && (
+          <div className="flex items-center gap-1.5 text-[10px] text-ink-faint">
+            <Wand2 className="size-3 text-signal shrink-0" />
+            <span className="font-mono">
+              filtro sugerido para {session?.controller?.position}
+            </span>
+            <button
+              onClick={() => setManual(available)}
+              className="ml-auto font-mono text-ink-faint hover:text-ink-dim underline"
+            >
+              ver todas
+            </button>
+          </div>
+        )}
+
+        {manual !== null && auto !== null && (
+          <button
+            onClick={() => setManual(null)}
+            className="flex items-center gap-1.5 text-[10px] font-mono text-ink-faint hover:text-ink-dim"
+          >
+            <Wand2 className="size-3" />
+            voltar ao filtro de {session?.controller?.position}
+          </button>
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto p-2">
-        {runways.map((rwy) => (
-          <div key={rwy} className="mb-3">
-            <p className="px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
-              RWY {rwy}
-            </p>
-            <div className="space-y-0.5">
-              {visible
-                .filter((p) => p.runway === rwy)
-                .map((p) => {
-                  const href = `/${icao.toLowerCase()}/carta/${p.id}`;
-                  const active = pathname === href;
-                  const Icon = p.type === "SID" ? PlaneTakeoff : PlaneLanding;
-                  const exits =
-                    p.type === "SID"
-                      ? (p.transitions ?? []).map((t) => t.fix)
-                      : (p.entryFixes ?? []);
+        {sections.map(({ category, entries }) => {
+          const Icon = CATEGORY_ICONS[category] ?? FileText;
+          const groups = Array.from(
+            new Set(entries.map((e) => e.group))
+          ).sort();
 
-                  return (
-                    <Link
-                      key={p.id}
-                      href={href}
-                      ref={active ? activeRef : undefined}
-                      className={`block px-2.5 py-2 rounded-lg border-l-2 transition-colors duration-150 ${
-                        active
-                          ? "border-signal bg-signal/11"
-                          : "border-transparent hover:bg-white/[0.04]"
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <Icon
-                          className={`size-3.5 shrink-0 ${
-                            p.type === "SID" ? "text-signal" : "text-warn"
-                          }`}
-                        />
-                        <span
-                          className={`font-mono text-[13px] font-medium truncate ${
-                            active ? "text-signal" : "text-ink"
-                          }`}
-                        >
-                          {p.name}
-                        </span>
-                        <span
-                          className={`ml-auto shrink-0 font-mono text-[9px] px-1.5 py-0.5 rounded ${
-                            p.category === "RNAV"
-                              ? "bg-ok/12 text-ok"
-                              : "bg-warn/12 text-warn"
-                          }`}
-                        >
-                          {p.category}
-                        </span>
-                      </div>
-                      {exits.length > 0 && (
-                        <p className="mt-1 pl-5.5 font-mono text-[10px] text-ink-faint truncate">
-                          {exits.join(" · ")}
-                        </p>
-                      )}
-                    </Link>
-                  );
-                })}
+          return (
+            <div key={category} className="mb-3">
+              <p className="flex items-center gap-1.5 px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+                <Icon
+                  className={`size-3 ${CATEGORY_TINT[category] ?? "text-ink-faint"}`}
+                />
+                {category}
+                <span className="normal-case tracking-normal opacity-70">
+                  {CATEGORY_LABELS[category] ?? ""}
+                </span>
+              </p>
+
+              {groups.map((group) => (
+                <div key={group ?? "all"}>
+                  {group && (
+                    <p className="px-2 py-1 font-mono text-[9px] text-ink-faint">
+                      {group}
+                    </p>
+                  )}
+                  <div className="space-y-0.5">
+                    {entries
+                      .filter((e) => e.group === group)
+                      .map((entry) => {
+                        const on = pathname === entry.href;
+                        return (
+                          <Link
+                            key={entry.key}
+                            href={entry.href}
+                            ref={on ? activeRef : undefined}
+                            className={`block px-2.5 py-2 rounded-lg border-l-2 transition-colors duration-150 ${
+                              on
+                                ? "border-signal bg-signal/11"
+                                : "border-transparent hover:bg-white/[0.04]"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span
+                                className={`font-mono text-[13px] font-medium truncate ${
+                                  on ? "text-signal" : "text-ink"
+                                }`}
+                              >
+                                {entry.label}
+                              </span>
+                              {entry.badge && (
+                                <span
+                                  className={`ml-auto shrink-0 font-mono text-[9px] px-1.5 py-0.5 rounded ${
+                                    entry.badge === "RNAV"
+                                      ? "bg-ok/12 text-ok"
+                                      : "bg-warn/12 text-warn"
+                                  }`}
+                                >
+                                  {entry.badge}
+                                </span>
+                              )}
+                            </div>
+                            {entry.sublabel && (
+                              <p className="mt-1 font-mono text-[10px] text-ink-faint truncate">
+                                {entry.sublabel}
+                              </p>
+                            )}
+                          </Link>
+                        );
+                      })}
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-        ))}
+          );
+        })}
 
-        {visible.length === 0 && (
+        {sections.every((s) => s.entries.length === 0) && (
           <p className="px-3 py-8 text-center text-xs text-ink-faint">
-            Nenhum procedimento nesta categoria.
+            Nenhuma carta nas categorias selecionadas.
           </p>
         )}
       </div>

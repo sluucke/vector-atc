@@ -60,6 +60,7 @@ export default async function CartaPage(
           key={procedure.id}
           icao={meta.icao}
           procedure={procedure}
+          initialChartKey={procedure.chartKey}
           charts={getCharts(icao)}
           geometry={getGeometry(icao)}
         />
