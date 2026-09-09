@@ -1,98 +1,92 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAirportCodes, getAirportMeta } from "@/lib/content";
+import { TriangleAlert } from "lucide-react";
+import ProcedureTables from "@/components/ProcedureTables";
+import { getAirportCodes, getAirportMeta, getProcedures } from "@/lib/content";
 
 export function generateStaticParams() {
   return getAirportCodes().map((icao) => ({ icao: icao.toLowerCase() }));
 }
 
-export default async function AirportPage({
-  params,
-}: {
-  params: Promise<{ icao: string }>;
-}) {
-  const { icao } = await params;
+function FreqCard({ label, values }: { label: string; values: string[] }) {
+  return (
+    <div className="rounded-lg border border-line bg-panel p-3">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+        {label}
+      </p>
+      <p className="mt-1.5 font-mono text-sm text-ink leading-relaxed">
+        {values.join("  ")}
+      </p>
+    </div>
+  );
+}
+
+export default async function AirportBriefingPage(
+  props: PageProps<"/[icao]">
+) {
+  const { icao } = await props.params;
   const meta = getAirportMeta(icao);
   if (!meta) notFound();
+  const procedures = getProcedures(icao);
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-10">
-      <Link href="/" className="text-sm text-blue-600 hover:underline">
-        ← Todos os aeródromos
-      </Link>
-
-      <h1 className="text-3xl font-bold mt-2">
-        {meta.icao} — {meta.name}
-      </h1>
-
-      <div className="flex flex-wrap gap-2 my-5">
-        {[
-          ["AD ELEV", meta.elevation],
-          ["TA", meta.ta],
-          ["MSA", meta.msa],
-          ["FIR/ACC", meta.fir],
-          ["AIRAC", `${meta.airac.cycle} (${meta.airac.effective})`],
-        ].map(([label, value]) => (
-          <div
-            key={label}
-            className="bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-md px-3 py-1.5 text-sm"
-          >
-            <span className="block text-[10px] uppercase tracking-wide text-neutral-500">
-              {label}
-            </span>
-            {value}
+    <>
+      <div className="flex-1 min-w-0 overflow-y-auto bg-content p-5 space-y-6">
+        <section>
+          <h2 className="text-sm font-semibold tracking-wide mb-3">
+            Frequências
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <FreqCard label="D-ATIS" values={meta.frequencies.dAtis} />
+            <FreqCard label="TWR" values={meta.frequencies.twr} />
+            <FreqCard label="APP" values={meta.frequencies.app} />
+            <FreqCard label="ACC" values={meta.frequencies.acc} />
           </div>
-        ))}
-      </div>
-
-      <div className="grid gap-3 mb-6 text-sm">
-        <div>
-          <b>D-ATIS</b> {meta.frequencies.dAtis.join(" / ")}
-        </div>
-        <div>
-          <b>TWR</b> {meta.frequencies.twr.join(" / ")}
-        </div>
-        <div>
-          <b>APP</b> {meta.frequencies.app.join(" / ")}
-        </div>
-        <div>
-          <b>ACC</b> {meta.frequencies.acc.join(" / ")}
           {meta.frequencies.accExtended && (
-            <span className="text-neutral-500">
-              {" "}
-              (cartas antigas: {meta.frequencies.accExtended.join(" / ")})
-            </span>
+            <p className="mt-2 font-mono text-[11px] text-ink-faint">
+              ACC (lista estendida em cartas antigas):{" "}
+              {meta.frequencies.accExtended.join("  ")}
+            </p>
           )}
+        </section>
+
+        <ProcedureTables icao={meta.icao} procedures={procedures} type="SID" />
+        <ProcedureTables icao={meta.icao} procedures={procedures} type="STAR" />
+      </div>
+
+      <aside className="w-72 shrink-0 hidden xl:flex flex-col bg-panel border-l border-line">
+        <div className="shrink-0 px-4 h-11 flex items-center gap-2 border-b border-line">
+          <TriangleAlert className="size-3.5 text-warn" />
+          <h2 className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+            Notas operacionais
+          </h2>
         </div>
-      </div>
 
-      <div className="flex gap-3 mb-8">
-        <Link
-          href={`/${meta.icao.toLowerCase()}/sid`}
-          className="px-5 py-2.5 rounded-lg bg-blue-700 text-white font-semibold hover:bg-blue-800"
-        >
-          Ver SID (Saídas)
-        </Link>
-        <Link
-          href={`/${meta.icao.toLowerCase()}/star`}
-          className="px-5 py-2.5 rounded-lg bg-orange-700 text-white font-semibold hover:bg-orange-800"
-        >
-          Ver STAR (Chegadas)
-        </Link>
-      </div>
+        <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
+          {meta.runwaysNote && (
+            <div className="rounded-lg border-l-2 border-warn bg-warn/[0.06] p-3">
+              <p className="text-[11px] leading-relaxed text-ink-dim">
+                {meta.runwaysNote}
+              </p>
+            </div>
+          )}
+          {meta.observations.map((obs, i) => (
+            <div
+              key={i}
+              className="rounded-lg border-l-2 border-signal/50 bg-white/[0.03] p-3"
+            >
+              <p className="text-[11px] leading-relaxed text-ink-dim">{obs}</p>
+            </div>
+          ))}
+        </div>
 
-      {meta.runwaysNote && (
-        <p className="text-sm bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-300 dark:border-yellow-800 rounded-md p-3 mb-6">
-          {meta.runwaysNote}
-        </p>
-      )}
-
-      <h2 className="text-xl font-bold mb-3">Observações específicas</h2>
-      <ul className="list-disc pl-5 space-y-2 text-sm">
-        {meta.observations.map((obs, i) => (
-          <li key={i}>{obs}</li>
-        ))}
-      </ul>
-    </main>
+        <div className="shrink-0 border-t border-line p-3">
+          <p className="font-mono text-[10px] text-ink-faint leading-relaxed">
+            Dados extraídos das cartas oficiais DECEA/AISWEB.
+            <br />
+            Verificado em {meta.airac.checkedAt}.
+          </p>
+        </div>
+      </aside>
+    </>
   );
 }

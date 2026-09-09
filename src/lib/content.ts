@@ -34,3 +34,29 @@ export function getAllAirports(): AirportMeta[] {
     .map((icao) => getAirportMeta(icao))
     .filter((meta): meta is AirportMeta => meta !== null);
 }
+
+export interface SearchEntry {
+  icao: string;
+  id: string;
+  name: string;
+  type: Procedure["type"];
+  runway: string;
+  category: Procedure["category"];
+  fixes: string[];
+  href: string;
+}
+
+export function getSearchIndex(): SearchEntry[] {
+  return getAirportCodes().flatMap((icao) =>
+    getProcedures(icao).map((p) => ({
+      icao,
+      id: p.id,
+      name: p.name,
+      type: p.type,
+      runway: p.runway,
+      category: p.category,
+      fixes: p.fixes,
+      href: `/${icao.toLowerCase()}/carta/${p.id}`,
+    }))
+  );
+}

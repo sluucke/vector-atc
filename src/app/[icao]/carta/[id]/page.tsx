@@ -1,6 +1,12 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAirportCodes, getAirportMeta, getProcedure, getProcedures } from "@/lib/content";
+import { TriangleAlert, Route, Waypoints, Target } from "lucide-react";
+import ChartViewer from "@/components/ChartViewer";
+import {
+  getAirportCodes,
+  getAirportMeta,
+  getProcedure,
+  getProcedures,
+} from "@/lib/content";
 
 export function generateStaticParams() {
   return getAirportCodes().flatMap((icao) =>
@@ -8,59 +14,144 @@ export function generateStaticParams() {
   );
 }
 
-export default async function CartaPage({
-  params,
+function PaneSection({
+  icon: Icon,
+  title,
+  children,
 }: {
-  params: Promise<{ icao: string; id: string }>;
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  children: React.ReactNode;
 }) {
-  const { icao, id } = await params;
+  return (
+    <section className="p-3 border-b border-line">
+      <div className="flex items-center gap-2 mb-2">
+        <Icon className="size-3.5 text-ink-faint" />
+        <h2 className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+          {title}
+        </h2>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+export default async function CartaPage(
+  props: PageProps<"/[icao]/carta/[id]">
+) {
+  const { icao, id } = await props.params;
   const meta = getAirportMeta(icao);
   const procedure = getProcedure(icao, id);
   if (!meta || !procedure) notFound();
 
-  const backHref = `/${icao.toLowerCase()}/${procedure.type === "SID" ? "sid" : "star"}`;
+  const isSid = procedure.type === "SID";
 
   return (
-    <main className="flex flex-col h-screen">
-      <div className="flex items-center justify-between gap-4 px-4 py-2 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 z-10">
-        <div className="flex items-center gap-3 min-w-0">
-          <Link href={backHref} className="text-sm text-blue-600 hover:underline shrink-0">
-            ← {procedure.type} {meta.icao}
-          </Link>
-          <h1 className="font-bold truncate">
-            {procedure.type} {procedure.name} — RWY {procedure.runway}
-          </h1>
-          <span
-            className={`text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 ${
-              procedure.category === "RNAV"
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
-            }`}
-          >
-            {procedure.category}
-          </span>
-        </div>
-        <a
-          href={procedure.chart}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm text-blue-600 hover:underline shrink-0"
-        >
-          Abrir PDF em nova aba ↗
-        </a>
-      </div>
-
-      {procedure.notes && (
-        <div className="px-4 py-2 text-sm bg-yellow-50 dark:bg-yellow-950/30 border-b border-yellow-300 dark:border-yellow-800">
-          {procedure.notes}
-        </div>
-      )}
-
-      <iframe
+    <>
+      <ChartViewer
         src={procedure.chart}
         title={`Carta ${procedure.type} ${procedure.name}`}
-        className="flex-1 w-full"
       />
-    </main>
+
+      <aside className="w-72 shrink-0 hidden lg:flex flex-col bg-panel border-l border-line overflow-y-auto">
+        <div className="shrink-0 p-3 border-b border-line">
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-base font-semibold">
+              {procedure.name}
+            </span>
+            <span
+              className={`font-mono text-[9px] px-1.5 py-0.5 rounded ${
+                procedure.category === "RNAV"
+                  ? "bg-ok/12 text-ok"
+                  : "bg-warn/12 text-warn"
+              }`}
+            >
+              {procedure.category}
+            </span>
+          </div>
+          <p className="mt-1 font-mono text-[11px] text-ink-faint">
+            {procedure.type} · RWY {procedure.runway} · {meta.icao}
+          </p>
+        </div>
+
+        <PaneSection icon={Route} title={isSid ? "Rota comum" : "Rota"}>
+          <p className="font-mono text-[11px] text-ink-dim leading-relaxed">
+            {isSid ? procedure.commonRoute : procedure.route}
+          </p>
+        </PaneSection>
+
+        {isSid && (procedure.transitions ?? []).length > 0 && (
+          <PaneSection icon={Waypoints} title="Transições">
+            <ul className="space-y-1.5">
+              {(procedure.transitions ?? []).map((t) => (
+                <li
+                  key={t.fix}
+                  className="rounded-md bg-white/[0.03] border border-line px-2.5 py-1.5"
+                >
+                  <p className="font-mono text-[12px] font-medium text-ink">
+                    {t.fix}
+                  </p>
+                  <p className="font-mono text-[10px] text-ink-faint leading-snug">
+                    {t.desc}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </PaneSection>
+        )}
+
+        {!isSid && (
+          <PaneSection icon={Target} title="Entrada / IAF">
+            <div className="flex flex-wrap gap-1 mb-2">
+              {(procedure.entryFixes ?? []).map((f) => (
+                <span
+                  key={f}
+                  className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-white/[0.06] text-ink"
+                >
+                  {f}
+                </span>
+              ))}
+            </div>
+            <p className="font-mono text-[11px] text-ink-faint">
+              IAF:{" "}
+              <span className="font-medium px-1.5 py-0.5 rounded bg-warn/12 text-warn">
+                {procedure.iaf}
+              </span>
+            </p>
+          </PaneSection>
+        )}
+
+        {procedure.fixes.length > 0 && (
+          <PaneSection icon={Waypoints} title="Todos os fixos">
+            <div className="flex flex-wrap gap-1">
+              {procedure.fixes.map((f) => (
+                <span
+                  key={f}
+                  className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-white/[0.04] text-ink-dim"
+                >
+                  {f}
+                </span>
+              ))}
+            </div>
+          </PaneSection>
+        )}
+
+        {procedure.notes && (
+          <div className="p-3">
+            <div className="rounded-lg border-l-2 border-warn bg-warn/[0.06] p-3">
+              <div className="flex items-center gap-2 mb-1.5">
+                <TriangleAlert className="size-3.5 text-warn" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-warn">
+                  Atenção
+                </span>
+              </div>
+              <p className="text-[11px] leading-relaxed text-ink-dim">
+                {procedure.notes}
+              </p>
+            </div>
+          </div>
+        )}
+      </aside>
+    </>
   );
 }
