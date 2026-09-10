@@ -47,6 +47,13 @@ const APPROACH = {
   SBFL: { position: "SBXF_APP", frequencies: ["119.650", "119.500"], center: "SBCW" },
   // Natal's approach frequencies come from the DECEA chart, not from the
   // division, so this script must not overwrite them.
+  SBNT: {
+    position: "SBXT_APP",
+    frequencies: null,
+    center: "SBRE",
+    source:
+      "Centro conforme as posições da divisão IVAO Brasil; APP conforme a carta DECEA",
+  },
   SBSG: {
     position: "SBXT_APP",
     frequencies: null,
