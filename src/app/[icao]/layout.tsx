@@ -29,6 +29,16 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
   const procedures = getProcedures(icao);
   const charts = getCharts(icao);
 
+  // The phraseology examples read better with this aerodrome's own departures
+  // than with invented names, and the one shown follows the runway in use.
+  const departures = procedures
+    .filter((p) => p.type === "SID")
+    .map((p) => ({
+      name: p.name,
+      runway: p.runway,
+      fix: p.transitions?.[0]?.fix ?? null,
+    }));
+
   const categories = ["SID", "STAR", "IAC", "ADC", "VAC", "PDC", "AOC"]
     .map((type) => ({
       type,
@@ -54,7 +64,7 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
               availableIcaos={getAirportCodes()}
               currentIcao={meta.icao}
             />
-            <AirportContextHeader meta={meta} />
+            <AirportContextHeader meta={meta} departures={departures} />
             <AirportOpsStrip
               transitionAltitude={meta.operational?.transitionAltitude}
             />

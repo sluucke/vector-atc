@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { MapPin, BookOpen } from "lucide-react";
+import PhraseologyDialog, { type Departure } from "./PhraseologyDialog";
 import RunwaySelect from "./RunwaySelect";
 import Tooltip from "./Tooltip";
 import type { AirportMeta } from "@/lib/types";
@@ -15,7 +16,13 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-export default function AirportContextHeader({ meta }: { meta: AirportMeta }) {
+export default function AirportContextHeader({
+  meta,
+  departures,
+}: {
+  meta: AirportMeta;
+  departures: Departure[];
+}) {
   return (
     <div className="shrink-0 flex items-center gap-5 h-14 px-4 bg-content border-b border-line">
       <Link
@@ -45,6 +52,8 @@ export default function AirportContextHeader({ meta }: { meta: AirportMeta }) {
           </a>
         </Tooltip>
       )}
+
+      <PhraseologyDialog meta={meta} departures={departures} />
 
       <div className="ml-auto flex items-center gap-6">
         <Stat label="AD ELEV" value={meta.elevation} />
