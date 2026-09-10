@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import CategoryGate from "@/components/CategoryGate";
 import ChartCategorySection from "@/components/ChartCategorySection";
 import MainPane from "@/components/MainPane";
 import OperationalPanel from "@/components/OperationalPanel";
@@ -86,26 +87,25 @@ export default async function AirportBriefingPage(
           )}
         </section>
 
-        <ProcedureTables
-          icao={meta.icao}
-          procedures={procedures}
-          charts={charts}
-          type="SID"
-        />
-        <ProcedureTables
-          icao={meta.icao}
-          procedures={procedures}
-          charts={charts}
-          type="STAR"
-        />
+        {(["SID", "STAR"] as const).map((type) => (
+          <CategoryGate key={type} category={type}>
+            <ProcedureTables
+              icao={meta.icao}
+              procedures={procedures}
+              charts={charts}
+              type={type}
+            />
+          </CategoryGate>
+        ))}
 
         {OTHER_CATEGORIES.map((category) => (
-          <ChartCategorySection
-            key={category}
-            icao={meta.icao}
-            charts={charts}
-            category={category}
-          />
+          <CategoryGate key={category} category={category}>
+            <ChartCategorySection
+              icao={meta.icao}
+              charts={charts}
+              category={category}
+            />
+          </CategoryGate>
         ))}
       </MainPane>
 

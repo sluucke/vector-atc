@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -18,7 +18,7 @@ import { useAirportContext } from "./AirportContextProvider";
 import RunwayFilterToggle from "./RunwayFilterToggle";
 import { usePaneClass } from "./MobilePanes";
 import { servesRunway } from "@/lib/runway-match";
-import { CATEGORY_LABELS, relevantCategories } from "@/lib/chart-relevance";
+import { CATEGORY_LABELS } from "@/lib/chart-relevance";
 import { categoryEntries } from "@/lib/chart-inventory";
 import type { Chart, Procedure } from "@/lib/types";
 
@@ -54,9 +54,15 @@ export default function ProcedureBrowser({
 }) {
   const pathname = usePathname();
   const session = useIvaoSession();
-  const { runways: activeRunways, onlyActiveRunway } = useAirportContext();
+  const {
+    runways: activeRunways,
+    onlyActiveRunway,
+    categories: active,
+    categoriesAuto: isAuto,
+    toggleCategory,
+    resetCategories,
+  } = useAirportContext();
   const activeRef = useRef<HTMLAnchorElement>(null);
-  const [manual, setManual] = useState<string[] | null>(null);
   const paneClass = usePaneClass("browser");
 
   const available = useMemo(
@@ -64,24 +70,6 @@ export default function ProcedureBrowser({
       CATEGORY_ORDER.filter((c) => charts.some((chart) => chart.type === c)),
     [charts]
   );
-
-  const auto = useMemo(() => {
-    const suggested = relevantCategories(session?.controller?.position);
-    if (!suggested) return null;
-    const usable = suggested.filter((c) => available.includes(c));
-    return usable.length > 0 ? usable : null;
-  }, [session, available]);
-
-  const active = manual ?? auto ?? available;
-  const isAuto = manual === null && auto !== null;
-
-  function toggle(category: string) {
-    const base = active;
-    const next = base.includes(category)
-      ? base.filter((c) => c !== category)
-      : [...base, category];
-    setManual(next.length > 0 ? next : [category]);
-  }
 
   const sections = useMemo(
     () =>
@@ -122,7 +110,7 @@ export default function ProcedureBrowser({
             return (
               <button
                 key={category}
-                onClick={() => toggle(category)}
+                onClick={() => toggleCategory(category)}
                 title={CATEGORY_LABELS[category] ?? category}
                 className={`px-2 py-1 rounded-md font-mono text-[10px] font-medium transition-colors duration-150 ${
                   on
@@ -148,18 +136,22 @@ export default function ProcedureBrowser({
               filtro sugerido para {session?.controller?.position}
             </span>
             <button
-              onClick={() => setManual(available)}
-              className="ml-auto font-mono text-ink-faint hover:text-ink-dim underline"
+              onClick={() => {
+                for (const category of available) {
+                  if (!active.includes(category)) toggleCategory(category);
+                }
+              }}
+              className="ml-auto cursor-pointer font-mono text-ink-faint hover:text-ink-dim underline"
             >
               ver todas
             </button>
           </div>
         )}
 
-        {manual !== null && auto !== null && (
+        {!isAuto && session?.controller?.position && (
           <button
-            onClick={() => setManual(null)}
-            className="flex items-center gap-1.5 text-[10px] font-mono text-ink-faint hover:text-ink-dim"
+            onClick={resetCategories}
+            className="flex items-center gap-1.5 cursor-pointer text-[10px] font-mono text-ink-faint hover:text-ink-dim"
           >
             <Wand2 className="size-3" />
             voltar ao filtro de {session?.controller?.position}

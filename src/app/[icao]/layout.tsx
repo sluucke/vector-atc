@@ -48,7 +48,10 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
 
   return (
     <IvaoSessionProvider>
-      <AirportContextProvider icao={meta.icao}>
+      <AirportContextProvider
+        icao={meta.icao}
+        availableCategories={categories.map((c) => c.type)}
+      >
         <div className="h-screen flex overflow-hidden">
           <Sidebar
             airports={getAllAirports()}

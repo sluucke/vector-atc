@@ -8,6 +8,8 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import { useIvaoSession } from "./IvaoSessionProvider";
+import { relevantCategories } from "@/lib/chart-relevance";
 import type { AirportDynamicContext } from "@/app/api/airport/[icao]/route";
 
 const POLL_MS = 60_000;
@@ -25,6 +27,13 @@ interface AirportContextValue {
   /** Hide procedures that do not serve the runway in use. */
   onlyActiveRunway: boolean;
   setOnlyActiveRunway: (only: boolean) => void;
+  /** Chart categories on show, everywhere at once. */
+  categories: string[];
+  /** True while following the suggestion for the position being worked. */
+  categoriesAuto: boolean;
+  toggleCategory: (category: string) => void;
+  /** Back to the suggestion, or to everything the aerodrome publishes. */
+  resetCategories: () => void;
 }
 
 const Ctx = createContext<AirportContextValue>({
@@ -36,6 +45,10 @@ const Ctx = createContext<AirportContextValue>({
   setRunway: () => {},
   onlyActiveRunway: false,
   setOnlyActiveRunway: () => {},
+  categories: [],
+  categoriesAuto: false,
+  toggleCategory: () => {},
+  resetCategories: () => {},
 });
 
 /**
@@ -84,12 +97,19 @@ function createRunwayStore(icao: string) {
 
 export function AirportContextProvider({
   icao,
+  availableCategories,
   children,
 }: {
   icao: string;
+  /** Categories this aerodrome actually publishes, in display order. */
+  availableCategories: string[];
   children: React.ReactNode;
 }) {
   const [onlyActiveRunway, setOnlyActiveRunway] = useState(false);
+  const [manualCategories, setManualCategories] = useState<string[] | null>(
+    null
+  );
+  const session = useIvaoSession();
   const [data, setData] = useState<AirportDynamicContext | null>(null);
   const [error, setError] = useState(false);
 
@@ -125,6 +145,18 @@ export function AirportContextProvider({
     };
   }, [icao]);
 
+  // The position being worked suggests a starting set; a manual choice replaces
+  // it. Resolving it here is what lets the sidebar and the briefing agree.
+  const autoCategories = useMemo(() => {
+    const suggested = relevantCategories(session?.controller?.position);
+    if (!suggested) return null;
+    const usable = suggested.filter((c) => availableCategories.includes(c));
+    return usable.length > 0 ? usable : null;
+  }, [session, availableCategories]);
+
+  const categories =
+    manualCategories ?? autoCategories ?? availableCategories;
+
   const value = useMemo<AirportContextValue>(
     () => ({
       data,
@@ -136,8 +168,31 @@ export function AirportContextProvider({
       setRunway: store.set,
       onlyActiveRunway,
       setOnlyActiveRunway,
+      categories,
+      categoriesAuto: manualCategories === null && autoCategories !== null,
+      toggleCategory: (category: string) => {
+        const next = categories.includes(category)
+          ? categories.filter((c) => c !== category)
+          : availableCategories.filter(
+              (c) => categories.includes(c) || c === category
+            );
+        // Emptying the filter would hide everything, so the last one clicked
+        // becomes the only one shown.
+        setManualCategories(next.length > 0 ? next : [category]);
+      },
+      resetCategories: () => setManualCategories(null),
     }),
-    [data, error, override, store, onlyActiveRunway]
+    [
+      data,
+      error,
+      override,
+      store,
+      onlyActiveRunway,
+      categories,
+      manualCategories,
+      autoCategories,
+      availableCategories,
+    ]
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

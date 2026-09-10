@@ -13,6 +13,7 @@ import {
   ParkingSquare,
   FileText,
 } from "lucide-react";
+import { useAirportContext } from "./AirportContextProvider";
 import { CATEGORY_LABELS } from "@/lib/chart-relevance";
 import type { AirportMeta } from "@/lib/types";
 
@@ -81,6 +82,8 @@ export default function Sidebar({
 }) {
   const pathname = usePathname();
   const active = airports.find((a) => a.icao === activeIcao);
+  // One filter for the whole console: what the browser hides, this hides too.
+  const { categories: shown } = useAirportContext();
 
   return (
     <aside className="w-60 shrink-0 hidden lg:flex flex-col bg-panel border-r border-line">
@@ -116,16 +119,18 @@ export default function Sidebar({
         {active && categories.length > 0 && (
           <>
             <SectionLabel>{active.icao} · Cartas</SectionLabel>
-            {categories.map(({ type, count }) => (
-              <NavItem
-                key={type}
-                href={`/${active.icao.toLowerCase()}#${type.toLowerCase()}`}
-                icon={CATEGORY_ICONS[type] ?? FileText}
-                label={`${CATEGORY_LABELS[type] ?? type} (${type})`}
-                badge={String(count)}
-                active={false}
-              />
-            ))}
+            {categories
+              .filter(({ type }) => shown.includes(type))
+              .map(({ type, count }) => (
+                <NavItem
+                  key={type}
+                  href={`/${active.icao.toLowerCase()}#${type.toLowerCase()}`}
+                  icon={CATEGORY_ICONS[type] ?? FileText}
+                  label={`${CATEGORY_LABELS[type] ?? type} (${type})`}
+                  badge={String(count)}
+                  active={false}
+                />
+              ))}
           </>
         )}
       </nav>
