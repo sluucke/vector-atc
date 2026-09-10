@@ -45,6 +45,15 @@ const APPROACH = {
     center: "SBCW",
   },
   SBFL: { position: "SBXF_APP", frequencies: ["119.650", "119.500"], center: "SBCW" },
+  // Natal's approach frequencies come from the DECEA chart, not from the
+  // division, so this script must not overwrite them.
+  SBSG: {
+    position: "SBXT_APP",
+    frequencies: null,
+    center: "SBRE",
+    source:
+      "Centro conforme as posições da divisão IVAO Brasil; APP conforme a carta DECEA",
+  },
   SBSV: { position: "SBXS_APP", frequencies: ["119.350", "120.800"], center: "SBRE" },
   // Recife has no APP frequency published to us yet, so it keeps an empty list
   // rather than borrowing another TMA's.
@@ -58,19 +67,20 @@ for (const [icao, app] of Object.entries(APPROACH)) {
 
   meta.frequencies = {
     ...meta.frequencies,
-    app: app.frequencies,
+    app: app.frequencies ?? meta.frequencies.app,
     acc: center.primary,
     accExtended: center.sectors,
   };
   meta.frequencies.network = {
-    source: "Frequências das posições da divisão IVAO Brasil",
+    source:
+      app.source ?? "Frequências das posições da divisão IVAO Brasil",
     app: app.position,
     acc: `${app.center}_CTR`,
   };
 
   fs.writeFileSync(file, JSON.stringify(meta, null, 2) + "\n");
   console.log(
-    `${icao}  APP ${app.position ?? "—"} ${app.frequencies.join(" ") || "—"}  ` +
+    `${icao}  APP ${app.position ?? "—"} ${(app.frequencies ?? meta.frequencies.app).join(" ") || "—"}  ` +
       `| ${center.label} ${center.primary.join(" ")}`
   );
 }
