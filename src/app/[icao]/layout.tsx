@@ -7,6 +7,7 @@ import TopBar from "@/components/TopBar";
 import AirportContextHeader from "@/components/AirportContextHeader";
 import AirportOpsStrip from "@/components/AirportOpsStrip";
 import ProcedureBrowser from "@/components/ProcedureBrowser";
+import { MobilePaneProvider, PaneTabs } from "@/components/MobilePanes";
 import {
   getAirportCodes,
   getAirportMeta,
@@ -58,14 +59,17 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
               transitionAltitude={meta.operational?.transitionAltitude}
             />
 
-            <div className="flex-1 flex min-h-0">
-              <ProcedureBrowser
-                icao={meta.icao}
-                procedures={procedures}
-                charts={charts}
-              />
-              {props.children}
-            </div>
+            <MobilePaneProvider>
+              <div className="flex-1 flex min-h-0">
+                <ProcedureBrowser
+                  icao={meta.icao}
+                  procedures={procedures}
+                  charts={charts}
+                />
+                {props.children}
+              </div>
+              <PaneTabs />
+            </MobilePaneProvider>
           </div>
         </div>
       </AirportContextProvider>

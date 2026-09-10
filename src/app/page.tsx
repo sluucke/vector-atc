@@ -24,7 +24,7 @@ export default function HomePage() {
         style={{ background: "var(--color-signal)" }}
       />
 
-      <div className="relative mx-auto max-w-5xl px-6 py-16">
+      <div className="relative mx-auto max-w-5xl px-5 sm:px-6 py-10 sm:py-16">
         <header className="flex items-center gap-2.5">
           <span className="grid place-items-center size-8 rounded-lg bg-signal text-base">
             <Navigation className="size-4" />
@@ -39,13 +39,13 @@ export default function HomePage() {
           </span>
         </header>
 
-        <div className="mt-20 max-w-2xl">
+        <div className="mt-12 sm:mt-20 max-w-2xl">
           <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-signal">
             Console operacional
           </p>
           <h1 className="mt-3 text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1]">
             Tudo o que a posição
-            <br />
+            <br className="hidden sm:block" />
             exige, em uma tela só.
           </h1>
           <p className="mt-5 text-base text-ink-dim leading-relaxed">
@@ -55,11 +55,11 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="mt-14">
+        <div className="mt-10 sm:mt-14">
           <AirportPicker airports={airports} />
         </div>
 
-        <footer className="mt-20 pt-6 border-t border-line flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+        <footer className="mt-14 sm:mt-20 pt-6 border-t border-line flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <p className="max-w-xl font-mono text-[10px] text-ink-faint leading-relaxed">
             Dados extraídos das cartas oficiais DECEA/AISWEB. Material de apoio
             para simulação na rede IVAO — não utilizar para navegação real.

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Search } from "lucide-react";
+import Link from "next/link";
+import { Navigation, Search } from "lucide-react";
 import CommandPalette from "./CommandPalette";
 import IvaoStatus from "./IvaoStatus";
 import ThemeToggle from "./ThemeToggle";
@@ -35,21 +36,35 @@ export default function TopBar({
 
   return (
     <>
-      <header className="h-16 shrink-0 flex items-center gap-4 px-4 bg-panel border-b border-line">
+      <header className="h-16 shrink-0 flex items-center gap-2 sm:gap-4 px-3 sm:px-4 bg-panel border-b border-line">
+        {/* The sidebar carries the wordmark from lg up; below that this is the
+            only way back to the aerodrome list. */}
+        <Link
+          href="/"
+          aria-label="Início"
+          className="lg:hidden grid place-items-center size-8 shrink-0 rounded-lg bg-signal text-base"
+        >
+          <Navigation className="size-4" />
+        </Link>
+
         <button
           onClick={() => setOpen(true)}
-          className="group flex items-center gap-2.5 w-full max-w-md px-3 py-2 rounded-lg bg-inset border border-line hover:border-line-strong transition-colors duration-150 text-left"
+          aria-label="Buscar"
+          className="group cursor-pointer flex items-center gap-2.5 min-w-0 w-full max-w-md px-3 py-2 rounded-lg bg-inset border border-line hover:border-line-strong transition-colors duration-150 text-left"
         >
-          <Search className="size-4 text-ink-faint" />
-          <span className="flex-1 text-sm text-ink-faint">
-            Buscar procedimento, fixo ou aeródromo…
+          <Search className="size-4 shrink-0 text-ink-faint" />
+          <span className="flex-1 truncate text-sm text-ink-faint">
+            <span className="sm:hidden">Buscar…</span>
+            <span className="hidden sm:inline">
+              Buscar procedimento, fixo ou aeródromo…
+            </span>
           </span>
-          <kbd className="font-mono text-[10px] text-ink-faint border border-line rounded px-1.5 py-0.5">
+          <kbd className="hidden sm:block font-mono text-[10px] text-ink-faint border border-line rounded px-1.5 py-0.5">
             ⌘K
           </kbd>
         </button>
 
-        <div className="ml-auto flex items-center gap-3 shrink-0">
+        <div className="ml-auto flex items-center gap-2 sm:gap-3 shrink-0">
           {station && (
             <div className="hidden xl:flex items-center gap-3">
               <span className="font-mono text-xs text-ink-dim">{station}</span>

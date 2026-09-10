@@ -16,6 +16,7 @@ import {
 import { useIvaoSession } from "./IvaoSessionProvider";
 import { useAirportContext } from "./AirportContextProvider";
 import RunwayFilterToggle from "./RunwayFilterToggle";
+import { usePaneClass } from "./MobilePanes";
 import { servesRunway } from "@/lib/runway-match";
 import { CATEGORY_LABELS, relevantCategories } from "@/lib/chart-relevance";
 import { categoryEntries } from "@/lib/chart-inventory";
@@ -56,6 +57,7 @@ export default function ProcedureBrowser({
   const { runways: activeRunways, onlyActiveRunway } = useAirportContext();
   const activeRef = useRef<HTMLAnchorElement>(null);
   const [manual, setManual] = useState<string[] | null>(null);
+  const paneClass = usePaneClass("browser");
 
   const available = useMemo(
     () =>
@@ -110,7 +112,9 @@ export default function ProcedureBrowser({
   }, [pathname]);
 
   return (
-    <div className="w-[21rem] shrink-0 hidden md:flex flex-col bg-panel border-r border-line">
+    <div
+      className={`w-full md:w-[21rem] shrink-0 flex-col bg-panel border-r border-line ${paneClass}`}
+    >
       <div className="shrink-0 p-3 border-b border-line space-y-2">
         <div className="flex flex-wrap gap-1">
           {available.map((category) => {

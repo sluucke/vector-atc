@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import ChartCategorySection from "@/components/ChartCategorySection";
+import MainPane from "@/components/MainPane";
 import OperationalPanel from "@/components/OperationalPanel";
 import ProcedureTables from "@/components/ProcedureTables";
 import {
@@ -54,7 +55,7 @@ export default async function AirportBriefingPage(
 
   return (
     <>
-      <div className="flex-1 min-w-0 overflow-y-auto bg-content p-5 space-y-6">
+      <MainPane className="flex-1 min-w-0 overflow-y-auto bg-content p-4 sm:p-5 space-y-6">
         <section>
           <h2 className="text-sm font-semibold tracking-wide mb-3">
             Frequências
@@ -106,7 +107,7 @@ export default async function AirportBriefingPage(
             category={category}
           />
         ))}
-      </div>
+      </MainPane>
 
       <OperationalPanel
         icao={meta.icao}

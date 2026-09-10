@@ -46,10 +46,13 @@ export default function IvaoStatus({
           // eslint-disable-next-line @next/next/no-location-assign-relative-destination
           window.location.href = "/api/ivao/login";
         }}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-signal/11 text-signal hover:bg-signal/20 transition-colors duration-150"
+        aria-label="Conectar IVAO"
+        className="flex items-center gap-2 cursor-pointer px-2.5 sm:px-3 py-1.5 rounded-lg bg-signal/11 text-signal hover:bg-signal/20 transition-colors duration-150"
       >
-        <Radio className="size-3.5" />
-        <span className="font-mono text-[11px] font-medium">Conectar IVAO</span>
+        <Radio className="size-3.5 shrink-0" />
+        <span className="hidden sm:block font-mono text-[11px] font-medium">
+          Conectar IVAO
+        </span>
       </button>
       </Tooltip>
     );

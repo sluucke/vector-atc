@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Radar, TriangleAlert, ScrollText } from "lucide-react";
 import TrafficPanel from "./TrafficPanel";
 import NotamPanel from "./NotamPanel";
+import { usePaneClass } from "./MobilePanes";
 import type { Procedure } from "@/lib/types";
 
 export default function OperationalPanel({
@@ -20,9 +21,12 @@ export default function OperationalPanel({
   checkedAt: string;
 }) {
   const [tab, setTab] = useState<"traffic" | "notam" | "notes">("traffic");
+  const paneClass = usePaneClass("side");
 
   return (
-    <aside className="w-72 shrink-0 hidden xl:flex flex-col bg-panel border-l border-line">
+    <aside
+      className={`w-full xl:w-72 shrink-0 flex-col bg-panel border-l border-line ${paneClass}`}
+    >
       <div className="shrink-0 h-11 flex items-stretch border-b border-line">
         {(
           [

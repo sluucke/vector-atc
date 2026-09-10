@@ -17,6 +17,7 @@ import {
 import PdfCanvas from "./PdfCanvas";
 import BackToAirport from "./BackToAirport";
 import Tooltip from "./Tooltip";
+import { usePaneClass } from "./MobilePanes";
 import type { AirportGeometry, Chart, Procedure } from "@/lib/types";
 
 const ProcedureMap = dynamic(() => import("./ProcedureMap"), {
@@ -57,6 +58,7 @@ export default function ChartWorkspace({
   const [rotation, setRotation] = useState(0);
   const [pickerOpen, setPickerOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const paneClass = usePaneClass("main");
 
   const chart = charts.find((c) => c.key === chartKey) ?? charts[0];
   const isProcedureChart = chartKey === initialChartKey;
@@ -80,8 +82,13 @@ export default function ChartWorkspace({
   }
 
   return (
-    <div ref={containerRef} className="flex-1 flex flex-col min-w-0 bg-content">
-      <div className="h-11 shrink-0 flex items-center gap-2 px-3 border-b border-line bg-panel">
+    <div
+      ref={containerRef}
+      className={`flex-1 flex-col min-w-0 bg-content ${paneClass}`}
+    >
+      {/* Wraps onto a second line on a phone: every control stays reachable
+          instead of being clipped off the right edge. */}
+      <div className="shrink-0 flex flex-wrap items-center gap-2 gap-y-1 py-1 sm:py-0 sm:h-11 px-3 border-b border-line bg-panel">
         <BackToAirport icao={icao} label="Cartas" />
         <span className="w-px h-4 bg-line shrink-0" />
 
@@ -112,7 +119,7 @@ export default function ChartWorkspace({
           <div className="relative min-w-0">
             <button
               onClick={() => setPickerOpen((o) => !o)}
-              className="flex items-center gap-2 max-w-md px-2.5 py-1.5 rounded-lg border border-line hover:border-line-strong transition-colors duration-150"
+              className="flex items-center gap-2 max-w-full md:max-w-md cursor-pointer px-2.5 py-1.5 rounded-lg border border-line hover:border-line-strong transition-colors duration-150"
             >
               <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-hover text-ink-dim shrink-0">
                 {chart.type}
@@ -134,7 +141,7 @@ export default function ChartWorkspace({
                   className="fixed inset-0 z-20"
                   onClick={() => setPickerOpen(false)}
                 />
-                <div className="absolute left-0 top-full mt-1 z-30 w-96 max-h-[70vh] overflow-y-auto rounded-lg bg-raised border border-line-strong shadow-2xl py-1.5">
+                <div className="absolute left-0 top-full mt-1 z-30 w-[min(24rem,calc(100vw-2rem))] max-h-[70vh] overflow-y-auto rounded-lg bg-raised border border-line-strong shadow-2xl py-1.5">
                   {grouped.map((group) => (
                     <div key={group.type}>
                       <p className="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
@@ -195,7 +202,7 @@ export default function ChartWorkspace({
                   <Minus className="size-4" />
                 </button>
               </Tooltip>
-              <span className="font-mono text-xs text-ink-dim w-12 text-center tabular-nums">
+              <span className="hidden sm:block font-mono text-xs text-ink-dim w-12 text-center tabular-nums">
                 {Math.round(zoom * 100)}%
               </span>
               <Tooltip label="Aumentar zoom">
@@ -248,7 +255,7 @@ export default function ChartWorkspace({
               className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-ink-dim hover:bg-hover hover:text-ink transition-colors duration-150"
             >
               <ExternalLink className="size-3.5" />
-              PDF
+              <span className="hidden sm:inline">PDF</span>
             </a>
           </Tooltip>
         </div>

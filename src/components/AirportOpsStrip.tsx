@@ -50,7 +50,7 @@ export default function AirportOpsStrip({
             : "sem dados";
 
   return (
-    <div className="shrink-0 flex flex-wrap items-baseline gap-x-5 gap-y-1 px-4 py-1.5 bg-content border-b border-line">
+    <div className="shrink-0 flex flex-wrap items-baseline gap-x-4 sm:gap-x-5 gap-y-1 px-3 sm:px-4 py-1.5 bg-content border-b border-line">
       <Field
         label="TA"
         value={transitionAltitude ? `${transitionAltitude} ft` : "—"}
@@ -69,7 +69,9 @@ export default function AirportOpsStrip({
 
       {metar?.raw ? (
         <span
-          className="font-mono text-[10px] text-ink-dim truncate min-w-0 flex-1"
+          // On a phone the report gets a line of its own; squeezed onto the
+          // row beside the fields it would truncate to nothing.
+          className="font-mono text-[10px] text-ink-dim truncate min-w-0 w-full sm:w-auto sm:flex-1"
           title={metar.raw}
         >
           {metar.raw}
