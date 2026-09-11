@@ -45,6 +45,22 @@ const APPROACH = {
     center: "SBCW",
   },
   SBFL: { position: "SBXF_APP", frequencies: ["119.650", "119.500"], center: "SBCW" },
+  // Belo Horizonte: both aerodromes share one TMA, and the division's callsign
+  // for that approach position is not known here, so the charts stand.
+  SBBH: {
+    position: null,
+    frequencies: null,
+    center: "SBBS",
+    source:
+      "Centro conforme as posições da divisão IVAO Brasil; APP conforme a carta DECEA",
+  },
+  SBCF: {
+    position: null,
+    frequencies: null,
+    center: "SBBS",
+    source:
+      "Centro conforme as posições da divisão IVAO Brasil; APP conforme a carta DECEA",
+  },
   // Natal's approach frequencies come from the DECEA chart, not from the
   // division, so this script must not overwrite them.
   SBNT: {
