@@ -7,17 +7,21 @@
  * FL410 the levels are 4000 ft apart. RVSM airspace is FL290 to FL410, which
  * needs the W in field 10a of the flight plan.
  *
- * The rule counts magnetic course, and the network reports a TRUE heading —
- * measured against the feed by comparing reported headings with the track
- * between two positions a minute apart, which came out at a median of 0°
- * across 46 flights over Brazil. So the aerodrome's published variation is
- * applied before the rule is read. Without it, Goiânia to Campinas (true 163°,
- * magnetic 184°) would be called eastbound and every correct even level would
- * be flagged.
+ * The rule counts the magnetic course of the route, which is not the heading
+ * the aircraft happens to be pointing: a departure still on its SID, or a
+ * dogleg around weather, points nowhere near the leg it is flying. So the
+ * course used here is the bearing of the leg itself — from this aerodrome out
+ * to a departure, or from an arrival in to this aerodrome.
  *
- * A heading is still not a track, and variation drifts across a FIR, so
- * courses within a few degrees of 000 or 180 are reported as undetermined
- * rather than guessed at.
+ * The network reports TRUE bearings. That was measured rather than assumed, by
+ * comparing reported headings with the track between two positions a minute
+ * apart: a median of 0° across 46 flights over Brazil. So the aerodrome's
+ * published variation is applied before the rule is read. Without it, Goiânia
+ * to Campinas (true 163°, magnetic 184°) would be called eastbound and every
+ * correct even level flagged.
+ *
+ * Variation drifts across a FIR and a leg bends, so courses within a few
+ * degrees of 000 or 180 are reported as undetermined rather than guessed at.
  *
  * The AIP also warns that some ATS routes carry their own level continuity on
  * the route charts. Those exceptions are not encoded here, and a flagged level
@@ -25,11 +29,14 @@
  */
 
 /**
- * Courses this close to 000 or 180 are not called either way: a heading is not
- * a track (wind drift runs to about 10°) and the variation used is the
- * aerodrome's, which drifts by a few degrees across a FIR.
+ * Courses this close to 000 or 180 are not called either way. The bearing here
+ * is the straight line between the field and the aircraft, while the rule
+ * applies to each airway segment, and the AIP allocates levels by route chart
+ * on some ATS routes. São Paulo to Brasília sits 11° from the boundary and
+ * flies the levels of the other semicircle, so a margin this wide is what it
+ * takes not to cry wolf.
  */
-const BOUNDARY_DEG = 8;
+const BOUNDARY_DEG = 25;
 
 /** RVSM airspace, inclusive. */
 const RVSM_BOTTOM = 290;
@@ -52,8 +59,8 @@ export interface CruiseLevelCheck {
   flightLevel: number | null;
   /** Which half of the rule the track falls in. */
   direction: "east" | "west" | null;
-  /** The heading the network reported, true. */
-  heading: number | null;
+  /** True course of the leg, as flown to or from this aerodrome. */
+  course: number | null;
   /** The magnetic course the rule was read against. */
   magneticCourse: number | null;
   rvsm: "outside" | "inside" | null;
@@ -125,18 +132,16 @@ function levelFits(flightLevel: number, east: boolean, vfr: boolean): boolean {
 
 export function checkCruiseLevel({
   level,
-  heading,
+  course,
   flightRules,
   equipment,
-  state,
   variation,
 }: {
   level: string | null | undefined;
-  heading: number | null | undefined;
+  /** True bearing of the leg to or from this aerodrome. */
+  course: number | null | undefined;
   flightRules: string | null | undefined;
   equipment: string | null | undefined;
-  /** IVAO's own phase of flight; only en route is the cruising track. */
-  state: string | null | undefined;
   /** Magnetic variation in degrees, negative to the west. */
   variation: number | null | undefined;
 }): CruiseLevelCheck {
@@ -148,7 +153,7 @@ export function checkCruiseLevel({
     verdict: "unknown",
     flightLevel,
     direction: null,
-    heading: heading ?? null,
+    course: course ?? null,
     magneticCourse: null,
     rvsm: null,
     rvsmApproved,
@@ -199,22 +204,12 @@ export function checkCruiseLevel({
     return base;
   }
 
-  if ((state ?? "") !== "En Route") {
+  if (course === null || course === undefined) {
     findings.push({
-      label: "fora de cruzeiro",
+      label: "a verificar",
       detail:
-        "O rumo atual é o da subida ou da chegada, não o de cruzeiro, então o " +
-        "semicírculo só é verificado com a aeronave em rota.",
-    });
-    base.verdict = findings.length > 1 ? "warn" : "unknown";
-    return base;
-  }
-
-  if (heading === null || heading === undefined) {
-    findings.push({
-      label: "sem rumo",
-      detail:
-        "A aeronave ainda não reporta rumo, então o semicírculo não pode ser determinado.",
+        "A aeronave ainda está perto do aeródromo ou sem posição na rede, então " +
+        "o rumo da perna não dá para medir e o semicírculo fica em aberto.",
     });
     base.verdict = findings.length > 1 ? "warn" : "unknown";
     return base;
@@ -222,7 +217,7 @@ export function checkCruiseLevel({
 
   if (variation === null || variation === undefined) {
     findings.push({
-      label: "sem declinação",
+      label: "a verificar",
       detail:
         "A declinação magnética do aeródromo não está no dataset, e sem ela o " +
         "rumo verdadeiro da rede não vira rumo magnético.",
@@ -233,7 +228,7 @@ export function checkCruiseLevel({
 
   // True to magnetic: variation is negative to the west, so a westerly
   // variation adds to the course.
-  const normalized = ((heading - variation) % 360 + 360) % 360;
+  const normalized = ((course - variation) % 360 + 360) % 360;
   base.magneticCourse = normalized;
   const distanceToBoundary = Math.min(
     Math.abs(((normalized + 180) % 360) - 180),
@@ -250,9 +245,10 @@ export function checkCruiseLevel({
     findings.push({
       label: "rumo no limite",
       detail:
-        `Rumo magnético ${String(Math.round(normalized)).padStart(3, "0")}°, a ` +
-        `${Math.round(distanceToBoundary)}° do limite do semicírculo — e o rumo da ` +
-        "rede não é a derrota. Com derrota de 000 a 179 o nível seria " +
+        `Rumo magnético da perna ${String(Math.round(normalized)).padStart(3, "0")}°, ` +
+        `a ${Math.round(distanceToBoundary)}° do limite do semicírculo, e a rota ` +
+        "pode ter continuidade de níveis própria na carta de rota. " +
+        "Com rumo de 000 a 179 o nível seria " +
         (asEast ? `ímpar, e ${planned} confere. ` : `ímpar, e ${planned} não confere. `) +
         "De 180 a 359 seria " +
         (asWest ? `par, e ${planned} confere.` : `par, e ${planned} não confere.`),
@@ -268,7 +264,7 @@ export function checkCruiseLevel({
     findings.push({
       label: "fora do semicírculo",
       detail:
-        `Rumo magnético ${String(Math.round(normalized)).padStart(3, "0")}° pede níveis ` +
+        `Rumo magnético da perna ${String(Math.round(normalized)).padStart(3, "0")}° pede níveis ` +
         (vfr
           ? east
             ? "ímpares mais 500 ft (FL035, FL055, FL075…)"

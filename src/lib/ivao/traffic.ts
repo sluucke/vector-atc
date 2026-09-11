@@ -1,8 +1,10 @@
 import "server-only";
-import { getAirportMeta, getProcedures } from "@/lib/content";
+import { getAirportMeta, getGeometry, getProcedures } from "@/lib/content";
 import { getWhazzup } from "./whazzup";
 import { matchProcedure } from "./procedure-match";
 import { checkCruiseLevel } from "@/lib/ops/cruise-level";
+import { trueBearing } from "@/lib/ops/runway";
+import type { GeoPoint } from "@/lib/types";
 import type {
   AirportTraffic,
   LiveFlight,
@@ -13,13 +15,64 @@ import type {
 /** Beyond this a departure is en route and no longer the field's problem. */
 const DEPARTURE_RANGE_NM = 250;
 
+/**
+ * Closer than this to the aerodrome, the bearing between the field and the
+ * aircraft is the circuit or the approach, not the leg being flown.
+ */
+const LEG_MIN_NM = 25;
+
+/** Where the aerodrome is, averaged over whatever runway ends we hold. */
+function aerodromePoint(icao: string): GeoPoint | null {
+  const points = Object.values(getGeometry(icao)?.runwayPoints ?? {}).flatMap(
+    (end) => [end.thr, end.der].filter(Boolean) as GeoPoint[]
+  );
+  if (points.length === 0) return null;
+  return {
+    lat: points.reduce((s, p) => s + p.lat, 0) / points.length,
+    lon: points.reduce((s, p) => s + p.lon, 0) / points.length,
+  };
+}
+
+/**
+ * True course of the leg: outbound from the field for a departure, inbound to
+ * it for an arrival. That is the direction the cruising level answers to, and
+ * unlike the reported heading it survives a SID, a vector or a dogleg.
+ */
+function legCourse(
+  field: GeoPoint | null,
+  aircraft: GeoPoint | null,
+  kind: "arrival" | "departure",
+  distanceNm: number | null
+): number | null {
+  if (!field || !aircraft) return null;
+  if (distanceNm !== null && distanceNm < LEG_MIN_NM) return null;
+  return kind === "departure"
+    ? trueBearing(field, aircraft)
+    : trueBearing(aircraft, field);
+}
+
 function toLiveFlight(
   pilot: WhazzupPilot,
   procedure: ProcedureMatch,
-  variation: number | null
+  variation: number | null,
+  field: GeoPoint | null,
+  kind: "arrival" | "departure"
 ): LiveFlight {
   const plan = pilot.flightPlan ?? null;
   const track = pilot.lastTrack ?? null;
+
+  const position =
+    track && track.latitude !== null && track.longitude !== null
+      ? { lat: track.latitude, lon: track.longitude }
+      : null;
+  const course = legCourse(
+    field,
+    position,
+    kind,
+    kind === "departure"
+      ? (track?.departureDistance ?? null)
+      : (track?.arrivalDistance ?? null)
+  );
 
   return {
     callsign: pilot.callsign,
@@ -52,10 +105,9 @@ function toLiveFlight(
     procedure,
     levelCheck: checkCruiseLevel({
       level: plan?.level,
-      heading: track?.heading,
+      course,
       flightRules: plan?.flightRules,
       equipment: plan?.aircraftEquipments,
-      state: track?.state,
       variation,
     }),
   };
@@ -69,6 +121,7 @@ export async function getAirportTraffic(
   // The rule counts magnetic course; this aerodrome's published variation is
   // the best local conversion we have for its own traffic.
   const variation = getAirportMeta(code)?.operational?.magneticVariation ?? null;
+  const field = aerodromePoint(code);
 
   const arrivals: LiveFlight[] = [];
   const departures: LiveFlight[] = [];
@@ -82,7 +135,9 @@ export async function getAirportTraffic(
         toLiveFlight(
           pilot,
           matchProcedure(plan.route, procedures, "STAR"),
-          variation
+          variation,
+          field,
+          "arrival"
         )
       );
     }
@@ -98,7 +153,9 @@ export async function getAirportTraffic(
           toLiveFlight(
             pilot,
             matchProcedure(plan.route, procedures, "SID"),
-            variation
+            variation,
+            field,
+            "departure"
           )
         );
       }

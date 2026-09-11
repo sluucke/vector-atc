@@ -28,7 +28,11 @@ const VERDICT_STYLE = {
   ok: { tint: "text-ok", Icon: CircleCheck, word: "nível confere" },
   warn: { tint: "text-warn", Icon: TriangleAlert, word: "nível com ressalva" },
   error: { tint: "text-danger", Icon: OctagonAlert, word: "nível fora da regra" },
-  unknown: { tint: "text-ink-faint", Icon: CircleHelp, word: "nível não verificado" },
+  unknown: {
+    tint: "text-ink-faint",
+    Icon: CircleHelp,
+    word: "nível ainda não verificado",
+  },
 } as const;
 
 /**
@@ -64,7 +68,8 @@ function LevelTag({ check }: { check: LiveFlight["levelCheck"] }) {
           )}
           {check.magneticCourse !== null && (
             <span className="block text-ink-faint">
-              Rumo {String(Math.round(check.heading ?? 0)).padStart(3, "0")}°
+              Rumo da perna{" "}
+              {String(Math.round(check.course ?? 0)).padStart(3, "0")}°
               verdadeiro ·{" "}
               {String(Math.round(check.magneticCourse)).padStart(3, "0")}°
               magnético
