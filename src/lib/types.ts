@@ -99,6 +99,9 @@ export interface AirportOperationalData {
   /** Feet. The value controllers use on the network. */
   transitionAltitude: number;
   transitionAltitudeSource: string;
+  /** Degrees, negative to the west, as printed on the aerodrome's charts. */
+  magneticVariation?: number;
+  magneticVariationSource?: string;
   /** Set when the published chart disagrees with the operational value. */
   chartTransitionAltitude?: number;
   chartTransitionAltitudeNote?: string;

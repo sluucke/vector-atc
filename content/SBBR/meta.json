@@ -8,7 +8,9 @@
   "operational": {
     "transitionAltitude": 7000,
     "transitionAltitudeSource": "Carta DECEA AIRAC 2609A1 — confirmar com o MOPS da TMA Brasília",
-    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbbs/sbwr"
+    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbbs/sbwr",
+    "magneticVariation": -22,
+    "magneticVariationSource": "Carta DECEA — VAR 22°W"
   },
   "airac": {
     "cycle": "2609A1",

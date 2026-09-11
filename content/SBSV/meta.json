@@ -10,7 +10,9 @@
     "transitionAltitudeSource": "MOPS IVAO — TMA Salvador",
     "chartTransitionAltitude": 10000,
     "chartTransitionAltitudeNote": "As cartas DECEA do AIRAC 2608A1 publicam TA 10000 ft (harmonização das TMA em curso). Para controle na rede IVAO vale o MOPS: TA 7000 ft.",
-    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbre/sbxs"
+    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbre/sbxs",
+    "magneticVariation": -23,
+    "magneticVariationSource": "Carta DECEA — VAR 23°W"
   },
   "airac": {
     "cycle": "AMDT 2608A1",

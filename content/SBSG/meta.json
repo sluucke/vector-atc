@@ -8,7 +8,9 @@
   "operational": {
     "transitionAltitude": 4000,
     "transitionAltitudeSource": "Carta DECEA AIRAC 2603A1 — confirmar com o MOPS da TMA Natal",
-    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbre"
+    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbre",
+    "magneticVariation": -21,
+    "magneticVariationSource": "Carta DECEA — VAR 21°W"
   },
   "airac": {
     "cycle": "2603A1",

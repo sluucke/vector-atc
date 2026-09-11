@@ -1,3 +1,5 @@
+import type { CruiseLevelCheck } from "@/lib/ops/cruise-level";
+
 /**
  * Shapes verified against the live feed at https://api.ivao.aero/v2/tracker/whazzup
  * (2026-09-09). Only fields IVAO actually publishes are modelled here.
@@ -45,6 +47,8 @@ export interface WhazzupFlightPlan {
     model: string | null;
     wakeTurbulence: string | null;
   } | null;
+  /** ICAO field 10a letters, where the W is the RVSM approval. */
+  aircraftEquipments?: string | null;
 }
 
 export interface WhazzupPilot {
@@ -140,8 +144,13 @@ export interface LiveFlight {
   arrivalDistance: number | null;
   departureDistance: number | null;
 
+  /** Field 10a of the flight plan, verbatim. */
+  equipment: string | null;
+
   /** Our own association against the aerodrome's published procedures. */
   procedure: ProcedureMatch;
+  /** Planned level against the semicircular rule and RVSM. */
+  levelCheck: CruiseLevelCheck;
 }
 
 export interface AirportTraffic {

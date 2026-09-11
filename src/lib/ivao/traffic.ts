@@ -1,7 +1,8 @@
 import "server-only";
-import { getProcedures } from "@/lib/content";
+import { getAirportMeta, getProcedures } from "@/lib/content";
 import { getWhazzup } from "./whazzup";
 import { matchProcedure } from "./procedure-match";
+import { checkCruiseLevel } from "@/lib/ops/cruise-level";
 import type {
   AirportTraffic,
   LiveFlight,
@@ -14,7 +15,8 @@ const DEPARTURE_RANGE_NM = 250;
 
 function toLiveFlight(
   pilot: WhazzupPilot,
-  procedure: ProcedureMatch
+  procedure: ProcedureMatch,
+  variation: number | null
 ): LiveFlight {
   const plan = pilot.flightPlan ?? null;
   const track = pilot.lastTrack ?? null;
@@ -45,7 +47,17 @@ function toLiveFlight(
     arrivalDistance: track?.arrivalDistance ?? null,
     departureDistance: track?.departureDistance ?? null,
 
+    equipment: plan?.aircraftEquipments ?? null,
+
     procedure,
+    levelCheck: checkCruiseLevel({
+      level: plan?.level,
+      heading: track?.heading,
+      flightRules: plan?.flightRules,
+      equipment: plan?.aircraftEquipments,
+      state: track?.state,
+      variation,
+    }),
   };
 }
 
@@ -54,6 +66,9 @@ export async function getAirportTraffic(
 ): Promise<AirportTraffic> {
   const code = icao.toUpperCase();
   const [whazzup, procedures] = [await getWhazzup(), getProcedures(code)];
+  // The rule counts magnetic course; this aerodrome's published variation is
+  // the best local conversion we have for its own traffic.
+  const variation = getAirportMeta(code)?.operational?.magneticVariation ?? null;
 
   const arrivals: LiveFlight[] = [];
   const departures: LiveFlight[] = [];
@@ -64,7 +79,11 @@ export async function getAirportTraffic(
 
     if (plan.arrivalId?.toUpperCase() === code) {
       arrivals.push(
-        toLiveFlight(pilot, matchProcedure(plan.route, procedures, "STAR"))
+        toLiveFlight(
+          pilot,
+          matchProcedure(plan.route, procedures, "STAR"),
+          variation
+        )
       );
     }
 
@@ -76,7 +95,11 @@ export async function getAirportTraffic(
         distance <= DEPARTURE_RANGE_NM;
       if (nearby) {
         departures.push(
-          toLiveFlight(pilot, matchProcedure(plan.route, procedures, "SID"))
+          toLiveFlight(
+            pilot,
+            matchProcedure(plan.route, procedures, "SID"),
+            variation
+          )
         );
       }
     }

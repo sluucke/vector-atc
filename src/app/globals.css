@@ -23,6 +23,7 @@
   --signal: #22d3ee;
   --warn: #fbbf24;
   --ok: #34d399;
+  --danger: #f87171;
 
   --grid-dot: rgba(255, 255, 255, 0.055);
 }
@@ -53,6 +54,7 @@
   --signal: #0e7490;
   --warn: #b45309;
   --ok: #047857;
+  --danger: #b91c1c;
 
   --grid-dot: rgba(15, 23, 42, 0.09);
 }
@@ -85,6 +87,7 @@
   --color-signal: var(--signal);
   --color-warn: var(--warn);
   --color-ok: var(--ok);
+  --color-danger: var(--danger);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;

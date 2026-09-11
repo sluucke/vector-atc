@@ -8,7 +8,9 @@
   "operational": {
     "transitionAltitude": 9000,
     "transitionAltitudeSource": "Carta DECEA 2607A1, coerente com a tabela de nível de transição do MOPS da TMA Florianópolis",
-    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbcw/sbxf"
+    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbcw/sbxf",
+    "magneticVariation": -20,
+    "magneticVariationSource": "Carta DECEA — VAR 20°W"
   },
   "airac": {
     "cycle": "2607A1",

@@ -8,7 +8,9 @@
   "operational": {
     "transitionAltitude": 8000,
     "transitionAltitudeSource": "Carta DECEA 2609A1 — confirmar com o MOPS da TMA",
-    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbse/sbxp"
+    "ivaoWikiUrl": "https://wiki.br.ivao.aero/atcops/mops/sbse/sbxp",
+    "magneticVariation": -22,
+    "magneticVariationSource": "Carta DECEA — VAR 22°W"
   },
   "airac": {
     "cycle": "2609A1",

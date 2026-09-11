@@ -8,8 +8,12 @@ import {
   PlaneTakeoff,
   RefreshCw,
   TriangleAlert,
+  CircleCheck,
+  CircleHelp,
+  OctagonAlert,
 } from "lucide-react";
 import type { AirportTraffic, LiveFlight } from "@/lib/ivao/types";
+import Tooltip from "./Tooltip";
 import { useAirportContext } from "./AirportContextProvider";
 import { servesRunway } from "@/lib/runway-match";
 import type { Procedure } from "@/lib/types";
@@ -19,6 +23,68 @@ const TABS = ["TODOS", "CHEGADAS", "PARTIDAS"] as const;
 type Tab = (typeof TABS)[number];
 
 type Row = LiveFlight & { kind: "arrival" | "departure" };
+
+const VERDICT_STYLE = {
+  ok: { tint: "text-ok", Icon: CircleCheck, word: "nível confere" },
+  warn: { tint: "text-warn", Icon: TriangleAlert, word: "nível com ressalva" },
+  error: { tint: "text-danger", Icon: OctagonAlert, word: "nível fora da regra" },
+  unknown: { tint: "text-ink-faint", Icon: CircleHelp, word: "nível não verificado" },
+} as const;
+
+/**
+ * The planned level judged against the semicircular rule and RVSM. The reasons
+ * are always shown, so a verdict can be argued with rather than trusted blindly.
+ */
+function LevelTag({ check }: { check: LiveFlight["levelCheck"] }) {
+  const { tint, Icon, word } = VERDICT_STYLE[check.verdict];
+  const level =
+    check.flightLevel === null
+      ? "—"
+      : `FL${String(check.flightLevel).padStart(3, "0")}`;
+
+  return (
+    <Tooltip
+      label={
+        <span className="block space-y-1">
+          <span className="block font-medium">
+            {level} · {word}
+          </span>
+          {check.findings.map((finding, i) => (
+            <span key={i} className="block text-ink-dim">
+              {finding.detail}
+            </span>
+          ))}
+          {check.verdict === "ok" && (
+            <span className="block text-ink-dim">
+              {check.direction === "east"
+                ? "Rumo magnético no semicírculo 000–179, níveis ímpares."
+                : "Rumo magnético no semicírculo 180–359, níveis pares."}
+              {check.rvsm === "inside" ? " Dentro do RVSM, com o W declarado." : ""}
+            </span>
+          )}
+          {check.magneticCourse !== null && (
+            <span className="block text-ink-faint">
+              Rumo {String(Math.round(check.heading ?? 0)).padStart(3, "0")}°
+              verdadeiro ·{" "}
+              {String(Math.round(check.magneticCourse)).padStart(3, "0")}°
+              magnético
+            </span>
+          )}
+        </span>
+      }
+    >
+      <span
+        className={`inline-flex items-center gap-1 font-mono text-[10px] ${tint}`}
+      >
+        <Icon className="size-3 shrink-0" />
+        {level}
+        {check.findings.length > 0 && (
+          <span className="opacity-80">· {check.findings[0].label}</span>
+        )}
+      </span>
+    </Tooltip>
+  );
+}
 
 function ProcedureTag({
   flight,
@@ -253,6 +319,10 @@ export default function TrafficPanel({
                 )}
               </div>
 
+              <div className="mt-1 flex items-center gap-2">
+                <LevelTag check={flight.levelCheck} />
+              </div>
+
               <div className="mt-1">
                 <ProcedureTag
                   flight={flight}
@@ -268,6 +338,11 @@ export default function TrafficPanel({
                   <dl className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 font-mono text-[10px] text-ink-faint">
                     <dt>Nível</dt>
                     <dd className="text-ink-dim">{flight.flightLevel ?? "—"}</dd>
+                    <dt>Equipamento</dt>
+                    <dd className="text-ink-dim">
+                      {flight.equipment ?? "—"}
+                      {flight.levelCheck.rvsmApproved === true && " · RVSM"}
+                    </dd>
                     <dt>Regras</dt>
                     <dd className="text-ink-dim">{flight.flightRules ?? "—"}</dd>
                     <dt>Altitude</dt>
