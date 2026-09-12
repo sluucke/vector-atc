@@ -8,26 +8,8 @@ import { PHRASEOLOGY, type PhraseologyPhase } from "@/lib/phraseology";
 import { formatFlightLevel } from "@/lib/ops/transition";
 import { parseWind } from "@/lib/ops/runway";
 import { servesRunway } from "@/lib/runway-match";
+import { langStore, type Lang } from "@/lib/ui-lang";
 import type { AirportMeta } from "@/lib/types";
-
-type Lang = "pt" | "en";
-
-const KEY = "vector:phraseology-lang";
-
-/** The chosen language outlives the dialog and the page. */
-const langStore = {
-  subscribe(listener: () => void) {
-    window.addEventListener("storage", listener);
-    return () => window.removeEventListener("storage", listener);
-  },
-  get(): Lang {
-    try {
-      return window.localStorage.getItem(KEY) === "en" ? "en" : "pt";
-    } catch {
-      return "pt";
-    }
-  },
-};
 
 export interface Departure {
   name: string;
@@ -100,11 +82,7 @@ function PhraseologySheet({
 
   function choose(next: Lang) {
     setLang(next);
-    try {
-      window.localStorage.setItem(KEY, next);
-    } catch {
-      // A browser that refuses storage still gets the choice for this visit.
-    }
+    langStore.set(next);
   }
 
   const wind = data?.metar?.raw ? parseWind(data.metar.raw) : null;

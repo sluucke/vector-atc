@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MapPin, BookOpen } from "lucide-react";
 import PhraseologyDialog, { type Departure } from "./PhraseologyDialog";
 import RunwaySelect from "./RunwaySelect";
+import TrafficCircuitDialog from "./TrafficCircuitDialog";
 import Tooltip from "./Tooltip";
 import type { AirportMeta } from "@/lib/types";
 
@@ -54,6 +55,7 @@ export default function AirportContextHeader({
       )}
 
       <PhraseologyDialog meta={meta} departures={departures} />
+      <TrafficCircuitDialog runways={meta.runways} />
 
       <div className="ml-auto flex items-center gap-6">
         <Stat label="AD ELEV" value={meta.elevation} />
