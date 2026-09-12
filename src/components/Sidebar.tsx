@@ -168,7 +168,7 @@ export default function Sidebar({
           className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-ink-faint hover:text-ink-dim transition-colors duration-150"
         >
           <ExternalLink className="size-3.5" />
-          Estude ADC: AeroStudy
+          Estude ATC: AeroStudy
         </a>
         <p className="px-3 font-mono text-[10px] text-ink-faint">
           por The Duck Corporation
