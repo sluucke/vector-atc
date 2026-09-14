@@ -12,6 +12,7 @@
     "prebuild": "npm run sync:pdf-worker"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "fuse.js": "^7.5.0",
     "jose": "^6.2.12",
     "leaflet": "^1.9.4",
