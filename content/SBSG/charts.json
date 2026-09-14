@@ -94,6 +94,15 @@
       "file": "/charts/SBSG/pdc-sbsg-pdc-2-sbsg-pdc-2.pdf"
     },
     {
+      "key": "rea-xt",
+      "type": "REA",
+      "name": "XT-Natal",
+      "code": "XT",
+      "amdt": "2503A1",
+      "date": "2025-03-20",
+      "file": "/charts/SBSG/rea-xt-ccv-rea-xt-natal.pdf"
+    },
+    {
       "key": "omni-rwy-12-30",
       "type": "SID",
       "name": "OMNI RWY 12/30",

@@ -42,6 +42,26 @@ Lê o que o sync gravou e produz:
 Não faz requisição de rede exceto para o ROTAER na primeira geração do meta.
 Pode rodar quantas vezes quiser.
 
+### `sync-rea.mjs` — cartas REA (Rotas Especiais de Aeronaves)
+
+Script à parte porque essas cartas não vivem na API `area=cartas` do AISWEB —
+uma consulta com `icaoCode` de qualquer aeródromo ou TMA sempre volta vazia.
+Elas só existem como uma tabela HTML simples em
+`aisweb.decea.mil.br/?i=cartas&p=visuais`, uma linha por TMA do país, com link
+de download estável e AIRAC próprio. O script busca essa página, filtra pelas
+TMAs que o projeto cobre e copia o PDF para cada aeródromo daquela TMA —
+Belo Horizonte (SBBH+SBCF) e Natal (SBNT+SBSG) compartilham uma carta; São
+Paulo publica duas (XP1/XP2, north/south) que aparecem como duas entradas.
+
+```bash
+node scripts/sync-rea.mjs
+```
+
+Não recebe ICAO como argumento — sincroniza as TMAs conhecidas de uma vez. Ao
+adicionar um aeródromo novo, é preciso primeiro achar sua TMA na tabela da
+página (o prefixo antes do nome, tipo `xt` em "CCV REA XT-Natal") e acrescentar
+a entrada em `TMA_AIRPORTS` no topo do script.
+
 ---
 
 ## Campos preservados entre execuções

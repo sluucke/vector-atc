@@ -39,7 +39,7 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
       fix: p.transitions?.[0]?.fix ?? null,
     }));
 
-  const categories = ["SID", "STAR", "IAC", "ADC", "VAC", "PDC", "AOC"]
+  const categories = ["SID", "STAR", "IAC", "ADC", "VAC", "REA", "PDC", "AOC"]
     .map((type) => ({
       type,
       count: categoryEntries(meta.icao, charts, procedures, type).length,

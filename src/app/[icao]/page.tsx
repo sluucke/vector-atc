@@ -12,7 +12,7 @@ import {
 } from "@/lib/content";
 
 /** Everything except SID/STAR, which render as detailed tables above. */
-const OTHER_CATEGORIES = ["IAC", "ADC", "VAC", "PDC", "AOC"];
+const OTHER_CATEGORIES = ["IAC", "ADC", "VAC", "REA", "PDC", "AOC"];
 
 export function generateStaticParams() {
   return getAirportCodes().map((icao) => ({ icao: icao.toLowerCase() }));

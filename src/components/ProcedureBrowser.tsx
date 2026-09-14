@@ -12,6 +12,7 @@ import {
   ParkingSquare,
   FileText,
   Wand2,
+  Route,
 } from "lucide-react";
 import { useIvaoSession } from "./IvaoSessionProvider";
 import { useAirportContext } from "./AirportContextProvider";
@@ -22,7 +23,7 @@ import { CATEGORY_LABELS } from "@/lib/chart-relevance";
 import { categoryEntries } from "@/lib/chart-inventory";
 import type { Chart, Procedure } from "@/lib/types";
 
-const CATEGORY_ORDER = ["SID", "STAR", "IAC", "ADC", "VAC", "PDC", "AOC"];
+const CATEGORY_ORDER = ["SID", "STAR", "IAC", "ADC", "VAC", "REA", "PDC", "AOC"];
 
 const CATEGORY_ICONS: Record<
   string,
@@ -33,6 +34,7 @@ const CATEGORY_ICONS: Record<
   IAC: ApproachIcon,
   ADC: Building2,
   VAC: Eye,
+  REA: Route,
   PDC: ParkingSquare,
 };
 

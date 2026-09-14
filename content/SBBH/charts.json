@@ -40,6 +40,15 @@
       "file": "/charts/SBBH/iac-bh02k-rnp-rwy-13.pdf"
     },
     {
+      "key": "rea-wh",
+      "type": "REA",
+      "name": "WH-Belo Horizonte",
+      "code": "WH",
+      "amdt": "2409A0",
+      "date": "2024-09-05",
+      "file": "/charts/SBBH/rea-wh-ccv-rea-wh-belo-horizonte.pdf"
+    },
+    {
       "key": "omni-rwy-13-31",
       "type": "SID",
       "name": "OMNI RWY 13/31",

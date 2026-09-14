@@ -148,6 +148,15 @@
       "file": "/charts/SBRJ/pdc-sbrj-pdc-sbrj-pdc.pdf"
     },
     {
+      "key": "rea-wj1",
+      "type": "REA",
+      "name": "WJ1-RIO DE JANEIRO",
+      "code": "WJ1",
+      "amdt": "2603A1",
+      "date": "2026-03-19",
+      "file": "/charts/SBRJ/rea-wj1-ccv-rea-wj1-rio-de-janeiro.pdf"
+    },
+    {
       "key": "RJ02O",
       "type": "SID",
       "name": "EVSOB 1D RWY 20L",

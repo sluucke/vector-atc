@@ -139,6 +139,15 @@
       "file": "/charts/SBCF/pdc-pdc-2-pdc-2.pdf"
     },
     {
+      "key": "rea-wh",
+      "type": "REA",
+      "name": "WH-Belo Horizonte",
+      "code": "WH",
+      "amdt": "2409A0",
+      "date": "2024-09-05",
+      "file": "/charts/SBCF/rea-wh-ccv-rea-wh-belo-horizonte.pdf"
+    },
+    {
       "key": "omni-rwy-16-34",
       "type": "SID",
       "name": "OMNI RWY 16/34",

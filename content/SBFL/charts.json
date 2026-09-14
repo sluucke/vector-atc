@@ -103,6 +103,15 @@
       "file": "/charts/SBFL/pdc-sbfl-pdc-4-sbfl-pdc-4.pdf"
     },
     {
+      "key": "rea-xf",
+      "type": "REA",
+      "name": "XF-FLORIANÓPOLIS",
+      "code": "XF",
+      "amdt": "2410A1",
+      "date": "2024-10-03",
+      "file": "/charts/SBFL/rea-xf-ccv-rea-xf-florianopolis.pdf"
+    },
+    {
       "key": "omni-rwy-14-32",
       "type": "SID",
       "name": "OMNI RWY 14/32",

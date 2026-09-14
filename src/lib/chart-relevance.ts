@@ -9,8 +9,8 @@
 const BY_POSITION: Record<string, string[]> = {
   DEL: ["SID", "ADC", "PDC"],
   GND: ["ADC", "PDC", "SID"],
-  TWR: ["ADC", "SID", "IAC", "VAC"],
-  APP: ["STAR", "IAC", "SID", "VAC"],
+  TWR: ["ADC", "SID", "IAC", "VAC", "REA"],
+  APP: ["STAR", "IAC", "SID", "VAC", "REA"],
   DEP: ["SID", "STAR"],
   CTR: ["SID", "STAR"],
 };
@@ -29,4 +29,5 @@ export const CATEGORY_LABELS: Record<string, string> = {
   VAC: "Visual",
   PDC: "Pátio",
   AOC: "Obstáculos",
+  REA: "Rotas Especiais",
 };

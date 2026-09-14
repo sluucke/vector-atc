@@ -12,6 +12,7 @@ import {
   Eye,
   ParkingSquare,
   FileText,
+  Route,
 } from "lucide-react";
 import { useAirportContext } from "./AirportContextProvider";
 import { CATEGORY_LABELS } from "@/lib/chart-relevance";
@@ -26,6 +27,7 @@ const CATEGORY_ICONS: Record<
   IAC: PlaneLanding,
   ADC: Building2,
   VAC: Eye,
+  REA: Route,
   PDC: ParkingSquare,
 };
 

@@ -130,6 +130,15 @@
       "file": "/charts/SBSV/pdc-sbsv-pdc-4-sbsv-pdc-4.pdf"
     },
     {
+      "key": "rea-xs",
+      "type": "REA",
+      "name": "XS-Salvador",
+      "code": "XS",
+      "amdt": "2412A1",
+      "date": "2024-11-28",
+      "file": "/charts/SBSV/rea-xs-ccv-rea-xs-salvador.pdf"
+    },
+    {
       "key": "omni-rwy-10-28",
       "type": "SID",
       "name": "OMNI RWY 10/28",

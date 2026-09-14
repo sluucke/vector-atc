@@ -346,6 +346,15 @@
       "file": "/charts/SBBR/pdc-sbbr-pdc-3-sbbr-pdc-3.pdf"
     },
     {
+      "key": "rea-wr",
+      "type": "REA",
+      "name": "WR-Brasília",
+      "code": "WR",
+      "amdt": "2401A1",
+      "date": "2024-01-25",
+      "file": "/charts/SBBR/rea-wr-ccv-rea-wr-brasilia.pdf"
+    },
+    {
       "key": "BR00I",
       "type": "SID",
       "name": "ANPAX 2A - LIXEM 1A RWY 29L",

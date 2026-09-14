@@ -130,6 +130,24 @@
       "file": "/charts/SBSP/pdc-sbsp-pdc-sbsp-pdc.pdf"
     },
     {
+      "key": "rea-xp1",
+      "type": "REA",
+      "name": "XP1-SÃO PAULO",
+      "code": "XP1",
+      "amdt": "2603A1",
+      "date": "2026-03-19",
+      "file": "/charts/SBSP/rea-xp1-ccv-rea-xp1-sao-paulo.pdf"
+    },
+    {
+      "key": "rea-xp2",
+      "type": "REA",
+      "name": "XP2-SÃO PAULO",
+      "code": "XP2",
+      "amdt": "2603A1",
+      "date": "2026-03-19",
+      "file": "/charts/SBSP/rea-xp2-ccv-rea-xp2-sao-paulo.pdf"
+    },
+    {
       "key": "omni-rwy-17l-17r-35l-35r",
       "type": "SID",
       "name": "OMNI RWY 17L / 17R 35L / 35R",

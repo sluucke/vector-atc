@@ -148,6 +148,15 @@
       "file": "/charts/SBNT/pdc-pdc-3-pdc-3.pdf"
     },
     {
+      "key": "rea-xt",
+      "type": "REA",
+      "name": "XT-Natal",
+      "code": "XT",
+      "amdt": "2503A1",
+      "date": "2025-03-20",
+      "file": "/charts/SBNT/rea-xt-ccv-rea-xt-natal.pdf"
+    },
+    {
       "key": "NT00D",
       "type": "SID",
       "name": "NTL 3A, 3B RWY 12/16L/16R",

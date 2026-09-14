@@ -139,6 +139,15 @@
       "file": "/charts/SBRF/pdc-sbrf-pdc-3-sbrf-pdc-3.pdf"
     },
     {
+      "key": "rea-wf",
+      "type": "REA",
+      "name": "WF-Recife",
+      "code": "WF",
+      "amdt": "2503A1",
+      "date": "2025-03-20",
+      "file": "/charts/SBRF/rea-wf-ccv-rea-wf-recife.pdf"
+    },
+    {
       "key": "omni-rwy-18-36",
       "type": "SID",
       "name": "OMNI RWY 18/36",
