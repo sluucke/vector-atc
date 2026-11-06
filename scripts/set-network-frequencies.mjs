@@ -44,6 +44,15 @@ const APPROACH = {
     ],
     center: "SBCW",
   },
+  // Goiânia is worked from the Anápolis TMA. The charts print no APP
+  // frequency for it, so the list stays empty rather than guessed.
+  SBGO: {
+    position: "SBXN_APP",
+    frequencies: null,
+    center: "SBBS",
+    source:
+      "Centro conforme as posições da divisão IVAO Brasil; sem frequência de APP publicada na carta",
+  },
   SBFL: { position: "SBXF_APP", frequencies: ["119.650", "119.500"], center: "SBCW" },
   // Belo Horizonte: both aerodromes share one TMA, and the division's callsign
   // for that approach position is not known here, so the charts stand.
