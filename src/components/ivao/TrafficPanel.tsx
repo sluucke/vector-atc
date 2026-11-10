@@ -58,7 +58,7 @@ function LevelTag({ check }: { check: LiveFlight["levelCheck"] }) {
               {finding.detail}
             </span>
           ))}
-          {check.verdict === "ok" && (
+          {check.verdict === "ok" && check.basis === "leg" && (
             <span className="block text-ink-dim">
               {check.direction === "east"
                 ? "Rumo magnético no semicírculo 000–179, níveis ímpares."
@@ -88,6 +88,74 @@ function LevelTag({ check }: { check: LiveFlight["levelCheck"] }) {
         )}
       </span>
     </Tooltip>
+  );
+}
+
+/**
+ * The filed route as the AIP reads it: consecutive legs on the same airway
+ * collapse into one line, with the parity that airway asks for in that
+ * direction and whether the planned level fits.
+ */
+function RouteLevels({ check }: { check: LiveFlight["levelCheck"] }) {
+  const groups: {
+    via: string;
+    from: string;
+    to: string;
+    required: string | null;
+    fits: boolean | null;
+    course: number | null;
+  }[] = [];
+  for (const leg of check.legs) {
+    const last = groups[groups.length - 1];
+    if (last && last.via === leg.via && leg.via !== "DCT" && last.to === leg.from) {
+      last.to = leg.to;
+      if (leg.fits === false) last.fits = false;
+      continue;
+    }
+    groups.push({
+      via: leg.via,
+      from: leg.from,
+      to: leg.to,
+      required: leg.required,
+      fits: leg.fits,
+      course: leg.magneticCourse,
+    });
+  }
+  if (groups.length === 0 && !check.rpl) return null;
+
+  return (
+    <div className="mt-2 space-y-0.5 font-mono text-[10px]">
+      {groups.length > 0 && <p className="text-ink-faint">Rota × AIP</p>}
+      {groups.map((g, i) => (
+        <p key={i} className="flex items-center gap-1.5 text-ink-dim">
+          <span
+            className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+              g.fits === true ? "bg-ok" : g.fits === false ? "bg-danger" : "bg-ink-faint"
+            }`}
+          />
+          <span className="text-ink">{g.via}</span>
+          <span className="truncate">
+            {g.from}→{g.to}
+          </span>
+          <span className="ml-auto shrink-0 text-ink-faint">
+            {g.required === "odd" ? "ímpar" : g.required === "even" ? "par" : "—"}
+            {g.via === "DCT" && g.course !== null
+              ? ` · ${String(g.course).padStart(3, "0")}°`
+              : ""}
+          </span>
+        </p>
+      ))}
+      {check.rpl && (
+        <p className="pt-1 text-ink-faint leading-relaxed">
+          RPL {check.rpl.cycle}: {check.rpl.flights} voos regulares,{" "}
+          {Math.round(Math.max(check.rpl.oddShare, check.rpl.evenShare) * 100)}%{" "}
+          {check.rpl.oddShare >= check.rpl.evenShare ? "ímpar" : "par"}
+          {check.rpl.topRoute
+            ? ` · FL${String(check.rpl.topRoute.level).padStart(3, "0")} ${check.rpl.topRoute.route}`
+            : ""}
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -363,6 +431,8 @@ export default function TrafficPanel({
                       {flight.route ?? "—"}
                     </dd>
                   </dl>
+
+                  <RouteLevels check={flight.levelCheck} />
 
                   {flight.procedure.procedureIds.length > 0 &&
                   flight.latitude !== null ? (

@@ -28,6 +28,9 @@
  * says so.
  */
 
+import type { Parity, RouteLeg } from "./airways";
+import type { RplEvidence } from "./rpl";
+
 /**
  * Courses this close to 000 or 180 are not called either way. The bearing here
  * is the straight line between the field and the aircraft, while the rule
@@ -66,6 +69,29 @@ export interface CruiseLevelCheck {
   rvsm: "outside" | "inside" | null;
   rvsmApproved: boolean | null;
   findings: LevelFinding[];
+  /**
+   * What settled the semicircle: the AIP allocation of the airways filed,
+   * the magnetic course of the filed direct legs, the bearing of the leg to or
+   * from this aerodrome, or the scheduled flights of the same city pair.
+   */
+  basis: "airway" | "route" | "leg" | "rpl" | null;
+  /** The filed route as read against the AIP, leg by leg. */
+  legs: LegCheck[];
+  /** Scheduled flights (CGNA RPL) of the same city pair. */
+  rpl: RplEvidence | null;
+}
+
+export interface LegCheck {
+  from: string;
+  to: string;
+  via: string;
+  level: number | null;
+  required: Parity | null;
+  basis: RouteLeg["basis"];
+  magneticCourse: number | null;
+  /** Planned level fits what the leg requires. */
+  fits: boolean | null;
+  wrongWay?: boolean;
 }
 
 /**
@@ -136,6 +162,8 @@ export function checkCruiseLevel({
   flightRules,
   equipment,
   variation,
+  route = [],
+  rpl = null,
 }: {
   level: string | null | undefined;
   /** True bearing of the leg to or from this aerodrome. */
@@ -144,6 +172,10 @@ export function checkCruiseLevel({
   equipment: string | null | undefined;
   /** Magnetic variation in degrees, negative to the west. */
   variation: number | null | undefined;
+  /** The filed route read against the AIP (see analyseRoute). */
+  route?: RouteLeg[];
+  /** Scheduled flights of the same city pair. */
+  rpl?: RplEvidence | null;
 }): CruiseLevelCheck {
   const flightLevel = parseLevel(level);
   const rvsmApproved = hasRvsmApproval(equipment);
@@ -158,6 +190,9 @@ export function checkCruiseLevel({
     rvsm: null,
     rvsmApproved,
     findings,
+    basis: null,
+    legs: [],
+    rpl,
   };
 
   if (flightLevel === null) {
@@ -204,7 +239,12 @@ export function checkCruiseLevel({
     return base;
   }
 
+  if (!vfr && decideByRoute(flightLevel, route, rpl, findings, base)) {
+    return base;
+  }
+
   if (course === null || course === undefined) {
+    if (!vfr && decideByRpl(flightLevel, rpl, findings, base)) return base;
     findings.push({
       label: "a verificar",
       detail:
@@ -236,6 +276,7 @@ export function checkCruiseLevel({
   );
 
   if (distanceToBoundary < BOUNDARY_DEG) {
+    if (!vfr && decideByRpl(flightLevel, rpl, findings, base)) return base;
     // Too close to call, so say what each side would require and let the
     // controller read the route.
     const asEast = levelFits(flightLevel, true, vfr);
@@ -259,6 +300,7 @@ export function checkCruiseLevel({
 
   const east = isEast(normalized);
   base.direction = east ? "east" : "west";
+  base.basis = "leg";
 
   if (!levelFits(flightLevel, east, vfr)) {
     findings.push({
@@ -282,4 +324,177 @@ export function checkCruiseLevel({
 
   base.verdict = findings.length > 0 ? "warn" : "ok";
   return base;
+}
+
+/** Which semicircle a planned IFR level belongs to; null when it fits neither. */
+export function levelParity(flightLevel: number): Parity | null {
+  if (levelFits(flightLevel, true, false)) return "odd";
+  if (levelFits(flightLevel, false, false)) return "even";
+  return null;
+}
+
+const PARITY_WORD: Record<Parity, string> = { odd: "ímpar", even: "par" };
+const fl = (level: number) => `FL${String(level).padStart(3, "0")}`;
+
+function rplLine(rpl: RplEvidence): string {
+  const share = Math.round(Math.max(rpl.oddShare, rpl.evenShare) * 100);
+  const parity = rpl.oddShare >= rpl.evenShare ? "ímpar" : "par";
+  const top = rpl.topRoute
+    ? ` Rota mais filada: ${rpl.topRoute.route} no ${fl(rpl.topRoute.level)}.`
+    : "";
+  return (
+    `Voos regulares da CGNA (RPL ${rpl.cycle}): ${rpl.flights} nesse par, ` +
+    `${share}% em nível ${parity}.${top}`
+  );
+}
+
+/**
+ * Settles the semicircle from the filed route. Airway legs answer with the AIP
+ * allocation, which is authoritative, including the level continuity some
+ * routes keep across bends. Direct legs answer with the magnetic course
+ * between their two points. Returns false when the route says nothing.
+ */
+function decideByRoute(
+  plannedLevel: number,
+  route: RouteLeg[],
+  rpl: RplEvidence | null,
+  findings: LevelFinding[],
+  base: CruiseLevelCheck
+): boolean {
+  const legs: LegCheck[] = route.map((l) => {
+    const level = l.level ?? plannedLevel;
+    const parity = levelParity(level);
+    return {
+      from: l.from,
+      to: l.to,
+      via: l.via,
+      level,
+      required: l.required,
+      basis: l.basis,
+      magneticCourse: l.magneticCourse,
+      fits: l.required && parity ? parity === l.required : null,
+      ...(l.wrongWay ? { wrongWay: true } : {}),
+    };
+  });
+  base.legs = legs;
+
+  const airway = legs.filter((l) => l.basis === "airway");
+  const direct = legs.filter((l) => l.basis === "track");
+  const wrongWay = legs.filter((l) => l.wrongWay);
+  if (airway.length === 0 && direct.length === 0 && wrongWay.length === 0) {
+    return false;
+  }
+
+  const rplAgrees = (level: number) =>
+    Boolean(rpl?.dominant) && rpl!.dominant === levelParity(level);
+
+  for (const l of wrongWay) {
+    findings.push({
+      label: "aerovia na contramão",
+      detail:
+        `${l.via} entre ${l.from} e ${l.to} é de sentido único no AIP, ` +
+        "e o plano a voa ao contrário.",
+    });
+  }
+
+  if (airway.length > 0) {
+    base.basis = "airway";
+    const bad = airway.filter((l) => l.fits === false);
+
+    if (bad.length === 0) {
+      const byAirway = [...new Set(airway.map((l) => l.via))]
+        .map((via) => {
+          const leg = airway.find((l) => l.via === via)!;
+          return `${via} pede nível ${PARITY_WORD[leg.required!]}`;
+        })
+        .join("; ");
+      findings.push({
+        label: "conforme o AIP",
+        detail: `${byAirway} nesse sentido (AIP ENR 3), e o plano confere.`,
+      });
+      if (rpl) findings.push({ label: "RPL", detail: rplLine(rpl) });
+      base.verdict = wrongWay.length > 0 ? "warn" : "ok";
+      return true;
+    }
+
+    const first = bad[0];
+    const detail =
+      `${first.via} de ${first.from} a ${first.to} pede nível ` +
+      `${PARITY_WORD[first.required!]} nesse sentido (AIP ENR 3), e o plano ` +
+      `traz ${fl(first.level!)}.`;
+    if (rplAgrees(first.level!)) {
+      findings.push({ label: "AIP diverge do RPL", detail });
+      findings.push({ label: "RPL", detail: rplLine(rpl!) });
+      base.verdict = "warn";
+    } else {
+      findings.push({ label: "fora do AIP", detail });
+      if (rpl) findings.push({ label: "RPL", detail: rplLine(rpl) });
+      base.verdict = "error";
+    }
+    return true;
+  }
+
+  if (direct.length === 0) {
+    base.verdict = "warn";
+    return true;
+  }
+
+  // Only direct legs: the geometry is exact, but the rule follows each leg's
+  // track, and a route that crosses the boundary is still filed at one level.
+  base.basis = "route";
+  const bad = direct.filter((l) => l.fits === false);
+  const courses = direct
+    .map((l) => `${l.from}→${l.to} ${String(l.magneticCourse).padStart(3, "0")}°`)
+    .join(", ");
+
+  if (bad.length === 0) {
+    findings.push({
+      label: "conforme a rota",
+      detail: `Pernas diretas com rumo magnético ${courses}: o plano confere.`,
+    });
+    if (rpl) findings.push({ label: "RPL", detail: rplLine(rpl) });
+    base.verdict = wrongWay.length > 0 ? "warn" : "ok";
+    return true;
+  }
+
+  const allBad = bad.length === direct.length;
+  const detail =
+    `Pernas diretas com rumo magnético ${courses}; ` +
+    (allBad
+      ? `todas pedem nível ${PARITY_WORD[bad[0].required!]} e o plano traz ${fl(bad[0].level!)}.`
+      : `a rota cruza o limite do semicírculo e ${fl(bad[0].level!)} não confere em ` +
+        `${bad.map((l) => `${l.from}→${l.to}`).join(", ")}.`);
+
+  if (rplAgrees(plannedLevel)) {
+    findings.push({ label: allBad ? "rota diverge do RPL" : "rota mista", detail });
+    findings.push({ label: "RPL", detail: rplLine(rpl!) });
+    base.verdict = allBad ? "warn" : "ok";
+  } else {
+    findings.push({ label: allBad ? "fora do semicírculo" : "rota mista", detail });
+    if (rpl) findings.push({ label: "RPL", detail: rplLine(rpl) });
+    base.verdict = allBad ? "error" : "warn";
+  }
+  return true;
+}
+
+/** Last resort: what the scheduled flights of the same city pair file. */
+function decideByRpl(
+  plannedLevel: number,
+  rpl: RplEvidence | null,
+  findings: LevelFinding[],
+  base: CruiseLevelCheck
+): boolean {
+  if (!rpl?.dominant) return false;
+  base.basis = "rpl";
+  const fits = levelParity(plannedLevel) === rpl.dominant;
+  findings.push({
+    label: fits ? "conforme o RPL" : "diverge do RPL",
+    detail:
+      rplLine(rpl) +
+      (fits
+        ? " A rota filada não pôde ser lida, mas o nível segue o dos voos regulares."
+        : ` A rota filada não pôde ser lida; ${fl(plannedLevel)} não segue o dos voos regulares.`),
+  });
+  base.verdict = fits ? "ok" : "warn";
+  return true;
 }

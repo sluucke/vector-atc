@@ -1,5 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
+import type { AirwayDatabase } from "./ops/airways";
+import type { RplDatabase } from "./ops/rpl";
 import type {
   AirportGeometry,
   AirportMeta,
@@ -9,6 +11,25 @@ import type {
 } from "./types";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
+
+/** Reads one national file from content/ once per server instance. */
+function nationalFile<T>(name: string): () => T | null {
+  let cached: T | null | undefined;
+  return () => {
+    if (cached !== undefined) return cached;
+    const file = path.join(CONTENT_DIR, name);
+    cached = fs.existsSync(file)
+      ? (JSON.parse(fs.readFileSync(file, "utf-8")) as T)
+      : null;
+    return cached;
+  };
+}
+
+/** ATS routes and points from the AIP (scripts/sync-airways.ts). */
+export const getAirways = nationalFile<AirwayDatabase>("airways.json");
+
+/** Scheduled flights per city pair (scripts/sync-rpl.ts). */
+export const getRpl = nationalFile<RplDatabase>("rpl.json");
 
 export function getAirportCodes(): string[] {
   if (!fs.existsSync(CONTENT_DIR)) return [];

@@ -1,4 +1,23 @@
+import fs from "node:fs";
+import { analyseRoute, type AirwayDatabase } from "../src/lib/ops/airways";
 import { checkCruiseLevel, parseLevel } from "../src/lib/ops/cruise-level";
+import { rplEvidence, type RplDatabase } from "../src/lib/ops/rpl";
+
+const airways = JSON.parse(fs.readFileSync("content/airways.json", "utf8")) as AirwayDatabase;
+const rpl = JSON.parse(fs.readFileSync("content/rpl.json", "utf8")) as RplDatabase;
+
+/** A flight with its filed route read against the AIP and the RPL. */
+function filed(dep: string, arr: string, level: string, route: string) {
+  return {
+    level,
+    course: null,
+    flightRules: "I",
+    equipment: "SW",
+    variation: -21,
+    route: analyseRoute(route, parseLevel(level), airways),
+    rpl: rplEvidence(rpl, dep, arr),
+  };
+}
 
 const cases: [string, Parameters<typeof checkCruiseLevel>[0], string][] = [
   [
@@ -92,6 +111,16 @@ const cases: [string, Parameters<typeof checkCruiseLevel>[0], string][] = [
     { level: "ABC", course: 90, flightRules: "I", equipment: "SW", variation: -21 },
     "unknown",
   ],
+  // Real routes from the CGNA RPL, read against the AIP ENR 3 allocation.
+  ["SBBR-SBTE UZ5 FL390 (AIP ímpar)", filed("SBBR", "SBTE", "F390", "PULUV UZ5 GUEST DCT"), "ok"],
+  ["SBBR-SBTE UZ5 FL380 (AIP ímpar)", filed("SBBR", "SBTE", "F380", "PULUV UZ5 GUEST DCT"), "error"],
+  ["SBGR-SBBR UZ26 FL340 (AIP par)", filed("SBGR", "SBBR", "F340", "ISMOB UZ26 AZOIC"), "ok"],
+  ["SBBR-SBRJ UZ6 FL370 (AIP ímpar)", filed("SBBR", "SBRJ", "F370", "GEPMO UZ6 TOKIM"), "ok"],
+  ["SBKP-SBRJ UZ171 FL200 (AIP ímpar)", filed("SBKP", "SBRJ", "F200", "NIBRU UZ171 KEVUN"), "error"],
+  ["SBGL-SBSP UZ45 FL270 (AIP par)", filed("SBGL", "SBSP", "F270", "NAXOP UZ45 IBDAL"), "error"],
+  // Direct legs either side of 180°, filed even like every scheduled flight.
+  ["SBGO-SBKP só DCT FL340 (RPL par)", filed("SBGO", "SBKP", "F340", "ESBOD DCT ISISA DCT UTLOT"), "ok"],
+  ["troca de nível na rota", filed("SBMA", "SBBR", "F340", "NUXOD DCT MASVA/N0450F350 UZ26 PADIL"), "ok"],
 ];
 
 let failed = 0;

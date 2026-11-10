@@ -1,8 +1,16 @@
 import "server-only";
-import { getAirportMeta, getGeometry, getProcedures } from "@/lib/content";
+import {
+  getAirportMeta,
+  getAirways,
+  getGeometry,
+  getProcedures,
+  getRpl,
+} from "@/lib/content";
 import { getWhazzup } from "./whazzup";
 import { matchProcedure } from "./procedure-match";
-import { checkCruiseLevel } from "@/lib/ops/cruise-level";
+import { analyseRoute } from "@/lib/ops/airways";
+import { checkCruiseLevel, parseLevel } from "@/lib/ops/cruise-level";
+import { rplEvidence } from "@/lib/ops/rpl";
 import { trueBearing } from "@/lib/ops/runway";
 import type { GeoPoint } from "@/lib/types";
 import type {
@@ -49,6 +57,13 @@ function legCourse(
   return kind === "departure"
     ? trueBearing(field, aircraft)
     : trueBearing(aircraft, field);
+}
+
+/** The filed route read against the AIP airways, when the data is present. */
+function routeLegs(route: string | null | undefined, level: string | null | undefined) {
+  const airways = getAirways();
+  if (!airways || !route) return [];
+  return analyseRoute(route, parseLevel(level), airways);
 }
 
 function toLiveFlight(
@@ -109,6 +124,8 @@ function toLiveFlight(
       flightRules: plan?.flightRules,
       equipment: plan?.aircraftEquipments,
       variation,
+      route: routeLegs(plan?.route, plan?.level),
+      rpl: rplEvidence(getRpl(), plan?.departureId ?? null, plan?.arrivalId ?? null),
     }),
   };
 }
