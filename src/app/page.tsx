@@ -1,5 +1,6 @@
 import { Navigation } from "lucide-react";
 import AirportPicker, { type AirportCard } from "@/components/airport/AirportPicker";
+import HomeBackground from "@/components/backgrounds/HomeBackground";
 import { getAllAirports, getCharts, getProcedures } from "@/lib/content";
 
 export default function HomePage() {
@@ -19,6 +20,7 @@ export default function HomePage() {
 
   return (
     <div className="grain relative min-h-screen overflow-hidden">
+      <HomeBackground />
       <div
         className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 size-[42rem] rounded-full opacity-[0.07] blur-3xl"
         style={{ background: "var(--color-signal)" }}

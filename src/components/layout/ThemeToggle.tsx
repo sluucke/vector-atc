@@ -32,8 +32,13 @@ const store = {
   },
 };
 
+/** The active theme, following the toggle. */
+export function useTheme(): Theme {
+  return useSyncExternalStore(store.subscribe, store.get, store.getServer);
+}
+
 export default function ThemeToggle() {
-  const theme = useSyncExternalStore(store.subscribe, store.get, store.getServer);
+  const theme = useTheme();
   const next: Theme = theme === "dark" ? "light" : "dark";
   const Icon = theme === "dark" ? Sun : Moon;
 
