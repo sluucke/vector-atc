@@ -43,6 +43,7 @@
     "sync:airways": "tsx scripts/sync-airways.ts",
     "sync:rpl": "tsx scripts/sync-rpl.ts",
     "check:airways": "tsx scripts/check-airways.ts",
+    "georef:charts": "tsx scripts/georef-charts.ts",
     "probe:heading": "tsx scripts/probe-heading-reference.ts",
     "sync:pdf-worker": "node -e \"require('fs').copyFileSync(require.resolve('pdfjs-dist/build/pdf.worker.min.mjs'),'public/pdf.worker.min.mjs')\"",
     "predev": "npm run sync:pdf-worker",

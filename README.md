@@ -119,6 +119,7 @@ opcionais:
 | `npm run sync:airways` | Lê aerovias e fixos do AIP (ENR 3 e ENR 4.4) |
 | `npm run sync:rpl` | Baixa os planos de voo regulares da CGNA |
 | `npm run check:airways` | Confere o AIP lido contra os planos da CGNA |
+| `npm run georef:charts` | Posiciona no mapa as cartas desenhadas em escala |
 
 ---
 

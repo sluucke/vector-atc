@@ -7,6 +7,7 @@ import {
   getAirportMeta,
   getCharts,
   getGeometry,
+  getMapOverlays,
   getProcedure,
   getProcedures,
 } from "@/lib/content";
@@ -63,6 +64,7 @@ export default async function CartaPage(
           initialChartKey={procedure.chartKey}
           charts={getCharts(icao)}
           geometry={getGeometry(icao)}
+          overlays={getMapOverlays(icao, procedure)}
         />
       </Suspense>
 

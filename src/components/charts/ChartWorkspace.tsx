@@ -19,7 +19,7 @@ import BackToAirport from "./BackToAirport";
 import Tooltip from "@/components/ui/Tooltip";
 import { usePaneClass } from "@/components/layout/MobilePanes";
 import { CATEGORY_ORDER } from "@/lib/charts/relevance";
-import type { AirportGeometry, Chart, Procedure } from "@/lib/types";
+import type { AirportGeometry, Chart, MapOverlay, Procedure } from "@/lib/types";
 
 const ProcedureMap = dynamic(() => import("./ProcedureMap"), {
   ssr: false,
@@ -39,6 +39,7 @@ export default function ChartWorkspace({
   initialChartKey,
   charts,
   geometry,
+  overlays = [],
 }: {
   icao: string;
   /** Null when browsing a chart that is not tied to a procedure (IAC, ADC…). */
@@ -46,6 +47,8 @@ export default function ChartWorkspace({
   initialChartKey: string;
   charts: Chart[];
   geometry: AirportGeometry | null;
+  /** Georeferenced chart pages the map can draw under the procedure. */
+  overlays?: MapOverlay[];
 }) {
   // Deep links from the traffic panel open straight into the map on a flight.
   const params = useSearchParams();
@@ -274,6 +277,7 @@ export default function ChartWorkspace({
           icao={icao}
           procedure={procedure}
           geometry={geometry}
+          overlays={overlays}
           focusCallsign={focus}
         />
       ) : (

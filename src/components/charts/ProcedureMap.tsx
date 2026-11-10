@@ -12,10 +12,11 @@ import {
   useMap,
 } from "react-leaflet";
 import L, { type LatLngExpression, type LatLngBoundsExpression } from "leaflet";
-import { Frame, Minus, Plus } from "lucide-react";
+import { Frame, Layers, Minus, Plus } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import { reciprocal } from "@/lib/ops/runway";
-import type { AirportGeometry, GeoPoint, Procedure } from "@/lib/types";
+import type { AirportGeometry, GeoPoint, MapOverlay, Procedure } from "@/lib/types";
+import ChartOverlay from "./ChartOverlay";
 import type { AirportTraffic, LiveFlight } from "@/lib/ivao/types";
 
 const SID_COLOR = "#22d3ee";
@@ -143,13 +144,21 @@ export default function ProcedureMap({
   icao,
   procedure,
   geometry,
+  overlays = [],
   focusCallsign,
 }: {
   icao: string;
   procedure: Procedure;
   geometry: AirportGeometry;
+  overlays?: MapOverlay[];
   focusCallsign?: string | null;
 }) {
+  // The procedure's own chart is drawn by default when it is to scale.
+  const [overlayKey, setOverlayKey] = useState<string | null>(
+    () => overlays.find((o) => o.key.startsWith(`${procedure.chartKey}#`))?.key ?? null
+  );
+  const [opacity, setOpacity] = useState(0.55);
+  const overlay = overlays.find((o) => o.key === overlayKey) ?? null;
   const color = procedure.type === "SID" ? SID_COLOR : STAR_COLOR;
   const flights = useProcedureTraffic(icao, procedure.id);
   const focused =
@@ -395,9 +404,61 @@ export default function ProcedureMap({
           </Marker>
         ))}
 
+        {overlay && (
+          <ChartOverlay
+            key={overlay.key}
+            file={overlay.file}
+            page={overlay.page}
+            opacity={opacity}
+          />
+        )}
+
         <FocusFlight flight={focused} />
         <MapControls bounds={bounds} />
       </MapContainer>
+
+      {overlays.length > 0 && (
+        <div className="absolute top-2 left-2 z-[400] flex flex-col gap-1.5 w-56 rounded-md border border-line bg-raised/90 p-2 backdrop-blur">
+          <label className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-ink-faint">
+            <Layers className="size-3" />
+            Carta sobreposta
+          </label>
+          <select
+            value={overlayKey ?? ""}
+            onChange={(e) => setOverlayKey(e.target.value || null)}
+            className="w-full rounded border border-line bg-inset px-1.5 py-1 font-mono text-[11px] text-ink"
+          >
+            <option value="">Nenhuma</option>
+            {overlays.map((o) => (
+              <option key={o.key} value={o.key}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+          {overlay && (
+            <>
+              <input
+                type="range"
+                min={0.15}
+                max={1}
+                step={0.05}
+                value={opacity}
+                onChange={(e) => setOpacity(Number(e.target.value))}
+                aria-label="Opacidade da carta"
+                className="w-full accent-[var(--signal)]"
+              />
+              <p className="font-mono text-[9px] leading-snug text-ink-faint">
+                Posicionada pelos fixos {overlay.page.fixes.slice(0, 4).join(", ")}
+                {overlay.page.fixes.length > 4 ? "…" : ""} · erro médio{" "}
+                {overlay.page.rmsMeters < 1000
+                  ? `${overlay.page.rmsMeters} m`
+                  : `${(overlay.page.rmsMeters / 1852).toFixed(1)} NM`}
+                . Apenas referência visual.
+              </p>
+            </>
+          )}
+        </div>
+      )}
 
       {flights.length > 0 && (
         <p className="absolute top-2 right-2 z-[400] font-mono text-[10px] px-2 py-1 rounded bg-raised/90 border border-line text-ink-dim">

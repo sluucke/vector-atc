@@ -124,3 +124,31 @@ export interface AirportMeta {
   runwaysNote?: string;
   observations: string[];
 }
+
+/**
+ * Where a chart page sits on the ground, from scripts/georef-charts.ts. The
+ * affine maps a point of the page (pdf.js viewport at scale 1, origin top
+ * left) to Web Mercator metres: X = a·u + b·v + c, Y = d·u + e·v + f.
+ */
+/** One georeferenced chart page the map can draw under a procedure. */
+export interface MapOverlay {
+  key: string;
+  label: string;
+  file: string;
+  page: ChartGeoref["pages"][number] & { number: number };
+}
+
+export interface ChartGeoref {
+  file: string;
+  pages: Record<
+    number,
+    {
+      width: number;
+      height: number;
+      affine: [number, number, number, number, number, number];
+      /** The fixes whose labels agreed with the fit. */
+      fixes: string[];
+      rmsMeters: number;
+    }
+  >;
+}

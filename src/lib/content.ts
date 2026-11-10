@@ -7,6 +7,8 @@ import type {
   AirportMeta,
   Chart,
   ChartCatalog,
+  ChartGeoref,
+  MapOverlay,
   Procedure,
 } from "./types";
 
@@ -60,6 +62,32 @@ function readJson<T>(icao: string, file: string): T | null {
   const full = path.join(CONTENT_DIR, icao.toUpperCase(), file);
   if (!fs.existsSync(full)) return null;
   return JSON.parse(fs.readFileSync(full, "utf-8")) as T;
+}
+
+/**
+ * Chart pages that can be drawn on the procedure map: the procedure's own
+ * chart first, then the TMA's vectoring and area charts, and for an arrival
+ * the approaches it feeds. Only pages that scripts/georef-charts.ts found to
+ * be drawn to scale are offered.
+ */
+export function getMapOverlays(icao: string, procedure: Procedure): MapOverlay[] {
+  const chartKey = procedure.chartKey;
+  const georef = readJson<Record<string, ChartGeoref>>(icao, "georef.json");
+  if (!georef) return [];
+  const charts = getCharts(icao);
+  const wanted = [
+    ...charts.filter((c) => c.key === chartKey),
+    ...charts.filter((c) => c.type === "ATCSMAC" || c.type === "ARC"),
+    ...(procedure.type === "STAR" ? charts.filter((c) => c.type === "IAC") : []),
+  ];
+  return wanted.flatMap((chart) =>
+    Object.entries(georef[chart.key]?.pages ?? {}).map(([n, page]) => ({
+      key: `${chart.key}#${n}`,
+      label: chart.key === chartKey ? "Carta do procedimento" : `${chart.type} ${chart.name}`,
+      file: chart.file,
+      page: { ...page, number: Number(n) },
+    }))
+  );
 }
 
 export function getCharts(icao: string): Chart[] {

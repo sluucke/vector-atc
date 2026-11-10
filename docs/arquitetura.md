@@ -43,6 +43,13 @@ content/<ICAO>/meta.json                nome, TA, frequências, observações
   de aeródromos: níveis usados e rotas mais filadas. Resultado:
   `content/rpl.json`. `npm run check:airways` cruza os dois e deve ficar acima
   de 97% de concordância.
+- A **sobreposição de cartas** vem de `npm run georef:charts`. Cada fixo que
+  a carta nomeia e cuja coordenada é conhecida vira ponto de controle; um
+  ajuste norte-acima (escala e deslocamento, com RANSAC) leva a página para
+  Web Mercator, e um segundo passo troca o rótulo pelo símbolo do fixo. Só
+  ficam as páginas em que metade dos fixos concorda e o erro fica abaixo de
+  1 km. Resultado: `content/<ICAO>/georef.json`; o mapa desenha a página com
+  pdf.js e uma matriz CSS.
 - As **frequências IVAO** (APP e centro) vêm de `npm run sync:frequencies`,
   separadas das frequências da carta.
 - Campos editoriais (`notes`, `observations`, TA operacional, link do MOPS) são

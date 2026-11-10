@@ -83,6 +83,20 @@ npm run sync:rpl       # planos regulares da CGNA
 npm run check:airways  # deve passar de 97% de concordância
 ```
 
+### `georef:charts` (`scripts/georef-charts.ts`)
+
+Rode depois do `sync:airport`, do `sync:tma` e do `sync:airways`. Grava
+`content/<ICAO>/georef.json` com a posição das páginas desenhadas em escala,
+que o mapa do procedimento oferece como camada:
+
+```bash
+npm run georef:charts          # todos os aeródromos
+npm run georef:charts -- SBBR  # um só
+```
+
+Cartas esquemáticas ("not to scale") ficam de fora sozinhas. Com
+`GEOREF_DEBUG=1` o script mostra o erro de cada página.
+
 ### `sync:frequencies` (`scripts/set-network-frequencies.ts`)
 
 Grava em cada `meta.json` as frequências das posições da divisão IVAO Brasil
