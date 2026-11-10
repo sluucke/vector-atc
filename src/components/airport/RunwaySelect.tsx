@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { ChevronDown, Radar, Wind, Wand2 } from "lucide-react";
-import { useAirportContext } from "./AirportContextProvider";
-import Tooltip from "./Tooltip";
+import { useAirportContext } from "@/providers/AirportContextProvider";
+import Tooltip from "@/components/ui/Tooltip";
 
 const SOURCE_ICON = {
   atis: Radar,

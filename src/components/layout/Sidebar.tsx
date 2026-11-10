@@ -14,8 +14,8 @@ import {
   FileText,
   Route,
 } from "lucide-react";
-import { useAirportContext } from "./AirportContextProvider";
-import { CATEGORY_LABELS } from "@/lib/chart-relevance";
+import { useAirportContext } from "@/providers/AirportContextProvider";
+import { CATEGORY_LABELS } from "@/lib/charts/relevance";
 import type { AirportMeta } from "@/lib/types";
 
 const CATEGORY_ICONS: Record<

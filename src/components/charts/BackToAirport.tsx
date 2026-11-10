@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import Tooltip from "./Tooltip";
+import Tooltip from "@/components/ui/Tooltip";
 
 /** Returns to the aerodrome briefing, where the full chart listing lives. */
 export default function BackToAirport({

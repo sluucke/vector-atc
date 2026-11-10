@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { Radar, TriangleAlert, ScrollText } from "lucide-react";
-import TrafficPanel from "./TrafficPanel";
+import TrafficPanel from "@/components/ivao/TrafficPanel";
 import NotamPanel from "./NotamPanel";
-import { usePaneClass } from "./MobilePanes";
+import { usePaneClass } from "@/components/layout/MobilePanes";
 import type { Procedure } from "@/lib/types";
 
 export default function OperationalPanel({

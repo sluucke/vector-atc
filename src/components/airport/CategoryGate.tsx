@@ -1,6 +1,6 @@
 "use client";
 
-import { useAirportContext } from "./AirportContextProvider";
+import { useAirportContext } from "@/providers/AirportContextProvider";
 
 /**
  * Hides a briefing section when its category is filtered out.

@@ -13,9 +13,9 @@ import {
   OctagonAlert,
 } from "lucide-react";
 import type { AirportTraffic, LiveFlight } from "@/lib/ivao/types";
-import Tooltip from "./Tooltip";
-import { useAirportContext } from "./AirportContextProvider";
-import { servesRunway } from "@/lib/runway-match";
+import Tooltip from "@/components/ui/Tooltip";
+import { useAirportContext } from "@/providers/AirportContextProvider";
+import { servesRunway } from "@/lib/ops/runway-match";
 import type { Procedure } from "@/lib/types";
 
 const POLL_MS = 20_000;

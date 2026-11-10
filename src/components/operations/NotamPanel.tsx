@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { RefreshCw, TriangleAlert } from "lucide-react";
-import { useAirportContext } from "./AirportContextProvider";
+import { useAirportContext } from "@/providers/AirportContextProvider";
 import { formatNotamTime } from "@/lib/ops/notam-format";
 
 type Source = "DECEA" | "IVAO";

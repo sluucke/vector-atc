@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Navigation, Search } from "lucide-react";
 import CommandPalette from "./CommandPalette";
-import IvaoStatus from "./IvaoStatus";
+import IvaoStatus from "@/components/ivao/IvaoStatus";
 import ThemeToggle from "./ThemeToggle";
 import type { SearchEntry } from "@/lib/content";
 

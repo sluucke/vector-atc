@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 import PdfCanvas from "./PdfCanvas";
 import BackToAirport from "./BackToAirport";
-import Tooltip from "./Tooltip";
-import { usePaneClass } from "./MobilePanes";
+import Tooltip from "@/components/ui/Tooltip";
+import { usePaneClass } from "@/components/layout/MobilePanes";
 import type { AirportGeometry, Chart, Procedure } from "@/lib/types";
 
 const ProcedureMap = dynamic(() => import("./ProcedureMap"), {

@@ -2,13 +2,13 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { MessagesSquare, X } from "lucide-react";
-import Tooltip from "./Tooltip";
-import { useAirportContext } from "./AirportContextProvider";
-import { PHRASEOLOGY, type PhraseologyPhase } from "@/lib/phraseology";
+import Tooltip from "@/components/ui/Tooltip";
+import { useAirportContext } from "@/providers/AirportContextProvider";
+import { PHRASEOLOGY, type PhraseologyPhase } from "@/lib/reference/phraseology";
 import { formatFlightLevel } from "@/lib/ops/transition";
 import { parseWind } from "@/lib/ops/runway";
-import { servesRunway } from "@/lib/runway-match";
-import { langStore, type Lang } from "@/lib/ui-lang";
+import { servesRunway } from "@/lib/ops/runway-match";
+import { langStore, type Lang } from "@/lib/reference/lang";
 import type { AirportMeta } from "@/lib/types";
 
 export interface Departure {

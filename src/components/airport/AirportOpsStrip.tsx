@@ -1,6 +1,6 @@
 "use client";
 
-import { useAirportContext } from "./AirportContextProvider";
+import { useAirportContext } from "@/providers/AirportContextProvider";
 import { formatFlightLevel } from "@/lib/ops/transition";
 
 function Field({

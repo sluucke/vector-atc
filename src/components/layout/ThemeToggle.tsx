@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
-import Tooltip from "./Tooltip";
+import Tooltip from "@/components/ui/Tooltip";
 
 const KEY = "vector:theme";
 type Theme = "dark" | "light";

@@ -9,7 +9,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import { useIvaoSession } from "./IvaoSessionProvider";
-import { relevantCategories } from "@/lib/chart-relevance";
+import { relevantCategories } from "@/lib/charts/relevance";
 import type { AirportDynamicContext } from "@/lib/ops/briefing";
 
 const POLL_MS = 60_000;

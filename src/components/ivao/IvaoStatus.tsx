@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Radio, LogOut, TriangleAlert } from "lucide-react";
 import { POSITION_LABELS } from "@/lib/ivao/callsign";
-import { useIvaoSession } from "./IvaoSessionProvider";
-import Tooltip from "./Tooltip";
+import { useIvaoSession } from "@/providers/IvaoSessionProvider";
+import Tooltip from "@/components/ui/Tooltip";
 
 export default function IvaoStatus({
   availableIcaos,

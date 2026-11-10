@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { TriangleAlert, Route, Waypoints, Target } from "lucide-react";
-import ChartWorkspace from "@/components/ChartWorkspace";
+import ChartWorkspace from "@/components/charts/ChartWorkspace";
 import {
   getAirportCodes,
   getAirportMeta,

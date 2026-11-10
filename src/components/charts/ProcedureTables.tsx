@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { PlaneTakeoff, PlaneLanding } from "lucide-react";
-import { useAirportContext } from "./AirportContextProvider";
-import { servesRunway } from "@/lib/runway-match";
+import { useAirportContext } from "@/providers/AirportContextProvider";
+import { servesRunway } from "@/lib/ops/runway-match";
 import type { Chart, Procedure } from "@/lib/types";
 
 function Th({

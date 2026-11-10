@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
-import Sidebar from "@/components/Sidebar";
-import { IvaoSessionProvider } from "@/components/IvaoSessionProvider";
-import { categoryEntries } from "@/lib/chart-inventory";
-import { AirportContextProvider } from "@/components/AirportContextProvider";
-import TopBar from "@/components/TopBar";
-import AirportContextHeader from "@/components/AirportContextHeader";
-import AirportOpsStrip from "@/components/AirportOpsStrip";
-import ProcedureBrowser from "@/components/ProcedureBrowser";
-import { MobilePaneProvider, PaneTabs } from "@/components/MobilePanes";
+import Sidebar from "@/components/layout/Sidebar";
+import { IvaoSessionProvider } from "@/providers/IvaoSessionProvider";
+import { categoryEntries } from "@/lib/charts/inventory";
+import { AirportContextProvider } from "@/providers/AirportContextProvider";
+import TopBar from "@/components/layout/TopBar";
+import AirportContextHeader from "@/components/airport/AirportContextHeader";
+import AirportOpsStrip from "@/components/airport/AirportOpsStrip";
+import ProcedureBrowser from "@/components/charts/ProcedureBrowser";
+import { MobilePaneProvider, PaneTabs } from "@/components/layout/MobilePanes";
 import {
   getAirportCodes,
   getAirportMeta,

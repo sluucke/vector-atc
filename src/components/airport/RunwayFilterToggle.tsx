@@ -1,8 +1,8 @@
 "use client";
 
 import { Check } from "lucide-react";
-import Tooltip from "./Tooltip";
-import { useAirportContext } from "./AirportContextProvider";
+import Tooltip from "@/components/ui/Tooltip";
+import { useAirportContext } from "@/providers/AirportContextProvider";
 
 /** Narrows every list to the runway actually being worked. */
 export default function RunwayFilterToggle() {

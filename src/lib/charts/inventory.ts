@@ -1,4 +1,4 @@
-import type { Chart, Procedure } from "./types";
+import type { Chart, Procedure } from "@/lib/types";
 
 export interface CategoryEntry {
   key: string;

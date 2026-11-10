@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FileText } from "lucide-react";
-import { CATEGORY_LABELS } from "@/lib/chart-relevance";
+import { CATEGORY_LABELS } from "@/lib/charts/relevance";
 import type { Chart } from "@/lib/types";
 
 /**

@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { FileText } from "lucide-react";
-import ChartWorkspace from "@/components/ChartWorkspace";
-import { CATEGORY_LABELS } from "@/lib/chart-relevance";
+import ChartWorkspace from "@/components/charts/ChartWorkspace";
+import { CATEGORY_LABELS } from "@/lib/charts/relevance";
 import {
   getAirportCodes,
   getAirportMeta,

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { MapPin, BookOpen } from "lucide-react";
-import PhraseologyDialog, { type Departure } from "./PhraseologyDialog";
+import PhraseologyDialog, { type Departure } from "@/components/reference/PhraseologyDialog";
 import RunwaySelect from "./RunwaySelect";
-import TrafficCircuitDialog from "./TrafficCircuitDialog";
-import Tooltip from "./Tooltip";
+import TrafficCircuitDialog from "@/components/reference/TrafficCircuitDialog";
+import Tooltip from "@/components/ui/Tooltip";
 import type { AirportMeta } from "@/lib/types";
 
 function Stat({ label, value }: { label: string; value: string }) {

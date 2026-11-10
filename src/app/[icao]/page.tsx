@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
-import CategoryGate from "@/components/CategoryGate";
-import ChartCategorySection from "@/components/ChartCategorySection";
-import MainPane from "@/components/MainPane";
-import OperationalPanel from "@/components/OperationalPanel";
-import ProcedureTables from "@/components/ProcedureTables";
+import CategoryGate from "@/components/airport/CategoryGate";
+import ChartCategorySection from "@/components/charts/ChartCategorySection";
+import MainPane from "@/components/layout/MainPane";
+import OperationalPanel from "@/components/operations/OperationalPanel";
+import ProcedureTables from "@/components/charts/ProcedureTables";
 import {
   getAirportCodes,
   getAirportMeta,

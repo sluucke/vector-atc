@@ -14,13 +14,13 @@ import {
   Wand2,
   Route,
 } from "lucide-react";
-import { useIvaoSession } from "./IvaoSessionProvider";
-import { useAirportContext } from "./AirportContextProvider";
-import RunwayFilterToggle from "./RunwayFilterToggle";
-import { usePaneClass } from "./MobilePanes";
-import { servesRunway } from "@/lib/runway-match";
-import { CATEGORY_LABELS } from "@/lib/chart-relevance";
-import { categoryEntries } from "@/lib/chart-inventory";
+import { useIvaoSession } from "@/providers/IvaoSessionProvider";
+import { useAirportContext } from "@/providers/AirportContextProvider";
+import RunwayFilterToggle from "@/components/airport/RunwayFilterToggle";
+import { usePaneClass } from "@/components/layout/MobilePanes";
+import { servesRunway } from "@/lib/ops/runway-match";
+import { CATEGORY_LABELS } from "@/lib/charts/relevance";
+import { categoryEntries } from "@/lib/charts/inventory";
 import type { Chart, Procedure } from "@/lib/types";
 
 const CATEGORY_ORDER = ["SID", "STAR", "IAC", "ADC", "VAC", "REA", "PDC", "AOC"];

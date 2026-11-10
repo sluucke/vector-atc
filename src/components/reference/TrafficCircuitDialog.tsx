@@ -2,15 +2,15 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { RectangleHorizontal, X } from "lucide-react";
-import Tooltip from "./Tooltip";
-import { useAirportContext } from "./AirportContextProvider";
+import Tooltip from "@/components/ui/Tooltip";
+import { useAirportContext } from "@/providers/AirportContextProvider";
 import {
   CIRCUIT_LEGS,
   CIRCUIT_ALTITUDES,
   mirrorHeading,
   type CircuitDirection,
-} from "@/lib/traffic-circuit";
-import { langStore, type Lang } from "@/lib/ui-lang";
+} from "@/lib/reference/traffic-circuit";
+import { langStore, type Lang } from "@/lib/reference/lang";
 
 /** Runway "13" -> magnetic heading 130. */
 function runwayHeading(runway: string): number {

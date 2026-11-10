@@ -1,5 +1,5 @@
 import { Navigation } from "lucide-react";
-import AirportPicker, { type AirportCard } from "@/components/AirportPicker";
+import AirportPicker, { type AirportCard } from "@/components/airport/AirportPicker";
 import { getAllAirports, getCharts, getProcedures } from "@/lib/content";
 
 export default function HomePage() {
