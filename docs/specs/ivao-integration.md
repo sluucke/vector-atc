@@ -448,7 +448,7 @@ Possible states:
 ⚠ CONNECTION ERROR
 ```
 
-Keep the visual treatment consistent with the existing `DESIGN.md` semantic status system.
+Keep the visual treatment consistent with the existing `docs/design/dark.md` semantic status system.
 
 ---
 

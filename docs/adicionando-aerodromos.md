@@ -1,12 +1,13 @@
 # Adicionando um aeródromo
 
-Dois comandos e uma revisão manual curta. O grosso do trabalho é automático:
+Três comandos e uma revisão manual curta. O grosso do trabalho é automático:
 as cartas e a geometria dos procedimentos vêm das *coding tables* do DECEA, que
 são a fonte autoritativa de coordenadas e sequência de pernas.
 
 ```bash
-node scripts/sync-airport.mjs SBGR    # rede: baixa cartas + coding tables
-node scripts/build-content.mjs SBGR   # offline: deriva procedimentos + meta
+npm run sync:airport -- SBGR    # rede: baixa cartas + coding tables
+npm run build:content -- SBGR   # offline: deriva procedimentos + meta
+npm run sync:rea                # rede: cartas REA de todas as TMAs conhecidas
 ```
 
 Depois disso o aeródromo já aparece na aplicação. O que sobra é revisão.
@@ -15,7 +16,7 @@ Depois disso o aeródromo já aparece na aplicação. O que sobra é revisão.
 
 ## O que cada script faz
 
-### `sync-airport.mjs <ICAO>` — busca na rede
+### `sync:airport` (`scripts/sync-airport.ts`) — busca na rede
 
 Consulta a API pública do AISWEB (`area=cartas`) e, para cada carta publicada:
 
@@ -28,7 +29,7 @@ Escreve `content/<ICAO>/charts.json` e `content/<ICAO>/geometry.json`.
 É o passo lento (dezenas de PDFs). Cartas AOC são ignoradas de propósito — não
 se usam em controle e dobrariam o tamanho do repositório.
 
-### `build-content.mjs <ICAO>` — deriva o conteúdo
+### `build:content` (`scripts/build-content.ts`) — deriva o conteúdo
 
 Lê o que o sync gravou e produz:
 
@@ -42,7 +43,7 @@ Lê o que o sync gravou e produz:
 Não faz requisição de rede exceto para o ROTAER na primeira geração do meta.
 Pode rodar quantas vezes quiser.
 
-### `sync-rea.mjs` — cartas REA (Rotas Especiais de Aeronaves)
+### `sync:rea` (`scripts/sync-rea.ts`) — cartas REA (Rotas Especiais de Aeronaves)
 
 Script à parte porque essas cartas não vivem na API `area=cartas` do AISWEB —
 uma consulta com `icaoCode` de qualquer aeródromo ou TMA sempre volta vazia.
@@ -54,7 +55,7 @@ Belo Horizonte (SBBH+SBCF) e Natal (SBNT+SBSG) compartilham uma carta; São
 Paulo publica duas (XP1/XP2, north/south) que aparecem como duas entradas.
 
 ```bash
-node scripts/sync-rea.mjs
+npm run sync:rea
 ```
 
 Não recebe ICAO como argumento — sincroniza as TMAs conhecidas de uma vez. Ao
@@ -62,11 +63,24 @@ adicionar um aeródromo novo, é preciso primeiro achar sua TMA na tabela da
 página (o prefixo antes do nome, tipo `xt` em "CCV REA XT-Natal") e acrescentar
 a entrada em `TMA_AIRPORTS` no topo do script.
 
+O `sync:airport` preserva as entradas REA já gravadas em `charts.json`, então a
+ordem entre os dois scripts não importa num re-sync.
+
+### `sync:frequencies` (`scripts/set-network-frequencies.ts`)
+
+Grava em cada `meta.json` as frequências das posições da divisão IVAO Brasil
+(APP e centro), separadas das frequências da carta. Ao adicionar um aeródromo,
+acrescente a entrada em `APPROACH` no script e rode:
+
+```bash
+npm run sync:frequencies
+```
+
 ---
 
 ## Campos preservados entre execuções
 
-`build-content.mjs` **nunca sobrescreve texto escrito à mão**. Se o
+`build:content` **nunca sobrescreve texto escrito à mão**. Se o
 `procedures.json` já existir, estes campos são mantidos:
 
 | Campo | Onde |
@@ -155,12 +169,14 @@ sync mostra `0 proc` e a carta segue navegável, só sem `MAPA`. Compare
 
 **Pistas paralelas.** Procedimentos podem servir várias pistas de uma vez
 (`11L/11R`). A comparação usa pertencimento, não igualdade — veja
-`src/lib/runway-match.ts`.
+`src/lib/ops/runway-match.ts`.
 
 **Cabeceiras ausentes.** Nem todo aeródromo publica THR nas coding tables de
-aproximação; aí só há o DER das SID. A detecção de pista lida com os dois, mas
-precisa da pista **recíproca** presente (11L precisa de 29R) para calcular o
-rumo.
+aproximação; aí só há o DER das SID. A detecção de pista usa primeiro o curso
+verdadeiro publicado na primeira perna das SID (`runwayCourses` em
+`geometry.json`), depois o par de cabeceiras. Se nenhum dos dois existir para
+um par de pistas (caso das paralelas 16/34 de SBNT), a pista daquele par só é
+escolhida à mão.
 
 **Nomes de procedimento.** O `id` sai de nome + tipo (`sid-esbux6a`). Se dois
 aeródromos tiverem procedimentos homônimos não há conflito — os arquivos são
@@ -175,9 +191,10 @@ execuções, então um laço resolve:
 
 ```bash
 for icao in SBGR SBSP SBRJ SBGL SBCF; do
-  node scripts/sync-airport.mjs "$icao"
-  node scripts/build-content.mjs "$icao"
+  npm run sync:airport -- "$icao"
+  npm run build:content -- "$icao"
 done
+npm run sync:rea
 ```
 
 Dois cuidados:

@@ -4,7 +4,7 @@
 
 We are building **Vector ATC Operations Dashboard**, a high-density, mission-critical desktop interface for virtual air traffic controllers.
 
-The existing visual direction is already defined in `DESIGN.md` and must be preserved. The application uses a dark tactical aviation aesthetic, dense information layout, Inter/IBM Plex Mono typography, cyan/amber/emerald semantic accents, and a fixed multi-pane desktop layout.
+The existing visual direction is already defined in `docs/design/dark.md` and must be preserved. The application uses a dark tactical aviation aesthetic, dense information layout, Inter/IBM Plex Mono typography, cyan/amber/emerald semantic accents, and a fixed multi-pane desktop layout.
 
 The application should feel like a professional aviation operations tool, not a generic SaaS dashboard.
 
@@ -17,7 +17,7 @@ The existing design specification explicitly calls for:
 - High information density and minimal whitespace.
 - Monospaced typography for technical aviation data.
 
-Reference: `DESIGN.md`.
+Reference: `docs/design/dark.md`.
 
 `AGENTS.md` contains an important Next.js instruction: before writing code, inspect the relevant Next.js documentation inside `node_modules/next/dist/docs/` because this project may use a version with breaking changes. Follow those local docs rather than relying on memory.
 
@@ -70,7 +70,7 @@ When an airport is selected, show an airport context header containing:
 - Pin/favorite action
 - Quick actions
 
-Follow the existing `DESIGN.md` airport context header pattern.
+Follow the existing `docs/design/dark.md` airport context header pattern.
 
 ---
 
@@ -309,7 +309,7 @@ Do not make the user reopen or search for the procedure after switching views.
 
 # Departure Explorer
 
-The right operational sidebar should include a departure flow view based on the existing `DESIGN.md`.
+The right operational sidebar should include a departure flow view based on the existing `docs/design/dark.md`.
 
 Show aircraft such as:
 
@@ -523,7 +523,7 @@ Potential technologies to investigate:
 
 Prefer an implementation that allows us to keep ownership of the procedure visualization layer and supports custom styling.
 
-The map should visually integrate into the existing `DESIGN.md` dark tactical environment.
+The map should visually integrate into the existing `docs/design/dark.md` dark tactical environment.
 
 ---
 
@@ -673,7 +673,7 @@ Before implementing the full feature:
 ## Phase 1 — Inspect Existing Project
 
 - Inspect the repository.
-- Read `CLAUDE.md`, `AGENTS.md`, and `DESIGN.md`.
+- Read `CLAUDE.md`, `AGENTS.md`, and `docs/design/dark.md`.
 - Inspect the existing Next.js version.
 - Read the relevant local Next.js documentation under `node_modules/next/dist/docs/` before writing code.
 - Identify existing components, routing, styling, state management, and data models.
@@ -760,7 +760,7 @@ Prioritize:
 5. Excellent procedure navigation
 6. Seamless map/chart switching
 7. Fast departure filtering
-8. Visual consistency with `DESIGN.md`
+8. Visual consistency with `docs/design/dark.md`
 
 Avoid:
 
@@ -792,4 +792,4 @@ The first implementation should allow a user to:
 11. Identify aircraft using a specific procedure.
 12. Use the entire workflow without leaving the application.
 
-The implementation should look and behave consistently with `DESIGN.md`, respect the repository instructions in `AGENTS.md`, and follow the actual Next.js version's local documentation rather than assumptions from memory.
+The implementation should look and behave consistently with `docs/design/dark.md`, respect the repository instructions in `AGENTS.md`, and follow the actual Next.js version's local documentation rather than assumptions from memory.
