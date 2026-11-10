@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Sidebar from "@/components/layout/Sidebar";
 import { IvaoSessionProvider } from "@/providers/IvaoSessionProvider";
 import { categoryEntries } from "@/lib/charts/inventory";
+import { CATEGORY_ORDER } from "@/lib/charts/relevance";
 import { AirportContextProvider } from "@/providers/AirportContextProvider";
 import TopBar from "@/components/layout/TopBar";
 import AirportContextHeader from "@/components/airport/AirportContextHeader";
@@ -39,7 +40,7 @@ export default async function AirportLayout(props: LayoutProps<"/[icao]">) {
       fix: p.transitions?.[0]?.fix ?? null,
     }));
 
-  const categories = ["SID", "STAR", "IAC", "ADC", "VAC", "REA", "PDC", "AOC"]
+  const categories = CATEGORY_ORDER
     .map((type) => ({
       type,
       count: categoryEntries(meta.icao, charts, procedures, type).length,

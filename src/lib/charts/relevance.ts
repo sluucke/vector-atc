@@ -10,10 +10,27 @@ const BY_POSITION: Record<string, string[]> = {
   DEL: ["SID", "ADC", "PDC"],
   GND: ["ADC", "PDC", "SID"],
   TWR: ["ADC", "SID", "IAC", "VAC", "REA"],
-  APP: ["STAR", "IAC", "SID", "VAC", "REA"],
-  DEP: ["SID", "STAR"],
-  CTR: ["SID", "STAR"],
+  APP: ["STAR", "IAC", "SID", "VAC", "REA", "ARC", "ATCSMAC"],
+  DEP: ["SID", "STAR", "ARC", "ATCSMAC"],
+  CTR: ["SID", "STAR", "ARC"],
 };
+
+/**
+ * Every chart category the console shows, in display order. Procedures first,
+ * then the aerodrome's own charts, then those published for its whole TMA.
+ */
+export const CATEGORY_ORDER = [
+  "SID",
+  "STAR",
+  "IAC",
+  "ADC",
+  "VAC",
+  "REA",
+  "ARC",
+  "ATCSMAC",
+  "PDC",
+  "AOC",
+];
 
 /** Null when the position has no sensible narrowing (FSS, observer, unknown). */
 export function relevantCategories(position: string | null | undefined) {
@@ -30,4 +47,6 @@ export const CATEGORY_LABELS: Record<string, string> = {
   PDC: "Pátio",
   AOC: "Obstáculos",
   REA: "Rotas Especiais",
+  ARC: "Área",
+  ATCSMAC: "Vetoração",
 };

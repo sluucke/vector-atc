@@ -18,6 +18,7 @@ import PdfCanvas from "./PdfCanvas";
 import BackToAirport from "./BackToAirport";
 import Tooltip from "@/components/ui/Tooltip";
 import { usePaneClass } from "@/components/layout/MobilePanes";
+import { CATEGORY_ORDER } from "@/lib/charts/relevance";
 import type { AirportGeometry, Chart, Procedure } from "@/lib/types";
 
 const ProcedureMap = dynamic(() => import("./ProcedureMap"), {
@@ -29,7 +30,6 @@ const ProcedureMap = dynamic(() => import("./ProcedureMap"), {
   ),
 });
 
-const TYPE_ORDER = ["SID", "STAR", "IAC", "ADC", "VAC", "PDC"];
 const MIN_ZOOM = 0.4;
 const MAX_ZOOM = 6;
 
@@ -65,7 +65,7 @@ export default function ChartWorkspace({
 
   const hasMap = Boolean(procedure && geometry && procedure.geometryKey);
 
-  const grouped = TYPE_ORDER.map((type) => ({
+  const grouped = CATEGORY_ORDER.map((type) => ({
     type,
     items: charts.filter((c) => c.type === type),
   })).filter((g) => g.items.length > 0);

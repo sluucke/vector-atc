@@ -13,6 +13,24 @@
       "file": "/charts/SBSV/adc-sbsv-adc-sbsv-adc.pdf"
     },
     {
+      "key": "arc-sbxs",
+      "type": "ARC",
+      "name": "ARC SALVADOR",
+      "code": "SBXS",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBSV/arc-sbxs-arc-salvador.pdf"
+    },
+    {
+      "key": "atcsmac-sbxs",
+      "type": "ATCSMAC",
+      "name": "TMA SALVADOR",
+      "code": "SBXS",
+      "amdt": "2608A1",
+      "date": "2026-08-06",
+      "file": "/charts/SBSV/atcsmac-sbxs-tma-salvador.pdf"
+    },
+    {
       "key": "SV03I",
       "type": "IAC",
       "name": "ILS X RWY 28",
@@ -133,10 +151,10 @@
       "key": "rea-xs",
       "type": "REA",
       "name": "XS-Salvador",
-      "code": "XS",
+      "code": "SBXS",
       "amdt": "2412A1",
       "date": "2024-11-28",
-      "file": "/charts/SBSV/rea-xs-ccv-rea-xs-salvador.pdf"
+      "file": "/charts/SBSV/rea-xs-xs-salvador.pdf"
     },
     {
       "key": "omni-rwy-10-28",

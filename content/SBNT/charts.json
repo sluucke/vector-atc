@@ -13,6 +13,24 @@
       "file": "/charts/SBNT/adc-adc-sbnt-adc-sbnt.pdf"
     },
     {
+      "key": "arc-sbxt",
+      "type": "ARC",
+      "name": "ARC NATAL",
+      "code": "SBXT",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBNT/arc-sbxt-arc-natal.pdf"
+    },
+    {
+      "key": "atcsmac-sbxt",
+      "type": "ATCSMAC",
+      "name": "TMA NATAL",
+      "code": "SBXT",
+      "amdt": "2501A1",
+      "date": "2025-01-23",
+      "file": "/charts/SBNT/atcsmac-sbxt-tma-natal.pdf"
+    },
+    {
       "key": "NT00I",
       "type": "IAC",
       "name": "ILS X OR LOC X RWY 16L",
@@ -151,10 +169,10 @@
       "key": "rea-xt",
       "type": "REA",
       "name": "XT-Natal",
-      "code": "XT",
+      "code": "SBXT",
       "amdt": "2503A1",
       "date": "2025-03-20",
-      "file": "/charts/SBNT/rea-xt-ccv-rea-xt-natal.pdf"
+      "file": "/charts/SBNT/rea-xt-xt-natal.pdf"
     },
     {
       "key": "NT00D",

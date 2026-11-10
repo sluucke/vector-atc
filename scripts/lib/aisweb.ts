@@ -5,6 +5,12 @@ import { aiswebUrl } from "../../src/lib/ops/aisweb-credentials";
 
 const HEADERS = { "User-Agent": "vector-atc/1.0" };
 
+/**
+ * Chart types published per TMA and copied in by sync:tma. sync:airport only
+ * knows the aerodrome's own charts, so it keeps these when it rewrites.
+ */
+export const TMA_CHART_TYPES = new Set(["ARC", "ATCSMAC", "REA"]);
+
 /** GETs one AISWEB API area as text. */
 export async function fetchAisweb(area: string, icao: string): Promise<string> {
   const res = await fetch(aiswebUrl(area, icao), { headers: HEADERS });

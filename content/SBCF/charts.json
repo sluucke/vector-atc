@@ -13,6 +13,24 @@
       "file": "/charts/SBCF/adc-sbcf-adc-sbcf-adc.pdf"
     },
     {
+      "key": "arc-sbwh",
+      "type": "ARC",
+      "name": "ARC BELO HORIZONTE",
+      "code": "SBWH",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBCF/arc-sbwh-arc-belo-horizonte.pdf"
+    },
+    {
+      "key": "atcsmac-sbwh",
+      "type": "ATCSMAC",
+      "name": "TMA BELO HORIZONTE",
+      "code": "SBWH",
+      "amdt": "2504A1",
+      "date": "2025-04-17",
+      "file": "/charts/SBCF/atcsmac-sbwh-tma-belo-horizonte.pdf"
+    },
+    {
       "key": "CF00Y",
       "type": "IAC",
       "name": "ILS K RWY 16",
@@ -142,10 +160,10 @@
       "key": "rea-wh",
       "type": "REA",
       "name": "WH-Belo Horizonte",
-      "code": "WH",
+      "code": "SBWH",
       "amdt": "2409A0",
       "date": "2024-09-05",
-      "file": "/charts/SBCF/rea-wh-ccv-rea-wh-belo-horizonte.pdf"
+      "file": "/charts/SBCF/rea-wh-wh-belo-horizonte.pdf"
     },
     {
       "key": "omni-rwy-16-34",

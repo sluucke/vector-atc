@@ -13,6 +13,8 @@ import {
   ParkingSquare,
   FileText,
   Route,
+  Map as MapIcon,
+  Radar,
 } from "lucide-react";
 import { useAirportContext } from "@/providers/AirportContextProvider";
 import { CATEGORY_LABELS } from "@/lib/charts/relevance";
@@ -28,6 +30,8 @@ const CATEGORY_ICONS: Record<
   ADC: Building2,
   VAC: Eye,
   REA: Route,
+  ARC: MapIcon,
+  ATCSMAC: Radar,
   PDC: ParkingSquare,
 };
 

@@ -13,7 +13,15 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { download, fetchAisweb, icaoArg, slug, tag, today } from "./lib/aisweb";
+import {
+  TMA_CHART_TYPES,
+  download,
+  fetchAisweb,
+  icaoArg,
+  slug,
+  tag,
+  today,
+} from "./lib/aisweb";
 import { pdfRows } from "./lib/pdf";
 import { AISWEB_API } from "../src/lib/ops/aisweb-credentials";
 import type {
@@ -170,15 +178,15 @@ if (items.length === 0) {
 fs.mkdirSync(chartsDir, { recursive: true });
 fs.mkdirSync(contentDir, { recursive: true });
 
-// REA charts come from scripts/sync-rea.ts, not from this API, so keep them.
+// TMA charts (ARC, ATCSMAC, REA) come from scripts/sync-tma.ts, so keep them.
 const catalogPath = path.join(contentDir, "charts.json");
-const previousRea: Chart[] = fs.existsSync(catalogPath)
+const tmaCharts: Chart[] = fs.existsSync(catalogPath)
   ? (JSON.parse(fs.readFileSync(catalogPath, "utf-8")) as ChartCatalog).charts.filter(
-      (c) => c.type === "REA"
+      (c) => TMA_CHART_TYPES.has(c.type)
     )
   : [];
 
-const charts: Chart[] = [...previousRea];
+const charts: Chart[] = [...tmaCharts];
 const allFixes: Record<string, GeoPoint> = {};
 const allRunwayPoints: RunwayPoints = {};
 const allRunwayCourses: Record<string, number> = {};

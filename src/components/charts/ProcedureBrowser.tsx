@@ -13,17 +13,18 @@ import {
   FileText,
   Wand2,
   Route,
+  Map as MapIcon,
+  Radar,
 } from "lucide-react";
 import { useIvaoSession } from "@/providers/IvaoSessionProvider";
 import { useAirportContext } from "@/providers/AirportContextProvider";
 import RunwayFilterToggle from "@/components/airport/RunwayFilterToggle";
 import { usePaneClass } from "@/components/layout/MobilePanes";
 import { servesRunway } from "@/lib/ops/runway-match";
-import { CATEGORY_LABELS } from "@/lib/charts/relevance";
+import { CATEGORY_LABELS, CATEGORY_ORDER } from "@/lib/charts/relevance";
 import { categoryEntries } from "@/lib/charts/inventory";
 import type { Chart, Procedure } from "@/lib/types";
 
-const CATEGORY_ORDER = ["SID", "STAR", "IAC", "ADC", "VAC", "REA", "PDC", "AOC"];
 
 const CATEGORY_ICONS: Record<
   string,
@@ -35,6 +36,8 @@ const CATEGORY_ICONS: Record<
   ADC: Building2,
   VAC: Eye,
   REA: Route,
+  ARC: MapIcon,
+  ATCSMAC: Radar,
   PDC: ParkingSquare,
 };
 

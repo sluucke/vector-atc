@@ -49,6 +49,24 @@
       "file": "/charts/SBRF/agmc-dep-36-dep-36.pdf"
     },
     {
+      "key": "arc-sbwf",
+      "type": "ARC",
+      "name": "ARC RECIFE",
+      "code": "SBWF",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBRF/arc-sbwf-arc-recife.pdf"
+    },
+    {
+      "key": "atcsmac-sbwf",
+      "type": "ATCSMAC",
+      "name": "TMA RECIFE",
+      "code": "SBWF",
+      "amdt": "2402A1",
+      "date": "2024-02-22",
+      "file": "/charts/SBRF/atcsmac-sbwf-tma-recife.pdf"
+    },
+    {
       "key": "RF01L",
       "type": "IAC",
       "name": "ILS W RWY 18",
@@ -142,10 +160,10 @@
       "key": "rea-wf",
       "type": "REA",
       "name": "WF-RECIFE",
-      "code": "WF",
+      "code": "SBWF",
       "amdt": "2611A0",
       "date": "2026-10-29",
-      "file": "/charts/SBRF/rea-wf-ccv-rea-wf-recife.pdf"
+      "file": "/charts/SBRF/rea-wf-wf-recife.pdf"
     },
     {
       "key": "omni-rwy-18-36",

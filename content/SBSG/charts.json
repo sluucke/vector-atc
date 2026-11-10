@@ -13,6 +13,24 @@
       "file": "/charts/SBSG/adc-sbsg-adc-sbsg-adc.pdf"
     },
     {
+      "key": "arc-sbxt",
+      "type": "ARC",
+      "name": "ARC NATAL",
+      "code": "SBXT",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBSG/arc-sbxt-arc-natal.pdf"
+    },
+    {
+      "key": "atcsmac-sbxt",
+      "type": "ATCSMAC",
+      "name": "TMA NATAL",
+      "code": "SBXT",
+      "amdt": "2501A1",
+      "date": "2025-01-23",
+      "file": "/charts/SBSG/atcsmac-sbxt-tma-natal.pdf"
+    },
+    {
       "key": "SG00J",
       "type": "IAC",
       "name": "ILS Y RWY 12",
@@ -97,10 +115,10 @@
       "key": "rea-xt",
       "type": "REA",
       "name": "XT-Natal",
-      "code": "XT",
+      "code": "SBXT",
       "amdt": "2503A1",
       "date": "2025-03-20",
-      "file": "/charts/SBSG/rea-xt-ccv-rea-xt-natal.pdf"
+      "file": "/charts/SBSG/rea-xt-xt-natal.pdf"
     },
     {
       "key": "omni-rwy-12-30",

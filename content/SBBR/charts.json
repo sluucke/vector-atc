@@ -85,6 +85,24 @@
       "file": "/charts/SBBR/agmc-dep-29r-dep-29r.pdf"
     },
     {
+      "key": "arc-sbwr",
+      "type": "ARC",
+      "name": "ARC BRASÍLIA",
+      "code": "SBWR",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBBR/arc-sbwr-arc-brasilia.pdf"
+    },
+    {
+      "key": "atcsmac-sbwr",
+      "type": "ATCSMAC",
+      "name": "TMA BRASÍLIA",
+      "code": "SBWR",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBBR/atcsmac-sbwr-tma-brasilia.pdf"
+    },
+    {
       "key": "BR04G",
       "type": "IAC",
       "name": "IAC ILS U OR LOC U RWY 11L",
@@ -349,10 +367,10 @@
       "key": "rea-wr",
       "type": "REA",
       "name": "WR-Brasília",
-      "code": "WR",
+      "code": "SBWR",
       "amdt": "2401A1",
       "date": "2024-01-25",
-      "file": "/charts/SBBR/rea-wr-ccv-rea-wr-brasilia.pdf"
+      "file": "/charts/SBBR/rea-wr-wr-brasilia.pdf"
     },
     {
       "key": "BR00I",

@@ -13,6 +13,24 @@
       "file": "/charts/SBRJ/adc-sbrj-adc-sbrj-adc.pdf"
     },
     {
+      "key": "arc-sbwj",
+      "type": "ARC",
+      "name": "ARC RIO DE JANEIRO",
+      "code": "SBWJ",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBRJ/arc-sbwj-arc-rio-de-janeiro.pdf"
+    },
+    {
+      "key": "atcsmac-sbwj",
+      "type": "ATCSMAC",
+      "name": "TMA RIO DE JANEIRO",
+      "code": "SBWJ",
+      "amdt": "2603A1",
+      "date": "2026-03-19",
+      "file": "/charts/SBRJ/atcsmac-sbwj-tma-rio-de-janeiro.pdf"
+    },
+    {
       "key": "RJ02X",
       "type": "IAC",
       "name": "RNP A RWY 02R",
@@ -151,10 +169,10 @@
       "key": "rea-wj1",
       "type": "REA",
       "name": "WJ1-RIO DE JANEIRO",
-      "code": "WJ1",
+      "code": "SBWJ",
       "amdt": "2603A1",
       "date": "2026-03-19",
-      "file": "/charts/SBRJ/rea-wj1-ccv-rea-wj1-rio-de-janeiro.pdf"
+      "file": "/charts/SBRJ/rea-wj1-wj1-rio-de-janeiro.pdf"
     },
     {
       "key": "RJ02O",

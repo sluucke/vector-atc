@@ -13,6 +13,24 @@
       "file": "/charts/SBFL/adc-sbfl-adc-sbfl-adc.pdf"
     },
     {
+      "key": "arc-sbxf",
+      "type": "ARC",
+      "name": "ARC FLORIANÓPOLIS",
+      "code": "SBXF",
+      "amdt": "2610A1",
+      "date": "2026-10-01",
+      "file": "/charts/SBFL/arc-sbxf-arc-florianopolis.pdf"
+    },
+    {
+      "key": "atcsmac-sbxf",
+      "type": "ATCSMAC",
+      "name": "TMA FLORIANÓPOLIS",
+      "code": "SBXF",
+      "amdt": "2504A1",
+      "date": "2025-04-17",
+      "file": "/charts/SBFL/atcsmac-sbxf-tma-florianopolis.pdf"
+    },
+    {
       "key": "FL00P",
       "type": "IAC",
       "name": "ILS X RWY 14",
@@ -106,10 +124,10 @@
       "key": "rea-xf",
       "type": "REA",
       "name": "XF-FLORIANÓPOLIS",
-      "code": "XF",
+      "code": "SBXF",
       "amdt": "2410A1",
       "date": "2024-10-03",
-      "file": "/charts/SBFL/rea-xf-ccv-rea-xf-florianopolis.pdf"
+      "file": "/charts/SBFL/rea-xf-xf-florianopolis.pdf"
     },
     {
       "key": "omni-rwy-14-32",

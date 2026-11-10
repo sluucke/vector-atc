@@ -4,6 +4,7 @@ import ChartCategorySection from "@/components/charts/ChartCategorySection";
 import MainPane from "@/components/layout/MainPane";
 import OperationalPanel from "@/components/operations/OperationalPanel";
 import ProcedureTables from "@/components/charts/ProcedureTables";
+import { CATEGORY_ORDER } from "@/lib/charts/relevance";
 import {
   getAirportCodes,
   getAirportMeta,
@@ -12,7 +13,7 @@ import {
 } from "@/lib/content";
 
 /** Everything except SID/STAR, which render as detailed tables above. */
-const OTHER_CATEGORIES = ["IAC", "ADC", "VAC", "REA", "PDC", "AOC"];
+const OTHER_CATEGORIES = CATEGORY_ORDER.filter((c) => c !== "SID" && c !== "STAR");
 
 export function generateStaticParams() {
   return getAirportCodes().map((icao) => ({ icao: icao.toLowerCase() }));
