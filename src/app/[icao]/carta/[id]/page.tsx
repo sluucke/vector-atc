@@ -69,7 +69,7 @@ export default async function CartaPage(
       <aside className="w-72 shrink-0 hidden lg:flex flex-col bg-panel border-l border-line overflow-y-auto">
         <div className="shrink-0 p-3 border-b border-line">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-base font-semibold">
+            <span className="font-mono text-[1rem] font-semibold text-ink">
               {procedure.name}
             </span>
             <span

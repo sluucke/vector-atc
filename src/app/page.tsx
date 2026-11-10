@@ -48,7 +48,7 @@ export default function HomePage() {
             <br className="hidden sm:block" />
             exige, em uma tela só.
           </h1>
-          <p className="mt-5 text-base text-ink-dim leading-relaxed">
+          <p className="mt-5 text-[1rem] text-ink-dim leading-relaxed">
             Cartas oficiais DECEA/AISWEB abertas no navegador, procedimentos com
             transições e fixos, pista em uso, METAR, nível de transição, NOTAM e
             o tráfego IVAO ao vivo ligado ao plano de voo de cada aeronave.
