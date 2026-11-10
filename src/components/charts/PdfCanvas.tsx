@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as pdfjs from "pdfjs-dist";
 import type { PDFDocumentProxy, RenderTask } from "pdfjs-dist";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
@@ -31,6 +32,10 @@ export default function PdfCanvas({
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
     "loading"
   );
+  // Many charts carry more than one sheet: coding tables, the textual
+  // description of a SID, or a second procedure on the back.
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
 
   // Load the document whenever the chart changes.
   useEffect(() => {
@@ -42,6 +47,8 @@ export default function PdfCanvas({
         if (cancelled) return;
         docRef.current = doc;
         setOffset({ x: 0, y: 0 });
+        setPage(1);
+        setPages(doc.numPages);
         setStatus("ready");
       },
       () => {
@@ -62,15 +69,15 @@ export default function PdfCanvas({
     const viewport = viewportRef.current;
     if (!doc || !canvas || !viewport) return;
 
-    const page = await doc.getPage(1);
-    const base = page.getViewport({ scale: 1, rotation });
+    const sheet = await doc.getPage(Math.min(page, doc.numPages));
+    const base = sheet.getViewport({ scale: 1, rotation });
     const fit = Math.min(
       viewport.clientWidth / base.width,
       viewport.clientHeight / base.height
     );
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const scaled = page.getViewport({ scale: fit * zoom, rotation });
+    const scaled = sheet.getViewport({ scale: fit * zoom, rotation });
 
     taskRef.current?.cancel();
     canvas.width = Math.floor(scaled.width * dpr);
@@ -82,14 +89,34 @@ export default function PdfCanvas({
     if (!context) return;
     context.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const task = page.render({ canvas, canvasContext: context, viewport: scaled });
+    const task = sheet.render({ canvas, canvasContext: context, viewport: scaled });
     taskRef.current = task;
     try {
       await task.promise;
     } catch {
       // Cancelled by a newer render — expected while zooming.
     }
-  }, [zoom, rotation]);
+  }, [zoom, rotation, page]);
+
+  const goTo = useCallback(
+    (next: number) => {
+      setPage(Math.min(pages, Math.max(1, next)));
+      setOffset({ x: 0, y: 0 });
+    },
+    [pages]
+  );
+
+  useEffect(() => {
+    if (pages < 2) return;
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("input, textarea, [contenteditable]")) return;
+      if (e.key === "PageDown") goTo(page + 1);
+      else if (e.key === "PageUp") goTo(page - 1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [pages, page, goTo]);
 
   useEffect(() => {
     if (status === "ready") void render();
@@ -148,6 +175,50 @@ export default function PdfCanvas({
           className="shadow-2xl rounded-sm bg-white select-none"
         />
       </div>
+
+      {status === "ready" && pages > 1 && (
+        <div
+          onPointerDown={(e) => e.stopPropagation()}
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1 rounded-md border border-line bg-raised/95 px-1 py-1 shadow-lg backdrop-blur cursor-default"
+        >
+          <button
+            type="button"
+            onClick={() => goTo(page - 1)}
+            disabled={page === 1}
+            aria-label="Página anterior"
+            className="grid h-7 w-7 place-items-center rounded text-ink-dim hover:bg-hover hover:text-ink disabled:opacity-30 disabled:hover:bg-transparent"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <div className="flex items-center gap-0.5 px-1">
+            {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+              <button
+                key={n}
+                type="button"
+                onClick={() => goTo(n)}
+                aria-label={`Página ${n}`}
+                aria-current={n === page ? "page" : undefined}
+                className={`h-7 min-w-7 rounded px-1.5 font-mono text-[11px] ${
+                  n === page
+                    ? "bg-signal/15 text-signal"
+                    : "text-ink-dim hover:bg-hover hover:text-ink"
+                }`}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => goTo(page + 1)}
+            disabled={page === pages}
+            aria-label="Próxima página"
+            className="grid h-7 w-7 place-items-center rounded text-ink-dim hover:bg-hover hover:text-ink disabled:opacity-30 disabled:hover:bg-transparent"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
 
       {status !== "ready" && (
         <div className="absolute inset-0 grid place-items-center pointer-events-none">
