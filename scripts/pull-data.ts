@@ -15,7 +15,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
+import zlib from "node:zlib";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import type { ReadableStream } from "node:stream/web";
@@ -77,13 +77,53 @@ async function readManifest(): Promise<Manifest> {
   return (await res.json()) as Manifest;
 }
 
-/** Unpacks into a fresh directory; relative paths keep GNU tar on Windows happy. */
+/**
+ * Unpacks a tar archive into a fresh directory. Read in Node rather than with
+ * a tar binary, which build images do not always ship. Handles the ustar
+ * prefix, pax and GNU long names; only files and directories are written.
+ */
 function unpack(archive: string, dir: string, gzip: boolean) {
   fs.rmSync(dir, { recursive: true, force: true });
   fs.mkdirSync(dir, { recursive: true });
-  execFileSync("tar", [gzip ? "-xzf" : "-xf", archive.replaceAll("\\", "/"), "-C", dir.replaceAll("\\", "/")], {
-    stdio: "inherit",
-  });
+  const root = path.resolve(dir);
+  const raw = fs.readFileSync(archive);
+  const data = gzip ? zlib.gunzipSync(raw) : raw;
+
+  const text = (start: number, length: number) =>
+    data.toString("utf8", start, start + length).replace(/\0.*$/s, "");
+  let longName: string | null = null;
+  let offset = 0;
+
+  while (offset + 512 <= data.length) {
+    const header = offset;
+    if (data[header] === 0) break; // two zero blocks end the archive
+    const size = parseInt(text(header + 124, 12).trim() || "0", 8);
+    const type = String.fromCharCode(data[header + 156] || 48);
+    const prefix = text(header + 345, 155);
+    let name = text(header, 100);
+    if (prefix) name = `${prefix}/${name}`;
+    const body = header + 512;
+    offset = body + Math.ceil(size / 512) * 512;
+
+    if (type === "x" || type === "L") {
+      const value = data.toString("utf8", body, body + size);
+      longName = type === "L" ? value.replace(/\0.*$/s, "") : (value.match(/\d+ path=([^\n]*)\n/)?.[1] ?? null);
+      continue;
+    }
+    if (longName) name = longName;
+    longName = null;
+    if (type === "g") continue;
+
+    const target = path.resolve(root, name);
+    if (target !== root && !target.startsWith(root + path.sep)) {
+      throw new Error(`Entrada fora do destino no arquivo: ${name}`);
+    }
+    if (type === "5") fs.mkdirSync(target, { recursive: true });
+    else if (type === "0" || type === "7") {
+      fs.mkdirSync(path.dirname(target), { recursive: true });
+      fs.writeFileSync(target, data.subarray(body, body + size));
+    }
+  }
 }
 
 let manifest: Manifest;
