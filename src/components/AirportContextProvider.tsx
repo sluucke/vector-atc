@@ -10,7 +10,7 @@ import {
 } from "react";
 import { useIvaoSession } from "./IvaoSessionProvider";
 import { relevantCategories } from "@/lib/chart-relevance";
-import type { AirportDynamicContext } from "@/app/api/airport/[icao]/route";
+import type { AirportDynamicContext } from "@/lib/ops/briefing";
 
 const POLL_MS = 60_000;
 

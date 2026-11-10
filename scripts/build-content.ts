@@ -1,44 +1,29 @@
 /**
  * Derives content/<ICAO>/procedures.json (and a meta.json skeleton) from what
- * sync-airport.mjs already downloaded.
+ * sync-airport.ts already downloaded.
  *
- *   node scripts/build-content.mjs SBBR
+ *   npm run build:content -- SBBR
  *
  * Structure comes from the DECEA coding tables; editorial fields (prose notes,
  * the operational transition altitude, observations) are preserved across runs
- * so re-syncing never overwrites hand-written text. Reads from disk only — no
- * network, safe to re-run.
+ * so re-syncing never overwrites hand-written text. Reads from disk only,
+ * except for the ROTAER lookup the first time meta.json is generated.
  */
 import fs from "node:fs";
 import path from "node:path";
-
-const API = "https://aisweb.decea.mil.br/api/";
-const API_KEY = "1587263166";
-const API_PASS = "3199249e-755b-1033-a49b-72567f175e3a";
-
-const icao = (process.argv[2] ?? "").toUpperCase();
-if (!/^[A-Z]{4}$/.test(icao)) {
-  console.error("Usage: node scripts/build-content.mjs <ICAO>");
-  process.exit(1);
-}
-
-const contentDir = path.join("content", icao);
-const read = (file) =>
-  JSON.parse(fs.readFileSync(path.join(contentDir, file), "utf-8"));
-
-/** ROTAER repeats tag names across blocks, some of them empty, so take the
- *  first occurrence that actually carries a value. */
-const tag = (xml, name) => {
-  const all = [...xml.matchAll(new RegExp("<" + name + ">([^]*?)</" + name + ">", "g"))];
-  return (
-    all
-      .map((m) => m[1].replace("<![CDATA[", "").replace("]]>", "").trim())
-      .find(Boolean) ?? ""
-  );
-};
+import { fetchAisweb, firstFilledTag, icaoArg, today } from "./lib/aisweb";
+import { AISWEB_API } from "../src/lib/ops/aisweb-credentials";
+import type {
+  AirportGeometry,
+  AirportMeta,
+  ChartCatalog,
+  Leg,
+  Procedure,
+  ProcedureType,
+} from "../src/lib/types";
 
 /** "SID RNAV UMPEL 1A RWY 10" -> { name: "UMPEL 1A", rnav: true } */
-function readTitle(title) {
+function readTitle(title: string): { name: string; rnav: boolean } {
   const body = title
     .replace(/^(SID|STAR|IAC)\s+/, "")
     .replace(/\s+RWY\s+[0-9]{2}[LRC]?(?:\/[0-9]{2}[LRC]?)*$/, "")
@@ -49,11 +34,12 @@ function readTitle(title) {
   };
 }
 
-const legFixes = (legs) => legs.map((l) => l.fix).filter(Boolean);
+const legFixes = (legs: Leg[]): string[] =>
+  legs.map((l) => l.fix).filter((f): f is string => Boolean(f));
 
-function describeLeg(legs) {
+function describeLeg(legs: Leg[]): string {
   const last = legs[legs.length - 1];
-  const parts = [];
+  const parts: string[] = [];
   if (last?.distance) parts.push(`${last.distance} NM`);
   if (last?.altitude) {
     parts.push(`${last.altitude.replace("+", "≥").replace("-", "≤")} ft`);
@@ -63,13 +49,17 @@ function describeLeg(legs) {
   return parts.join(" · ") || "conforme coding table";
 }
 
-function buildProcedures(geometry, existing) {
+function buildProcedures(
+  geometry: AirportGeometry,
+  existing: Procedure[]
+): Procedure[] {
   const previous = new Map(existing.map((p) => [p.id, p]));
 
   return Object.entries(geometry.procedures)
     .filter(([key]) => key.startsWith("SID|") || key.startsWith("STAR|"))
-    .map(([key, geo]) => {
-      const [type, , runway] = key.split("|");
+    .map(([key, geo]): Procedure => {
+      const [rawType, , runway] = key.split("|");
+      const type = rawType as ProcedureType;
       const { name, rnav } = readTitle(geo.title);
       const id = `${type.toLowerCase()}-${name.replace(/\s+/g, "").toLowerCase()}`;
 
@@ -77,9 +67,9 @@ function buildProcedures(geometry, existing) {
         ([label]) => label !== "RWY"
       );
       const common = geo.transitions.RWY ?? [];
-      const prior = previous.get(id) ?? {};
+      const prior: Partial<Procedure> = previous.get(id) ?? {};
 
-      const base = {
+      const base: Procedure = {
         id,
         type,
         runway,
@@ -128,17 +118,10 @@ function buildProcedures(geometry, existing) {
     );
 }
 
-async function fetchRotaer() {
-  const url = new URL(API);
-  url.searchParams.set("apiKey", API_KEY);
-  url.searchParams.set("apiPass", API_PASS);
-  url.searchParams.set("area", "rotaer");
-  url.searchParams.set("icaoCode", icao);
-  const xml = await (
-    await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } })
-  ).text();
+async function fetchRotaer(icao: string) {
+  const xml = await fetchAisweb("rotaer", icao);
 
-  const freqsOf = (pattern) => {
+  const freqsOf = (pattern: string): string[] => {
     const block = xml
       .split("<service")
       .find((s) => new RegExp(`<type>(${pattern})</type>`, "i").test(s));
@@ -150,9 +133,9 @@ async function fetchRotaer() {
   };
 
   return {
-    name: tag(xml, "name"),
-    elevation: tag(xml, "altFt"),
-    fir: tag(xml, "fir"),
+    name: firstFilledTag(xml, "name"),
+    elevation: firstFilledTag(xml, "altFt"),
+    fir: firstFilledTag(xml, "fir"),
     runways: [...xml.matchAll(/<rwy>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/rwy>/g)]
       .map((m) => m[1].trim())
       .filter(Boolean),
@@ -162,18 +145,23 @@ async function fetchRotaer() {
   };
 }
 
-const geometry = read("geometry.json");
-const charts = read("charts.json").charts;
+const icao = icaoArg("build:content");
+const contentDir = path.join("content", icao);
+const readJson = <T>(file: string): T =>
+  JSON.parse(fs.readFileSync(path.join(contentDir, file), "utf-8")) as T;
+
+const geometry = readJson<AirportGeometry>("geometry.json");
+const charts = readJson<ChartCatalog>("charts.json").charts;
 
 const proceduresPath = path.join(contentDir, "procedures.json");
-const existing = fs.existsSync(proceduresPath)
+const existing: Procedure[] = fs.existsSync(proceduresPath)
   ? JSON.parse(fs.readFileSync(proceduresPath, "utf-8"))
   : [];
 
 const procedures = buildProcedures(geometry, existing);
 fs.writeFileSync(proceduresPath, JSON.stringify(procedures, null, 2) + "\n");
 
-const counts = procedures.reduce((acc, p) => {
+const counts = procedures.reduce<Record<string, number>>((acc, p) => {
   acc[p.type] = (acc[p.type] ?? 0) + 1;
   return acc;
 }, {});
@@ -186,10 +174,10 @@ const metaPath = path.join(contentDir, "meta.json");
 if (fs.existsSync(metaPath)) {
   console.log(`${icao}: meta.json já existe — preservado.`);
 } else {
-  const rotaer = await fetchRotaer();
+  const rotaer = await fetchRotaer(icao);
   // Charts are re-issued per cycle; the newest one carries the current AIRAC.
   const newest = [...charts].sort((a, b) => b.date.localeCompare(a.date))[0];
-  const meta = {
+  const meta: AirportMeta = {
     icao,
     name: rotaer.name || "REVISAR: nome do aeródromo",
     elevation: rotaer.elevation ? `${rotaer.elevation}'` : "REVISAR",
@@ -204,8 +192,8 @@ if (fs.existsSync(metaPath)) {
     airac: {
       cycle: newest?.amdt ?? "",
       effective: newest?.date ?? "",
-      checkedAt: new Date().toISOString().slice(0, 10),
-      source: `${API}?area=cartas&icaoCode=${icao}`,
+      checkedAt: today(),
+      source: `${AISWEB_API}?area=cartas&icaoCode=${icao}`,
     },
     frequencies: {
       dAtis: rotaer.dAtis,

@@ -1,122 +1,68 @@
 /**
  * Syncs one aerodrome from the AISWEB (DECEA) public API.
  *
- *   node scripts/sync-airport.mjs SBSV
+ *   npm run sync:airport -- SBSV
  *
  * Downloads every published chart into public/charts/<ICAO>/ and parses the
  * coding tables into content/<ICAO>/{charts,geometry}.json. Coding tables are
  * the authoritative source for waypoint coordinates and leg sequences — the
  * graphic charts only draw them.
+ *
+ * Charts already on disk are not downloaded again; set REFRESH_CHARTS=1 to
+ * force it.
  */
 import fs from "node:fs";
 import path from "node:path";
-import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
+import { download, fetchAisweb, icaoArg, slug, tag, today } from "./lib/aisweb";
+import { pdfRows } from "./lib/pdf";
+import { AISWEB_API } from "../src/lib/ops/aisweb-credentials";
+import type {
+  AirportGeometry,
+  Chart,
+  ChartCatalog,
+  GeoPoint,
+  Leg,
+  ProcedureGeometry,
+} from "../src/lib/types";
 
-const API = "https://aisweb.decea.mil.br/api/";
-const API_KEY = "1587263166";
-const API_PASS = "3199249e-755b-1033-a49b-72567f175e3a";
-
-// Parking (PDC) and obstacle (AOC) charts aren't used for procedure work and
-// would double the repo size for every aerodrome.
+// Obstacle charts (AOC) aren't used for procedure work and would double the
+// repository size for every aerodrome.
 const SKIP_TYPES = new Set(["AOC"]);
 
-const icao = (process.argv[2] ?? "").toUpperCase();
-if (!/^[A-Z]{4}$/.test(icao)) {
-  console.error("Usage: node scripts/sync-airport.mjs <ICAO>");
-  process.exit(1);
+type RunwayPoints = AirportGeometry["runwayPoints"];
+
+interface ParsedProcedure {
+  type: string;
+  title: string;
+  name: string;
+  runway: string;
+  transitions: Record<string, Leg[]>;
 }
 
-const chartsDir = path.join("public", "charts", icao);
-const contentDir = path.join("content", icao);
-
-const slug = (s) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-
-const tag = (xml, name) => {
-  const m = xml.match(
-    new RegExp(`<${name}>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${name}>`)
-  );
-  return m ? m[1].trim() : "";
-};
+interface ParsedTable {
+  procedures: ParsedProcedure[];
+  fixes: Record<string, GeoPoint>;
+  runwayPoints: RunwayPoints;
+  runwayCourses: Record<string, number>;
+}
 
 /** "S 13:08:30.75" / "W 38:12:28.40" -> signed decimal degrees */
-function toDecimal(hemisphere, dms) {
+function toDecimal(hemisphere: string, dms: string): number {
   const [d, m, s] = dms.split(":").map(Number);
   const value = d + m / 60 + s / 3600;
   return hemisphere === "S" || hemisphere === "W" ? -value : value;
 }
 
 /**
- * Turns one line's text fragments into table cells.
- *
- * The generator splits words wherever it likes — a title can arrive as "S",
- * "ID", "RNAV", "EVKOX", "4", "A" — so fragments are rejoined by how far apart
- * they sit: touching means one word, a space's width means one phrase, and a
- * column's width means a new cell. Columns that overlap in x, which happens
- * where the true and magnetic courses are printed out of order, always start a
- * new cell.
- */
-function toCells(items) {
-  const GLUE = 0.5;
-  const COLUMN = 6;
-  const cells = [];
-  let end = null;
-
-  for (const item of items) {
-    const gap = end === null ? Infinity : item.x - end;
-    if (gap > COLUMN || gap < -GLUE) cells.push(item.s);
-    else if (gap < GLUE) cells[cells.length - 1] += item.s;
-    else cells[cells.length - 1] += ` ${item.s}`;
-    end = item.x + item.width;
-  }
-
-  return cells;
-}
-
-async function pdfRows(buffer) {
-  const doc = await getDocument({
-    data: new Uint8Array(buffer),
-    useSystemFonts: true,
-  }).promise;
-  const pages = [];
-  for (let p = 1; p <= doc.numPages; p++) {
-    const content = await (await doc.getPage(p)).getTextContent();
-    const byY = new Map();
-    for (const item of content.items) {
-      if (!item.str.trim()) continue;
-      const y = Math.round(item.transform[5]);
-      const key = [...byY.keys()].find((k) => Math.abs(k - y) <= 4) ?? y;
-      if (!byY.has(key)) byY.set(key, []);
-      byY.get(key).push({
-        x: item.transform[4],
-        width: item.width ?? 0,
-        s: item.str.trim(),
-      });
-    }
-    pages.push(
-      [...byY.entries()]
-        .sort((a, b) => b[0] - a[0])
-        .map(([, items]) => toCells(items.sort((a, b) => a.x - b.x)))
-    );
-  }
-  return pages.flat();
-}
-
-/**
  * A coding table holds one or more procedures. Each starts with a header row
  * ("SID RNAV UMPEL 1A RWY 10"), followed by leg rows keyed by transition.
  */
-function parseCodingTable(rows) {
-  const procedures = [];
-  const fixes = {};
-  const runwayPoints = {};
-  const runwayCourses = {};
-  let current = null;
+function parseCodingTable(rows: string[][]): ParsedTable {
+  const procedures: ParsedProcedure[] = [];
+  const fixes: Record<string, GeoPoint> = {};
+  const runwayPoints: RunwayPoints = {};
+  const runwayCourses: Record<string, number> = {};
+  let current: ParsedProcedure | null = null;
 
   for (const row of rows) {
     const [first = "", ...rest] = row;
@@ -174,8 +120,9 @@ function parseCodingTable(rows) {
     // Courses come as two cells, "161.79° True" and "183.22° Mag", in either
     // order. True is the one comparable with geographic bearings.
     const trueCourse =
-      rest.find((v) => /^\d{1,3}(\.\d+)?\s*°?\s*True$/i.test(v))?.match(/[\d.]+/)?.[0] ??
-      null;
+      rest
+        .find((v) => /^\d{1,3}(\.\d+)?\s*°?\s*True$/i.test(v))
+        ?.match(/[\d.]+/)?.[0] ?? null;
 
     // A departure's first leg flies the runway centreline, so its course is the
     // runway's own. That is the only bearing available at an aerodrome whose
@@ -210,22 +157,11 @@ function parseCodingTable(rows) {
   return { procedures, fixes, runwayPoints, runwayCourses };
 }
 
-async function download(url) {
-  const res = await fetch(url, {
-    headers: { "User-Agent": "Mozilla/5.0" },
-  });
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText} — ${url}`);
-  return Buffer.from(await res.arrayBuffer());
-}
+const icao = icaoArg("sync:airport");
+const chartsDir = path.join("public", "charts", icao);
+const contentDir = path.join("content", icao);
 
-const xml = await (
-  await fetch(
-    `${API}?apiKey=${API_KEY}&apiPass=${API_PASS}&area=cartas&icaoCode=${icao}`,
-    { headers: { "User-Agent": "Mozilla/5.0" } }
-  )
-).text();
-
-const items = xml.split("<item ").slice(1);
+const items = (await fetchAisweb("cartas", icao)).split("<item ").slice(1);
 if (items.length === 0) {
   console.error(`No charts returned for ${icao}.`);
   process.exit(1);
@@ -234,11 +170,19 @@ if (items.length === 0) {
 fs.mkdirSync(chartsDir, { recursive: true });
 fs.mkdirSync(contentDir, { recursive: true });
 
-const charts = [];
-const allFixes = {};
-const allRunwayPoints = {};
-const allRunwayCourses = {};
-const geometry = {};
+// REA charts come from scripts/sync-rea.ts, not from this API, so keep them.
+const catalogPath = path.join(contentDir, "charts.json");
+const previousRea: Chart[] = fs.existsSync(catalogPath)
+  ? (JSON.parse(fs.readFileSync(catalogPath, "utf-8")) as ChartCatalog).charts.filter(
+      (c) => c.type === "REA"
+    )
+  : [];
+
+const charts: Chart[] = [...previousRea];
+const allFixes: Record<string, GeoPoint> = {};
+const allRunwayPoints: RunwayPoints = {};
+const allRunwayCourses: Record<string, number> = {};
+const geometry: Record<string, ProcedureGeometry> = {};
 
 for (const item of items) {
   const type = tag(item, "tipo");
@@ -291,38 +235,29 @@ for (const item of items) {
   );
 }
 
-fs.writeFileSync(
-  path.join(contentDir, "charts.json"),
-  JSON.stringify(
-    {
-      icao,
-      syncedAt: new Date().toISOString().slice(0, 10),
-      source: `${API}?area=cartas&icaoCode=${icao}`,
-      charts: charts.sort(
-        (a, b) => a.type.localeCompare(b.type) || a.name.localeCompare(b.name)
-      ),
-    },
-    null,
-    2
-  ) + "\n"
-);
+const catalog: ChartCatalog = {
+  icao,
+  syncedAt: today(),
+  source: `${AISWEB_API}?area=cartas&icaoCode=${icao}`,
+  charts: charts.sort(
+    (a, b) => a.type.localeCompare(b.type) || a.name.localeCompare(b.name)
+  ),
+};
+fs.writeFileSync(catalogPath, JSON.stringify(catalog, null, 2) + "\n");
 
+const airportGeometry: AirportGeometry = {
+  icao,
+  syncedAt: today(),
+  fixes: Object.fromEntries(
+    Object.entries(allFixes).sort(([a], [b]) => a.localeCompare(b))
+  ),
+  runwayPoints: allRunwayPoints,
+  runwayCourses: allRunwayCourses,
+  procedures: geometry,
+};
 fs.writeFileSync(
   path.join(contentDir, "geometry.json"),
-  JSON.stringify(
-    {
-      icao,
-      syncedAt: new Date().toISOString().slice(0, 10),
-      fixes: Object.fromEntries(
-        Object.entries(allFixes).sort(([a], [b]) => a.localeCompare(b))
-      ),
-      runwayPoints: allRunwayPoints,
-      runwayCourses: allRunwayCourses,
-      procedures: geometry,
-    },
-    null,
-    2
-  ) + "\n"
+  JSON.stringify(airportGeometry, null, 2) + "\n"
 );
 
 console.log(

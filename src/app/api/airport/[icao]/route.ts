@@ -2,35 +2,14 @@ import { NextResponse } from "next/server";
 import { getAirportMeta, getGeometry } from "@/lib/content";
 import { parseController } from "@/lib/ivao/callsign";
 import { getWhazzup } from "@/lib/ivao/whazzup";
-import { detectRunwayInUse, type RunwayInUse } from "@/lib/ops/runway";
-import { getIvaoNotams, type IvaoNotam } from "@/lib/ivao/data-api";
+import { detectRunwayInUse } from "@/lib/ops/runway";
+import { getIvaoNotams } from "@/lib/ivao/data-api";
 import { getMetar } from "@/lib/ops/metar";
 import { getNotams } from "@/lib/ops/notam";
-import {
-  calculateTransitionLevel,
-  type TransitionLevelResult,
-} from "@/lib/ops/transition";
-import type { MetarReport } from "@/lib/ops/metar";
-import type { Notam } from "@/lib/ops/notam-format";
+import { calculateTransitionLevel } from "@/lib/ops/transition";
+import type { AirportDynamicContext } from "@/lib/ops/briefing";
 
 export const dynamic = "force-dynamic";
-
-export interface AirportDynamicContext {
-  icao: string;
-  metar: MetarReport | null;
-  metarError: boolean;
-  transitionLevel: TransitionLevelResult | null;
-  /** Real-world NOTAMs from the official Brazilian AIS. */
-  notams: Notam[];
-  notamsUpdatedAt: string | null;
-  notamsError: boolean;
-  /** IVAO network NOTAMs — division notices, not real-world AIS. */
-  ivaoNotams: IvaoNotam[];
-  /** Detected only — the controller can always override in the UI. */
-  runwayInUse: RunwayInUse;
-  runways: string[];
-  updatedAt: string;
-}
 
 /**
  * One consolidated call per airport. Each source is settled independently so a

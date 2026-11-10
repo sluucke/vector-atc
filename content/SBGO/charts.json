@@ -58,6 +58,15 @@
       "file": "/charts/SBGO/iac-go00i-vor-rwy-32.pdf"
     },
     {
+      "key": "rea-xn",
+      "type": "REA",
+      "name": "XN-Anápolis",
+      "code": "XN",
+      "amdt": "2611A0",
+      "date": "2026-10-29",
+      "file": "/charts/SBGO/rea-xn-ccv-rea-xn-anapolis.pdf"
+    },
+    {
       "key": "omni-rwy-14-32",
       "type": "SID",
       "name": "OMNI RWY 14/32",

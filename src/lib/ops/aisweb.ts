@@ -1,24 +1,16 @@
 import "server-only";
 
+import { aiswebUrl } from "./aisweb-credentials";
+
 /**
  * AISWEB (DECEA) is the official Brazilian AIS source and publishes both METAR
- * and NOTAM. The credentials below are the ones AISWEB's own public site ships
- * in its client bundle; set AISWEB_API_KEY / AISWEB_API_PASS to use your own
- * registered pair in production.
+ * and NOTAM. Credentials come from aisweb-credentials.ts.
  */
-const API = "https://aisweb.decea.mil.br/api/";
-const PUBLIC_KEY = "1587263166";
-const PUBLIC_PASS = "3199249e-755b-1033-a49b-72567f175e3a";
-
 export async function aiswebFetch(
   area: string,
   icao: string
 ): Promise<string> {
-  const url = new URL(API);
-  url.searchParams.set("apiKey", process.env.AISWEB_API_KEY || PUBLIC_KEY);
-  url.searchParams.set("apiPass", process.env.AISWEB_API_PASS || PUBLIC_PASS);
-  url.searchParams.set("area", area);
-  url.searchParams.set("icaoCode", icao.toUpperCase());
+  const url = aiswebUrl(area, icao);
 
   const res = await fetch(url, {
     cache: "no-store",

@@ -4,15 +4,17 @@
  * the reported heading says whether that heading is true or magnetic, since
  * Brazilian variation is around 20°W.
  */
-const URL = "https://api.ivao.aero/v2/tracker/whazzup";
+import type { Whazzup, WhazzupTrack } from "../src/lib/ivao/types";
+
+const WHAZZUP_URL = "https://api.ivao.aero/v2/tracker/whazzup";
 const GAP_MS = 90_000;
 
 const snapshot = async () => {
-  const res = await fetch(URL, {
+  const res = await fetch(WHAZZUP_URL, {
     headers: { "user-agent": "vector-atc-charts/1.0" },
   });
-  const body = await res.json();
-  const map = new Map();
+  const body = (await res.json()) as Whazzup;
+  const map = new Map<string, WhazzupTrack>();
   for (const pilot of body.clients.pilots) {
     const t = pilot.lastTrack;
     if (!t || t.onGround || t.state !== "En Route") continue;
@@ -26,7 +28,7 @@ const snapshot = async () => {
 };
 
 const toRad = Math.PI / 180;
-function bearing(a, b) {
+function bearing(a: WhazzupTrack, b: WhazzupTrack): number {
   const dLon = (b.longitude - a.longitude) * toRad;
   const l1 = a.latitude * toRad;
   const l2 = b.latitude * toRad;
@@ -41,7 +43,7 @@ console.log(`primeira amostra: ${first.size} voos em rota sobre o Brasil`);
 await new Promise((r) => setTimeout(r, GAP_MS));
 const second = await snapshot();
 
-const offsets = [];
+const offsets: { callsign: string; track: string; heading: number; diff: number }[] = [];
 for (const [callsign, a] of first) {
   const b = second.get(callsign);
   if (!b) continue;

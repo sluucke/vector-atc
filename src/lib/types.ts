@@ -20,13 +20,13 @@ export interface Procedure {
   notes?: string;
 
   // SID-specific
-  commonRoute?: string;
+  commonRoute?: string | null;
   transitions?: Transition[];
 
   // STAR-specific
   entryFixes?: string[];
-  route?: string;
-  iaf?: string;
+  route?: string | null;
+  iaf?: string | null;
 }
 
 export interface Chart {
@@ -58,6 +58,8 @@ export interface Leg {
   pathTerminator: string;
   altitude: string | null;
   distance: number | null;
+  /** True course of the leg, when the table publishes one. */
+  course?: number | null;
 }
 
 export interface ProcedureGeometry {

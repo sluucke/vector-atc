@@ -8,8 +8,25 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import type { AirportMeta } from "../src/lib/types";
 
-const CENTERS = {
+interface Center {
+  label: string;
+  primary: string[];
+  sectors: string[];
+}
+
+interface Approach {
+  /** IVAO callsign of the approach position, when known. */
+  position: string | null;
+  /** Division frequencies; null keeps whatever meta.json already has. */
+  frequencies: string[] | null;
+  center: keyof typeof CENTERS;
+  /** Overrides the default note shown under the frequency cards. */
+  source?: string;
+}
+
+const CENTERS: Record<"SBBS" | "SBCW" | "SBRE", Center> = {
   SBBS: {
     label: "Centro Brasília (SBBS_CTR)",
     primary: ["123.000"],
@@ -28,7 +45,7 @@ const CENTERS = {
 };
 
 /** APP position and its frequencies, as published by the division. */
-const APPROACH = {
+const APPROACH: Record<string, Approach> = {
   SBBR: { position: "SBWR_APP", frequencies: ["129.600"], center: "SBBS" },
   SBSP: { position: "SBXP_APP", frequencies: ["129.750"], center: "SBBS" },
   SBRJ: {
@@ -94,7 +111,7 @@ const APPROACH = {
 
 for (const [icao, app] of Object.entries(APPROACH)) {
   const file = path.join("content", icao, "meta.json");
-  const meta = JSON.parse(fs.readFileSync(file, "utf8"));
+  const meta = JSON.parse(fs.readFileSync(file, "utf8")) as AirportMeta;
   const center = CENTERS[app.center];
 
   meta.frequencies = {

@@ -1,12 +1,46 @@
 {
-  "name": "ivao",
+  "name": "vector-atc",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "description": "Console operacional para controladores da rede IVAO: cartas oficiais do DECEA, procedimentos SID/STAR no mapa, pista em uso, METAR, nível de transição, NOTAM e tráfego ao vivo.",
+  "license": "MIT",
+  "author": "The Duck Corporation",
+  "homepage": "https://vectoratc.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sluucke/vector-atc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sluucke/vector-atc/issues"
+  },
+  "keywords": [
+    "ivao",
+    "atc",
+    "air-traffic-control",
+    "decea",
+    "aisweb",
+    "aeronautical-charts",
+    "sid",
+    "star",
+    "flight-simulation",
+    "nextjs"
+  ],
+  "engines": {
+    "node": ">=20.9"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx scripts/check-cruise-levels.ts",
+    "sync:airport": "tsx scripts/sync-airport.ts",
+    "build:content": "tsx scripts/build-content.ts",
+    "sync:rea": "tsx scripts/sync-rea.ts",
+    "sync:frequencies": "tsx scripts/set-network-frequencies.ts",
+    "probe:heading": "tsx scripts/probe-heading-reference.ts",
     "sync:pdf-worker": "node -e \"require('fs').copyFileSync(require.resolve('pdfjs-dist/build/pdf.worker.min.mjs'),'public/pdf.worker.min.mjs')\"",
     "predev": "npm run sync:pdf-worker",
     "prebuild": "npm run sync:pdf-worker"
@@ -33,6 +67,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }
