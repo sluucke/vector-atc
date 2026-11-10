@@ -7,7 +7,7 @@ são a fonte autoritativa de coordenadas e sequência de pernas.
 ```bash
 npm run sync:airport -- SBGR    # rede: baixa cartas + coding tables
 npm run build:content -- SBGR   # offline: deriva procedimentos + meta
-npm run sync:rea                # rede: cartas REA de todas as TMAs conhecidas
+npm run sync:tma                # rede: cartas da TMA (ARC, ATCSMAC, REA)
 ```
 
 Depois disso o aeródromo já aparece na aplicação. O que sobra é revisão.
@@ -43,7 +43,15 @@ Lê o que o sync gravou e produz:
 Não faz requisição de rede exceto para o ROTAER na primeira geração do meta.
 Pode rodar quantas vezes quiser.
 
-### `sync:rea` (`scripts/sync-rea.ts`) — cartas REA (Rotas Especiais de Aeronaves)
+### `sync:tma` (`scripts/sync-tma.ts`) — cartas da TMA
+
+Baixa as cartas que o DECEA publica por TMA e não por aeródromo: **ARC** (carta
+de área), **ATCSMAC** (altitudes mínimas de vetoração) e **REA** (rotas
+especiais de aeronaves). Ao adicionar um aeródromo, acrescente-o em
+`TMA_AIRPORTS` no topo do script, sob o código da TMA (SBWR para Brasília,
+SBXP para São Paulo...). ARC e ATCSMAC vêm da API do AISWEB com esse código.
+
+#### REA
 
 Script à parte porque essas cartas não vivem na API `area=cartas` do AISWEB —
 uma consulta com `icaoCode` de qualquer aeródromo ou TMA sempre volta vazia.
@@ -55,16 +63,25 @@ Belo Horizonte (SBBH+SBCF) e Natal (SBNT+SBSG) compartilham uma carta; São
 Paulo publica duas (XP1/XP2, north/south) que aparecem como duas entradas.
 
 ```bash
-npm run sync:rea
+npm run sync:tma
 ```
 
-Não recebe ICAO como argumento — sincroniza as TMAs conhecidas de uma vez. Ao
-adicionar um aeródromo novo, é preciso primeiro achar sua TMA na tabela da
-página (o prefixo antes do nome, tipo `xt` em "CCV REA XT-Natal") e acrescentar
-a entrada em `TMA_AIRPORTS` no topo do script.
+Não recebe ICAO como argumento — sincroniza as TMAs conhecidas de uma vez. O
+código da folha REA é o da TMA sem o "SB" (`xt` em "CCV REA XT-Natal" é a
+SBXT), às vezes numerado (`xp1`, `xp2`).
 
-O `sync:airport` preserva as entradas REA já gravadas em `charts.json`, então a
-ordem entre os dois scripts não importa num re-sync.
+O `sync:airport` preserva as cartas da TMA já gravadas em `charts.json`, então
+a ordem entre os dois scripts não importa num re-sync.
+
+### Dados nacionais: `sync:airways` e `sync:rpl`
+
+Não dependem do aeródromo. Rode uma vez por ciclo AIRAC:
+
+```bash
+npm run sync:airways   # aerovias e fixos do AIP (~55 MB de download)
+npm run sync:rpl       # planos regulares da CGNA
+npm run check:airways  # deve passar de 97% de concordância
+```
 
 ### `sync:frequencies` (`scripts/set-network-frequencies.ts`)
 
@@ -194,7 +211,7 @@ for icao in SBGR SBSP SBRJ SBGL SBCF; do
   npm run sync:airport -- "$icao"
   npm run build:content -- "$icao"
 done
-npm run sync:rea
+npm run sync:tma
 ```
 
 Dois cuidados:

@@ -29,9 +29,20 @@ content/<ICAO>/meta.json                nome, TA, frequências, observações
 - A **geometria** vem das *coding tables* do DECEA, que são a fonte
   autoritativa de coordenadas. O parser (`scripts/lib/pdf.ts`) reconstrói as
   células da tabela pela distância entre os fragmentos de texto do PDF.
-- As cartas **REA** não estão na API do AISWEB. `npm run sync:rea` lê a tabela
-  HTML da página de cartas visuais e distribui cada folha para os aeródromos da
-  TMA.
+- As cartas **da TMA** (ARC, ATCSMAC e REA) vêm de `npm run sync:tma`. ARC e
+  ATCSMAC estão na API do AISWEB sob o código da TMA (SBWR para Brasília). As
+  REA não estão na API: o script lê a tabela HTML da página de cartas visuais.
+  Cada folha é copiada para todos os aeródromos da TMA.
+- As **aerovias** vêm de `npm run sync:airways`, que lê o AIP completo. A ENR
+  3.1 e a ENR 3.2 listam cada trecho com rumo magnético, limites e, em colunas
+  Ímpar e Par, uma seta para o sentido em que cada paridade vale (↓ na ordem da
+  tabela, ↑ ao contrário). A ENR 4.4 dá as coordenadas de todos os fixos.
+  Resultado: `content/airways.json`.
+- Os **planos regulares** vêm de `npm run sync:rpl`, que baixa o RPL da CGNA
+  (o arquivo que as empresas aéreas filam para voos regulares) e resume por par
+  de aeródromos: níveis usados e rotas mais filadas. Resultado:
+  `content/rpl.json`. `npm run check:airways` cruza os dois e deve ficar acima
+  de 97% de concordância.
 - As **frequências IVAO** (APP e centro) vêm de `npm run sync:frequencies`,
   separadas das frequências da carta.
 - Campos editoriais (`notes`, `observations`, TA operacional, link do MOPS) são
@@ -61,9 +72,16 @@ Em `src/lib/ops/`, sem interface, testáveis isoladamente:
   extrapola: TA fora da tabela devolve "sem nível".
 - `runway.ts`: pista em uso pelo ATIS do controlador ou, sem ATIS, pelo vento
   do METAR contra o curso publicado da pista.
-- `cruise-level.ts`: nível de cruzeiro contra a regra semicircular e o RVSM. O
-  rumo da rede é verdadeiro, então a declinação do aeródromo é aplicada antes.
-  Perto do limite entre semicírculos a regra não é aplicada.
+- `airways.ts`: lê a rota filada contra as aerovias. Para cada trecho de
+  aerovia, a paridade vem da tabela do AIP no sentido voado. Para cada perna
+  direta, do rumo magnético entre os dois fixos, com a declinação medida no
+  próprio AIP (a diferença entre o rumo publicado e o rumo verdadeiro do
+  trecho de aerovia mais próximo).
+- `cruise-level.ts`: decide o nível de cruzeiro nesta ordem: aerovias do AIP,
+  pernas diretas da rota, rumo entre o aeródromo e a aeronave, planos regulares
+  da CGNA. Quando o AIP e os planos regulares divergem, o resultado vira
+  ressalva em vez de erro. Também confere RVSM e VFR.
+- `rpl.ts`: resume os planos regulares de um par de aeródromos.
 - `notam.ts`, `metar.ts`: AISWEB com cache.
 
 Em `src/lib/ivao/`:
