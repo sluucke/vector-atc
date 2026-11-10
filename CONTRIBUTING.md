@@ -12,7 +12,8 @@ Ao participar, você concorda com o [código de conduta](CODE_OF_CONDUCT.md).
 - **Corrigir um dado**: frequência, TA, observação ou procedimento errado.
   Cite a fonte (carta DECEA com AIRAC, MOPS da TMA, ROTAER).
 - **Adicionar um aeródromo**: siga
-  [Adicionando um aeródromo](docs/adicionando-aerodromos.md).
+  [Adicionando um aeródromo](https://github.com/sluucke/vector-atc-data/blob/main/docs/adicionando-aerodromos.md),
+  no repositório de dados.
 - **Código**: correções e novos recursos. Para mudanças grandes, abra uma
   *issue* antes para combinar a abordagem.
 
@@ -62,9 +63,9 @@ src/
     ivao/           OAuth, whazzup, tráfego, associação de procedimento
     ops/            METAR, NOTAM, pista, nível de transição e de cruzeiro
     reference/      conteúdo de fraseologia e circuito
-scripts/          sincronização com o AISWEB (rodam com tsx)
-content/<ICAO>/   dados gerados e editoriais de cada aeródromo
-public/charts/    PDFs das cartas
+scripts/          download dos dados e checagens (rodam com tsx)
+content/          dados dos aeródromos, baixados por npm run data:pull
+public/charts/    PDFs das cartas, idem
 docs/             documentação
 ```
 

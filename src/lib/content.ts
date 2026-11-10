@@ -27,10 +27,10 @@ function nationalFile<T>(name: string): () => T | null {
   };
 }
 
-/** ATS routes and points from the AIP (scripts/sync-airways.ts). */
+/** ATS routes and points from the AIP (vector-atc-data: scripts/sync-airways.ts). */
 export const getAirways = nationalFile<AirwayDatabase>("airways.json");
 
-/** Scheduled flights per city pair (scripts/sync-rpl.ts). */
+/** Scheduled flights per city pair (vector-atc-data: scripts/sync-rpl.ts). */
 export const getRpl = nationalFile<RplDatabase>("rpl.json");
 
 export function getAirportCodes(): string[] {
@@ -67,7 +67,7 @@ function readJson<T>(icao: string, file: string): T | null {
 /**
  * Chart pages that can be drawn on the procedure map: the procedure's own
  * chart first, then the TMA's vectoring and area charts, and for an arrival
- * the approaches it feeds. Only pages that scripts/georef-charts.ts found to
+ * the approaches it feeds. Only pages that vector-atc-data's georef-charts.ts found to
  * be drawn to scale are offered.
  */
 export function getMapOverlays(icao: string, procedure: Procedure): MapOverlay[] {

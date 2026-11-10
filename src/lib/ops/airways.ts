@@ -2,7 +2,7 @@
  * ATS routes from the AIP Brasil (ENR 3) and the cruising-level parity each
  * segment carries, plus the reading of a flight plan route against them.
  *
- * The data comes from scripts/sync-airways.ts. Pure functions only: the server
+ * The data comes from scripts/sync-airways.ts in vector-atc-data. Pure functions only: the server
  * loads the file and passes it in, so this module stays importable anywhere.
  */
 import type { GeoPoint } from "@/lib/types";

@@ -5,19 +5,27 @@ Visão geral de como o Vector ATC obtém, guarda e mostra os dados.
 ## Dois tipos de dado
 
 **Estático**: muda a cada ciclo AIRAC (28 dias). Cartas, coordenadas dos
-fixos, sequência de pernas dos procedimentos, frequências, TA. É gerado por
-scripts e versionado no repositório.
+fixos, sequência de pernas dos procedimentos, frequências, TA. É gerado no
+repositório [vector-atc-data](https://github.com/sluucke/vector-atc-data) e baixado no build.
 
 **Dinâmico**: muda durante a sessão. METAR, NOTAM, pista em uso, tráfego da
 rede. Vem de rotas de API consultadas pelo navegador.
 
 ## Dados estáticos
 
+Os scripts abaixo vivem em [vector-atc-data](https://github.com/sluucke/vector-atc-data). Lá, um
+workflow semanal refaz tudo e, se algo mudou além das datas, publica um
+release com `content.tar.gz`, `charts.tar` e `manifest.json`. Aqui,
+`npm run data:pull` (chamado pelo `prebuild`) compara o `manifest.json` do
+release mais recente com `content/.release.json` e só baixa quando mudou. Um
+*deploy hook* da Vercel, chamado pelo workflow, reconstrói o site com os dados
+novos.
+
 ```
 AISWEB (DECEA)
   │  npm run sync:airport -- <ICAO>      scripts/sync-airport.ts
   ▼
-public/charts/<ICAO>/*.pdf              PDFs das cartas
+charts/<ICAO>/*.pdf                     PDFs das cartas (public/charts/ aqui)
 content/<ICAO>/charts.json              catálogo das cartas
 content/<ICAO>/geometry.json            fixos, cabeceiras, cursos e pernas
   │  npm run build:content -- <ICAO>     scripts/build-content.ts
@@ -27,7 +35,8 @@ content/<ICAO>/meta.json                nome, TA, frequências, observações
 ```
 
 - A **geometria** vem das *coding tables* do DECEA, que são a fonte
-  autoritativa de coordenadas. O parser (`scripts/lib/pdf.ts`) reconstrói as
+  autoritativa de coordenadas. O parser (`scripts/lib/pdf.ts` no repositório
+  de dados) reconstrói as
   células da tabela pela distância entre os fragmentos de texto do PDF.
 - As cartas **da TMA** (ARC, ATCSMAC e REA) vêm de `npm run sync:tma`. ARC e
   ATCSMAC estão na API do AISWEB sob o código da TMA (SBWR para Brasília). As
@@ -54,6 +63,10 @@ content/<ICAO>/meta.json                nome, TA, frequências, observações
   separadas das frequências da carta.
 - Campos editoriais (`notes`, `observations`, TA operacional, link do MOPS) são
   escritos à mão e preservados quando os scripts rodam de novo.
+
+Os tipos desses arquivos estão em `src/lib/types.ts`, `src/lib/ops/airways.ts`
+e `src/lib/ops/rpl.ts`. O repositório de dados tem a própria cópia em
+`src/types.ts`; mudar um formato exige mudar os dois.
 
 `src/lib/content.ts` lê esses arquivos no servidor. Com eles o Next.js gera,
 no build, uma página estática por aeródromo, por carta e por procedimento.

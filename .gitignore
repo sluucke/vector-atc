@@ -30,3 +30,8 @@ yarn-error.log*
 
 # generated from node_modules by the predev/prebuild scripts
 /public/pdf.worker.min.mjs
+
+# chart data, downloaded from sluucke/vector-atc-data by npm run data:pull
+/content
+/public/charts
+/.data-cache

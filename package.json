@@ -36,18 +36,14 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "tsx scripts/check-cruise-levels.ts",
-    "sync:airport": "tsx scripts/sync-airport.ts",
-    "build:content": "tsx scripts/build-content.ts",
-    "sync:tma": "tsx scripts/sync-tma.ts",
-    "sync:frequencies": "tsx scripts/set-network-frequencies.ts",
-    "sync:airways": "tsx scripts/sync-airways.ts",
-    "sync:rpl": "tsx scripts/sync-rpl.ts",
+    "pretest": "npm run data:pull -- --if-missing",
+    "data:pull": "tsx scripts/pull-data.ts",
     "check:airways": "tsx scripts/check-airways.ts",
-    "georef:charts": "tsx scripts/georef-charts.ts",
+    "precheck:airways": "npm run data:pull -- --if-missing",
     "probe:heading": "tsx scripts/probe-heading-reference.ts",
     "sync:pdf-worker": "node -e \"require('fs').copyFileSync(require.resolve('pdfjs-dist/build/pdf.worker.min.mjs'),'public/pdf.worker.min.mjs')\"",
-    "predev": "npm run sync:pdf-worker",
-    "prebuild": "npm run sync:pdf-worker"
+    "predev": "npm run sync:pdf-worker && npm run data:pull -- --if-missing",
+    "prebuild": "npm run sync:pdf-worker && npm run data:pull"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

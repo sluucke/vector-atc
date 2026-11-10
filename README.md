@@ -74,8 +74,8 @@ Portuguese.*
 | SBSP | São Paulo / Congonhas |
 | SBSV | Salvador / Luís Eduardo Magalhães |
 
-Quer outro? Veja [Adicionando um aeródromo](docs/adicionando-aerodromos.md) ou
-abra uma *issue*.
+Quer outro? Veja [Adicionando um aeródromo](https://github.com/sluucke/vector-atc-data/blob/main/docs/adicionando-aerodromos.md)
+no repositório de dados ou abra uma *issue*.
 
 ---
 
@@ -93,8 +93,10 @@ npm run dev
 
 Abra [http://localhost:3000](http://localhost:3000).
 
-As cartas e os dados dos aeródromos já estão no repositório, então a aplicação
-funciona sem nenhuma variável de ambiente. As variáveis só ligam recursos
+O `npm run dev` baixa, na primeira vez, as cartas e os dados dos aeródromos do
+último release de [vector-atc-data](https://github.com/sluucke/vector-atc-data) (~280 MB) para
+`content/` e `public/charts/`. Para atualizar depois, rode `npm run data:pull`.
+Nenhuma variável de ambiente é obrigatória. As variáveis só ligam recursos
 opcionais:
 
 | Variável | Para quê |
@@ -102,6 +104,7 @@ opcionais:
 | `IVAO_CLIENT_ID`, `IVAO_CLIENT_SECRET`, `IVAO_REDIRECT_URL` | Login com a conta IVAO (OAuth). Crie um app em [developers.ivao.aero](https://developers.ivao.aero). Em desenvolvimento, o redirect é `http://localhost:3000/api/ivao/callback`. |
 | `IVAO_API_KEY` | NOTAM e METAR da divisão IVAO. O tráfego ao vivo funciona sem ela. |
 | `AISWEB_API_KEY`, `AISWEB_API_PASS` | Seu próprio par da API do AISWEB. Sem elas é usado o par público do site do AISWEB. |
+| `VECTOR_ATC_DATA_RELEASE` | Fixa um release de dados (`data-2026-11-10`). Sem ela, usa o mais recente. |
 
 ### Comandos
 
@@ -112,14 +115,12 @@ opcionais:
 | `npm run lint` | ESLint |
 | `npm run typecheck` | Checagem de tipos do TypeScript |
 | `npm test` | Casos da verificação de nível de cruzeiro |
-| `npm run sync:airport -- <ICAO>` | Baixa cartas e *coding tables* de um aeródromo |
-| `npm run build:content -- <ICAO>` | Gera procedimentos e o esqueleto do `meta.json` |
-| `npm run sync:tma` | Baixa as cartas da TMA (ARC, ATCSMAC, REA) |
-| `npm run sync:frequencies` | Aplica as frequências das posições IVAO |
-| `npm run sync:airways` | Lê aerovias e fixos do AIP (ENR 3 e ENR 4.4) |
-| `npm run sync:rpl` | Baixa os planos de voo regulares da CGNA |
+| `npm run data:pull` | Baixa o release de dados mais recente (o `build` já roda) |
+| `npm run data:pull -- --from <dir>` | Usa um pacote local gerado no repositório de dados |
 | `npm run check:airways` | Confere o AIP lido contra os planos da CGNA |
-| `npm run georef:charts` | Posiciona no mapa as cartas desenhadas em escala |
+
+A sincronização com o AISWEB (`sync:airport`, `sync:tma`, `sync:airways`,
+`georef:charts`...) mora em [vector-atc-data](https://github.com/sluucke/vector-atc-data).
 
 ---
 
@@ -127,7 +128,9 @@ opcionais:
 
 Os dados estáticos (cartas, geometria, procedimentos, frequências, aerovias do
 AIP e planos regulares da CGNA) são gerados por scripts a partir do AISWEB e
-da CGNA e versionados em `content/` e `public/charts/`. A aplicação é Next.js e gera uma página estática por
+da CGNA no repositório [vector-atc-data](https://github.com/sluucke/vector-atc-data), que publica um release
+por ciclo AIRAC. O build baixa esse release para `content/` e `public/charts/`.
+A aplicação é Next.js e gera uma página estática por
 aeródromo, carta e procedimento. Os dados que mudam durante uma sessão (METAR,
 NOTAM, pista em uso, tráfego) vêm de rotas de API consultadas pelo navegador.
 
@@ -153,10 +156,10 @@ Encontrou uma falha de segurança? Siga a [política de segurança](SECURITY.md)
 
 O código está sob a [licença MIT](LICENSE).
 
-As cartas aeronáuticas em `public/charts/` e as informações derivadas delas em
-`content/` são publicações do **DECEA** (Departamento de Controle do Espaço
+As cartas aeronáuticas e as informações derivadas delas, publicadas em
+[vector-atc-data](https://github.com/sluucke/vector-atc-data), são publicações do **DECEA** (Departamento de Controle do Espaço
 Aéreo), obtidas no [AISWEB](https://aisweb.decea.mil.br). Os planos de voo
-regulares em `content/rpl.json` vêm do
+regulares vêm do
 [CGNA](https://portal.cgna.decea.mil.br). Elas não são cobertas
 pela licença MIT e pertencem ao DECEA. Este projeto não é afiliado ao DECEA nem
 à IVAO.

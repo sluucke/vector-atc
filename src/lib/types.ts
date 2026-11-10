@@ -1,3 +1,8 @@
+/**
+ * Shapes of the files in content/, which come from sluucke/vector-atc-data
+ * (npm run data:pull). That repository keeps its own copy in src/types.ts; a
+ * change to a data type here has to land there too.
+ */
 export type ProcedureCategory = "RNAV" | "CONV";
 export type ProcedureType = "SID" | "STAR";
 
@@ -126,7 +131,7 @@ export interface AirportMeta {
 }
 
 /**
- * Where a chart page sits on the ground, from scripts/georef-charts.ts. The
+ * Where a chart page sits on the ground, from vector-atc-data's georef-charts.ts. The
  * affine maps a point of the page (pdf.js viewport at scale 1, origin top
  * left) to Web Mercator metres: X = a·u + b·v + c, Y = d·u + e·v + f.
  */

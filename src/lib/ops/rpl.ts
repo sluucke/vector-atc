@@ -1,6 +1,6 @@
 /**
  * Real scheduled flight plans (CGNA RPL), summarised per city pair. Built by
- * scripts/sync-rpl.ts. Pure: the server loads the file and passes it in.
+ * scripts/sync-rpl.ts in vector-atc-data. Pure: the server loads the file and passes it in.
  */
 import type { Parity } from "./airways";
 
