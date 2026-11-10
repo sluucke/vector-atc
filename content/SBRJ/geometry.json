@@ -1,7 +1,11 @@
 {
   "icao": "SBRJ",
-  "syncedAt": "2026-09-09",
+  "syncedAt": "2026-11-10",
   "fixes": {
+    "ADA": {
+      "lat": -22.812775000000002,
+      "lon": -42.09533888888889
+    },
     "AKNUB": {
       "lat": -24.49416666666667,
       "lon": -44.573
@@ -102,6 +106,10 @@
       "lat": -22.439025,
       "lon": -43.96008333333334
     },
+    "KOXUN": {
+      "lat": -22.914675,
+      "lon": -43.42979166666667
+    },
     "LOKOD": {
       "lat": -22.949466666666666,
       "lon": -43.13571944444445
@@ -157,6 +165,10 @@
     "PAI": {
       "lat": -22.454052777777775,
       "lon": -43.84050555555556
+    },
+    "PCX": {
+      "lat": -22.715394444444442,
+      "lon": -42.857422222222226
     },
     "POPSU": {
       "lat": -23.212166666666665,
@@ -233,10 +245,6 @@
     "RJ039": {
       "lat": -22.904597222222222,
       "lon": -43.16321111111111
-    },
-    "RJ047": {
-      "lat": -22.913730555555553,
-      "lon": -43.427566666666664
     },
     "RJ048": {
       "lat": -22.92085,
@@ -534,10 +542,6 @@
       "lat": -22.956555555555553,
       "lon": -43.05245277777777
     },
-    "RJ946": {
-      "lat": -22.914675,
-      "lon": -43.42979166666667
-    },
     "RJ947": {
       "lat": -22.924172222222225,
       "lon": -42.96490277777778
@@ -633,6 +637,914 @@
     "02R": 356.57
   },
   "procedures": {
+    "STAR|GELUT1A|02R/20L": {
+      "title": "STAR RNAV GELUT 1A RWY 02R/20L",
+      "chartKey": "RJ02T",
+      "transitions": {
+        "KEVUN": [
+          {
+            "seq": 10,
+            "fix": "KEVUN",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ313",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 30.06,
+            "course": 76.51
+          },
+          {
+            "seq": 30,
+            "fix": "RJ307",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 20.74,
+            "course": 64.98
+          },
+          {
+            "seq": 40,
+            "fix": "RJ021",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 5.35,
+            "course": 63.57
+          },
+          {
+            "seq": 50,
+            "fix": "RJ308",
+            "pathTerminator": "TF",
+            "altitude": "@8000",
+            "distance": 18.02,
+            "course": 65.06
+          },
+          {
+            "seq": 60,
+            "fix": "ASALU",
+            "pathTerminator": "TF",
+            "altitude": "@7000",
+            "distance": 4.53,
+            "course": 64.73
+          }
+        ],
+        "TOKIM": [
+          {
+            "seq": 10,
+            "fix": "TOKIM",
+            "pathTerminator": "IF",
+            "altitude": "-23000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "KOSRU",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 33.38,
+            "course": 157.21
+          },
+          {
+            "seq": 30,
+            "fix": "GETVU",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 10,
+            "course": 157.13
+          },
+          {
+            "seq": 40,
+            "fix": "GIMPI",
+            "pathTerminator": "TF",
+            "altitude": "-8000",
+            "distance": 10,
+            "course": 157.1
+          },
+          {
+            "seq": 50,
+            "fix": "RJ017",
+            "pathTerminator": "TF",
+            "altitude": "@7000",
+            "distance": 5.75,
+            "course": 157.07
+          },
+          {
+            "seq": 60,
+            "fix": "SCR",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 7.3,
+            "course": 157.05
+          },
+          {
+            "seq": 70,
+            "fix": "ASALU",
+            "pathTerminator": "TF",
+            "altitude": "@7000",
+            "distance": 6.27,
+            "course": 117.89
+          }
+        ],
+        "RWY": [
+          {
+            "seq": 10,
+            "fix": "ASALU",
+            "pathTerminator": "IF",
+            "altitude": "@7000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "GELUT",
+            "pathTerminator": "TF",
+            "altitude": "@6000",
+            "distance": 7.12,
+            "course": 64.62
+          }
+        ]
+      }
+    },
+    "STAR|KOXUN1A|02R/20L": {
+      "title": "STAR RNAV KOXUN 1A RWY 02R/20L",
+      "chartKey": "RJ02T",
+      "transitions": {
+        "KEVUN": [
+          {
+            "seq": 10,
+            "fix": "KEVUN",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ313",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 30.06,
+            "course": 76.51
+          },
+          {
+            "seq": 30,
+            "fix": "RJ307",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 20.74,
+            "course": 64.98
+          },
+          {
+            "seq": 40,
+            "fix": "RJ021",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 5.35,
+            "course": 63.57
+          },
+          {
+            "seq": 50,
+            "fix": "RJ308",
+            "pathTerminator": "TF",
+            "altitude": "@8000",
+            "distance": 18.02,
+            "course": 65.06
+          },
+          {
+            "seq": 60,
+            "fix": "ASALU",
+            "pathTerminator": "TF",
+            "altitude": "@7000",
+            "distance": 4.53,
+            "course": 64.73
+          }
+        ],
+        "TOKIM": [
+          {
+            "seq": 10,
+            "fix": "TOKIM",
+            "pathTerminator": "IF",
+            "altitude": "-23000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "KOSRU",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 33.38,
+            "course": 157.21
+          },
+          {
+            "seq": 30,
+            "fix": "GETVU",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 10,
+            "course": 157.13
+          },
+          {
+            "seq": 40,
+            "fix": "GIMPI",
+            "pathTerminator": "TF",
+            "altitude": "-8000",
+            "distance": 10,
+            "course": null
+          },
+          {
+            "seq": 50,
+            "fix": "RJ017",
+            "pathTerminator": "TF",
+            "altitude": "@7000",
+            "distance": 5.75,
+            "course": 157.07
+          },
+          {
+            "seq": 60,
+            "fix": "SCR",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 7.3,
+            "course": 157.05
+          },
+          {
+            "seq": 70,
+            "fix": "ASALU",
+            "pathTerminator": "TF",
+            "altitude": "@7000",
+            "distance": 6.27,
+            "course": 117.89
+          }
+        ],
+        "RWY": [
+          {
+            "seq": 10,
+            "fix": "ASALU",
+            "pathTerminator": "IF",
+            "altitude": "@7000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "GELUT",
+            "pathTerminator": "TF",
+            "altitude": "@6000",
+            "distance": 7.12,
+            "course": 64.62
+          },
+          {
+            "seq": 30,
+            "fix": "KOXUN",
+            "pathTerminator": "TF",
+            "altitude": "@4800",
+            "distance": 4.86,
+            "course": 65.3
+          }
+        ]
+      }
+    },
+    "IAC|RNPL|02R": {
+      "title": "IAC RNP L RWY 02R",
+      "chartKey": "RJ02Y",
+      "transitions": {
+        "APCH": [
+          {
+            "seq": 10,
+            "fix": "KOXUN",
+            "pathTerminator": "IF",
+            "altitude": "@4800",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ031",
+            "pathTerminator": "TF",
+            "altitude": "+4000",
+            "distance": 4.6,
+            "course": 65.41
+          }
+        ],
+        "FINAL": [
+          {
+            "seq": 10,
+            "fix": "RJ031",
+            "pathTerminator": "IF",
+            "altitude": "+4000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ081",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 4.96,
+            "course": 95.72
+          },
+          {
+            "seq": 30,
+            "fix": "RJ048",
+            "pathTerminator": "TF",
+            "altitude": "+1200",
+            "distance": 4.12,
+            "course": 115.8
+          }
+        ],
+        "MA": [
+          {
+            "seq": 10,
+            "fix": "RJ049",
+            "pathTerminator": "TF",
+            "altitude": "+2000",
+            "distance": 4.74,
+            "course": 109.12
+          },
+          {
+            "seq": 20,
+            "fix": "RJ051",
+            "pathTerminator": "TF",
+            "altitude": "-3000",
+            "distance": 8.41,
+            "course": 107.64
+          },
+          {
+            "seq": 30,
+            "fix": "EVRIR",
+            "pathTerminator": "TF",
+            "altitude": "@5500",
+            "distance": 9.25,
+            "course": 107.58
+          },
+          {
+            "seq": 40,
+            "fix": "EVRIR",
+            "pathTerminator": "HM",
+            "altitude": "@5500",
+            "distance": null,
+            "course": 224.97
+          }
+        ]
+      }
+    },
+    "IAC|RNPM|20L": {
+      "title": "IAC RNP M RWY 20L",
+      "chartKey": "RJ03C",
+      "transitions": {
+        "APCH": [
+          {
+            "seq": 10,
+            "fix": "GELUT",
+            "pathTerminator": "IF",
+            "altitude": "@6000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "KOXUN",
+            "pathTerminator": "TF",
+            "altitude": "@4800",
+            "distance": 4.86,
+            "course": 65.45
+          },
+          {
+            "seq": 30,
+            "fix": "RJ031",
+            "pathTerminator": "TF",
+            "altitude": "+3600",
+            "distance": 4.6,
+            "course": 65.41
+          }
+        ],
+        "FINAL": [
+          {
+            "seq": 10,
+            "fix": "RJ031",
+            "pathTerminator": "IF",
+            "altitude": "+3600",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ056",
+            "pathTerminator": "TF",
+            "altitude": "+3600",
+            "distance": 5.73,
+            "course": 98.8
+          },
+          {
+            "seq": 30,
+            "fix": "RJ052",
+            "pathTerminator": "TF",
+            "altitude": "+2000",
+            "distance": 5,
+            "course": 98.76
+          }
+        ],
+        "MA": [
+          {
+            "seq": 10,
+            "fix": "RJ053",
+            "pathTerminator": "DF",
+            "altitude": "+2400",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ249",
+            "pathTerminator": "TF",
+            "altitude": "+4000",
+            "distance": 12.16,
+            "course": 125.11
+          },
+          {
+            "seq": 30,
+            "fix": "RJ249",
+            "pathTerminator": "HM",
+            "altitude": "+4000",
+            "distance": null,
+            "course": 305.06
+          }
+        ]
+      }
+    },
+    "SID|EVKOX2B|02R": {
+      "title": "SID RNAV EVKOX 2B RWY 02R",
+      "chartKey": "RJ03F",
+      "transitions": {
+        "RWY": [
+          {
+            "seq": 10,
+            "fix": "RJ912",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "MALDU",
+            "pathTerminator": "TF",
+            "altitude": "+4000",
+            "distance": 3.7,
+            "course": 99.03
+          },
+          {
+            "seq": 30,
+            "fix": "UTGAT",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 3.17,
+            "course": 170.08
+          },
+          {
+            "seq": 40,
+            "fix": "EVKOX",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 10,
+            "course": 219.6
+          }
+        ],
+        "NAXOP": [
+          {
+            "seq": 10,
+            "fix": "EVKOX",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "TIVRO",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 20.7,
+            "course": 218.83
+          },
+          {
+            "seq": 30,
+            "fix": "ARSOV",
+            "pathTerminator": "TF",
+            "altitude": "+24000",
+            "distance": 31,
+            "course": 255.7
+          },
+          {
+            "seq": 40,
+            "fix": "NAXOP",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 12.91,
+            "course": 255.92
+          }
+        ],
+        "BITAK": [
+          {
+            "seq": 10,
+            "fix": "EVKOX",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "TIVRO",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 20.7,
+            "course": 218.83
+          },
+          {
+            "seq": 30,
+            "fix": "BITAK",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 22.46,
+            "course": 218.32
+          }
+        ],
+        "ESORU": [
+          {
+            "seq": 10,
+            "fix": "EVKOX",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "DOVDA",
+            "pathTerminator": "TF",
+            "altitude": "+10000",
+            "distance": 13.42,
+            "course": 312.37
+          },
+          {
+            "seq": 30,
+            "fix": "EVLOG",
+            "pathTerminator": "TF",
+            "altitude": "+14000",
+            "distance": 8.8,
+            "course": 311.31
+          },
+          {
+            "seq": 40,
+            "fix": "RJ003",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 9.89,
+            "course": 311.39
+          },
+          {
+            "seq": 50,
+            "fix": "RJ004",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 10.74,
+            "course": 261.66
+          },
+          {
+            "seq": 60,
+            "fix": "ESORU",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 53.06,
+            "course": 250.3
+          }
+        ]
+      }
+    },
+    "IAC|RNPF|20L": {
+      "title": "IAC RNP F RWY 20L",
+      "chartKey": "RJ03B",
+      "transitions": {
+        "APCH": [
+          {
+            "seq": 10,
+            "fix": "KOXUN",
+            "pathTerminator": "IF",
+            "altitude": "@4800",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ031",
+            "pathTerminator": "TF",
+            "altitude": "+3000",
+            "distance": 4.6,
+            "course": 65.41
+          }
+        ],
+        "FINAL": [
+          {
+            "seq": 10,
+            "fix": "RJ031",
+            "pathTerminator": "IF",
+            "altitude": "+3000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ107",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 5.17,
+            "course": 70.76
+          },
+          {
+            "seq": 30,
+            "fix": "RJ941",
+            "pathTerminator": "TF",
+            "altitude": "+700",
+            "distance": 4,
+            "course": 98.71
+          }
+        ],
+        "MA": [
+          {
+            "seq": 10,
+            "fix": "RJ942",
+            "pathTerminator": "DF",
+            "altitude": "+1300",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ943",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 5,
+            "course": 125.64
+          },
+          {
+            "seq": 30,
+            "fix": "RJ249",
+            "pathTerminator": "TF",
+            "altitude": "+4000",
+            "distance": 8.94,
+            "course": 137.04
+          },
+          {
+            "seq": 40,
+            "fix": "RJ249",
+            "pathTerminator": "HM",
+            "altitude": "+4000",
+            "distance": null,
+            "course": 317
+          }
+        ]
+      }
+    },
+    "IAC|RNPE|20L": {
+      "title": "IAC RNP E RWY 20L",
+      "chartKey": "RJ00M",
+      "transitions": {
+        "APCH": [
+          {
+            "seq": 10,
+            "fix": "GELUT",
+            "pathTerminator": "IF",
+            "altitude": "@6000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "KOXUN",
+            "pathTerminator": "TF",
+            "altitude": "@4800",
+            "distance": 4.86,
+            "course": 65.45
+          },
+          {
+            "seq": 30,
+            "fix": "RJ031",
+            "pathTerminator": "TF",
+            "altitude": "+3000",
+            "distance": 4.6,
+            "course": 65.41
+          }
+        ],
+        "FINAL": [
+          {
+            "seq": 10,
+            "fix": "RJ031",
+            "pathTerminator": "IF",
+            "altitude": "+3000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ107",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 5.17,
+            "course": 70.8
+          },
+          {
+            "seq": 30,
+            "fix": "RJ941",
+            "pathTerminator": "TF",
+            "altitude": "+900",
+            "distance": 4,
+            "course": 98.61
+          }
+        ],
+        "MA": [
+          {
+            "seq": 10,
+            "fix": "RJ942",
+            "pathTerminator": "DF",
+            "altitude": "+1400",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ943",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 5,
+            "course": 125.64
+          },
+          {
+            "seq": 30,
+            "fix": "RJ249",
+            "pathTerminator": "TF",
+            "altitude": "+4000",
+            "distance": 8.94,
+            "course": 137
+          },
+          {
+            "seq": 40,
+            "fix": "RJ249",
+            "pathTerminator": "HM",
+            "altitude": "+4000",
+            "distance": null,
+            "course": 317.05
+          }
+        ]
+      }
+    },
+    "SID|EVKOX2C|20L": {
+      "title": "SID RNAV EVKOX 2C RWY 20L",
+      "chartKey": "RJ02U",
+      "transitions": {
+        "RWY": [
+          {
+            "seq": 10,
+            "fix": "LOKOD",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "EVSOB",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 3.89,
+            "course": 138.97
+          },
+          {
+            "seq": 30,
+            "fix": "EVKOX",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 5.26,
+            "course": 219.59
+          }
+        ],
+        "NAXOP": [
+          {
+            "seq": 10,
+            "fix": "EVKOX",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "TIVRO",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 20.7,
+            "course": 218.83
+          },
+          {
+            "seq": 30,
+            "fix": "ARSOV",
+            "pathTerminator": "TF",
+            "altitude": "+24000",
+            "distance": 31,
+            "course": 255.7
+          },
+          {
+            "seq": 40,
+            "fix": "NAXOP",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 12.91,
+            "course": 255.92
+          }
+        ],
+        "BITAK": [
+          {
+            "seq": 10,
+            "fix": "EVKOX",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "TIVRO",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 20.7,
+            "course": 218.83
+          },
+          {
+            "seq": 30,
+            "fix": "BITAK",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 22.46,
+            "course": 218.32
+          }
+        ],
+        "ESORU": [
+          {
+            "seq": 10,
+            "fix": "EVKOX",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "DOVDA",
+            "pathTerminator": "TF",
+            "altitude": "+10000",
+            "distance": 13.42,
+            "course": 312.37
+          },
+          {
+            "seq": 30,
+            "fix": "EVLOG",
+            "pathTerminator": "TF",
+            "altitude": "+14000",
+            "distance": 8.8,
+            "course": 311.31
+          },
+          {
+            "seq": 40,
+            "fix": "RJ003",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 9.89,
+            "course": 311.39
+          },
+          {
+            "seq": 50,
+            "fix": "RJ004",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 10.74,
+            "course": 261.66
+          },
+          {
+            "seq": 60,
+            "fix": "ESORU",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 53.06,
+            "course": 250.3
+          }
+        ]
+      }
+    },
     "IAC|RNPV|20L": {
       "title": "IAC RNP V RWY 20L",
       "chartKey": "RJ01G",
@@ -999,298 +1911,6 @@
         ]
       }
     },
-    "SID|EVKOX2B|02R": {
-      "title": "SID RNAV EVKOX 2B RWY 02R",
-      "chartKey": "RJ03F",
-      "transitions": {
-        "RWY": [
-          {
-            "seq": 10,
-            "fix": "RJ912",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "MALDU",
-            "pathTerminator": "TF",
-            "altitude": "+4000",
-            "distance": 3.7,
-            "course": 99.03
-          },
-          {
-            "seq": 30,
-            "fix": "UTGAT",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 3.17,
-            "course": 170.08
-          },
-          {
-            "seq": 40,
-            "fix": "EVKOX",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 10,
-            "course": 219.6
-          }
-        ],
-        "NAXOP": [
-          {
-            "seq": 10,
-            "fix": "EVKOX",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "TIVRO",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 20.7,
-            "course": 218.83
-          },
-          {
-            "seq": 30,
-            "fix": "ARSOV",
-            "pathTerminator": "TF",
-            "altitude": "+24000",
-            "distance": 31,
-            "course": 255.7
-          },
-          {
-            "seq": 40,
-            "fix": "NAXOP",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 12.91,
-            "course": 255.92
-          }
-        ],
-        "BITAK": [
-          {
-            "seq": 10,
-            "fix": "EVKOX",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "TIVRO",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 20.7,
-            "course": 218.83
-          },
-          {
-            "seq": 30,
-            "fix": "BITAK",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 22.46,
-            "course": 218.32
-          }
-        ],
-        "ESORU": [
-          {
-            "seq": 10,
-            "fix": "EVKOX",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "DOVDA",
-            "pathTerminator": "TF",
-            "altitude": "+10000",
-            "distance": 13.42,
-            "course": 312.37
-          },
-          {
-            "seq": 30,
-            "fix": "EVLOG",
-            "pathTerminator": "TF",
-            "altitude": "+14000",
-            "distance": 8.8,
-            "course": 311.31
-          },
-          {
-            "seq": 40,
-            "fix": "RJ003",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 9.89,
-            "course": 311.39
-          },
-          {
-            "seq": 50,
-            "fix": "RJ004",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 10.74,
-            "course": 261.66
-          },
-          {
-            "seq": 60,
-            "fix": "ESORU",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 53.06,
-            "course": 250.3
-          }
-        ]
-      }
-    },
-    "SID|EVKOX2C|20L": {
-      "title": "SID RNAV EVKOX 2C RWY 20L",
-      "chartKey": "RJ02U",
-      "transitions": {
-        "RWY": [
-          {
-            "seq": 10,
-            "fix": "LOKOD",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "EVSOB",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 3.89,
-            "course": 138.97
-          },
-          {
-            "seq": 30,
-            "fix": "EVKOX",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 5.26,
-            "course": 219.59
-          }
-        ],
-        "NAXOP": [
-          {
-            "seq": 10,
-            "fix": "EVKOX",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "TIVRO",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 20.7,
-            "course": 218.83
-          },
-          {
-            "seq": 30,
-            "fix": "ARSOV",
-            "pathTerminator": "TF",
-            "altitude": "+24000",
-            "distance": 31,
-            "course": 255.7
-          },
-          {
-            "seq": 40,
-            "fix": "NAXOP",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 12.91,
-            "course": 255.92
-          }
-        ],
-        "BITAK": [
-          {
-            "seq": 10,
-            "fix": "EVKOX",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "TIVRO",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 20.7,
-            "course": 218.83
-          },
-          {
-            "seq": 30,
-            "fix": "BITAK",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 22.46,
-            "course": 218.32
-          }
-        ],
-        "ESORU": [
-          {
-            "seq": 10,
-            "fix": "EVKOX",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "DOVDA",
-            "pathTerminator": "TF",
-            "altitude": "+10000",
-            "distance": 13.42,
-            "course": 312.37
-          },
-          {
-            "seq": 30,
-            "fix": "EVLOG",
-            "pathTerminator": "TF",
-            "altitude": "+14000",
-            "distance": 8.8,
-            "course": 311.31
-          },
-          {
-            "seq": 40,
-            "fix": "RJ003",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 9.89,
-            "course": 311.39
-          },
-          {
-            "seq": 50,
-            "fix": "RJ004",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 10.74,
-            "course": 261.66
-          },
-          {
-            "seq": 60,
-            "fix": "ESORU",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 53.06,
-            "course": 250.3
-          }
-        ]
-      }
-    },
     "SID|EVKOX4A|02R": {
       "title": "SID RNAV EVKOX 4A RWY 02R",
       "chartKey": "RJ02N",
@@ -1653,388 +2273,6 @@
             "altitude": "@5500",
             "distance": null,
             "course": 287.5
-          }
-        ]
-      }
-    },
-    "SID|PUMSO4A|02R": {
-      "title": "SID RNAV PUMSO 4A RWY 02R",
-      "chartKey": "RJ00P",
-      "transitions": {
-        "RWY": [
-          {
-            "seq": 10,
-            "fix": null,
-            "pathTerminator": "CA",
-            "altitude": "+500",
-            "distance": 2.46,
-            "course": 356.57
-          },
-          {
-            "seq": 20,
-            "fix": "MALDU",
-            "pathTerminator": "DF",
-            "altitude": null,
-            "distance": 2.46,
-            "course": null
-          },
-          {
-            "seq": 30,
-            "fix": "UBMIG",
-            "pathTerminator": "TF",
-            "altitude": "-5000",
-            "distance": 7.8,
-            "course": 85.59
-          },
-          {
-            "seq": 40,
-            "fix": "PUMSO",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 4,
-            "course": 85.53
-          }
-        ],
-        "ADA": [
-          {
-            "seq": 10,
-            "fix": "PUMSO",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "ADA",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 41,
-            "course": 85.36
-          }
-        ],
-        "ISRIN": [
-          {
-            "seq": 10,
-            "fix": "PUMSO",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "BUSVO",
-            "pathTerminator": "TF",
-            "altitude": "+8000",
-            "distance": 5.3,
-            "course": null
-          },
-          {
-            "seq": 30,
-            "fix": "PCX",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 4.04,
-            "course": 351.81
-          },
-          {
-            "seq": 40,
-            "fix": "ASKAV",
-            "pathTerminator": "TF",
-            "altitude": "+23000",
-            "distance": 23.7,
-            "course": 351.22
-          },
-          {
-            "seq": 50,
-            "fix": "ISRIN",
-            "pathTerminator": "351.25° True",
-            "altitude": null,
-            "distance": 9.97,
-            "course": 351.25
-          }
-        ],
-        "IMBAP": [
-          {
-            "seq": 10,
-            "fix": "PUMSO",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "BUSVO",
-            "pathTerminator": "351.28° True",
-            "altitude": "+8000",
-            "distance": 5.3,
-            "course": 351.28
-          },
-          {
-            "seq": 30,
-            "fix": "PCX",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 4.04,
-            "course": 351.81
-          },
-          {
-            "seq": 40,
-            "fix": "ASKAV",
-            "pathTerminator": "351.22° True",
-            "altitude": "+23000",
-            "distance": 23.7,
-            "course": 351.22
-          },
-          {
-            "seq": 50,
-            "fix": "ISRIN",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 9.97,
-            "course": 351.25
-          },
-          {
-            "seq": 60,
-            "fix": "IMBAP",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 37.41,
-            "course": 32.87
-          }
-        ],
-        "MUDKA": [
-          {
-            "seq": 10,
-            "fix": "PUMSO",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "BUSVO",
-            "pathTerminator": "TF",
-            "altitude": "+8000",
-            "distance": 5.3,
-            "course": 351.28
-          },
-          {
-            "seq": 30,
-            "fix": "PCX",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 4.04,
-            "course": 351.81
-          },
-          {
-            "seq": 40,
-            "fix": "ASKAV",
-            "pathTerminator": "TF",
-            "altitude": "+23000",
-            "distance": 23.7,
-            "course": 351.22
-          },
-          {
-            "seq": 50,
-            "fix": "ISRIN",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 9.97,
-            "course": 351.25
-          },
-          {
-            "seq": 60,
-            "fix": "TOSAT",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 33.66,
-            "course": 313.93
-          },
-          {
-            "seq": 70,
-            "fix": "MUDKA",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 15.84,
-            "course": 317.48
-          }
-        ],
-        "TISVA": [
-          {
-            "seq": 10,
-            "fix": "PUMSO",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "TISVA",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 36.54,
-            "course": 62.19
-          }
-        ],
-        "UKENU": [
-          {
-            "seq": 10,
-            "fix": "PUMSO",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "BUSVO",
-            "pathTerminator": "TF",
-            "altitude": "+8000",
-            "distance": 5.3,
-            "course": 351.28
-          },
-          {
-            "seq": 30,
-            "fix": "PCX",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 4.04,
-            "course": 351.81
-          },
-          {
-            "seq": 40,
-            "fix": "ASKAV",
-            "pathTerminator": "TF",
-            "altitude": "+23000",
-            "distance": 23.7,
-            "course": 351.22
-          },
-          {
-            "seq": 50,
-            "fix": "ISRIN",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 9.97,
-            "course": 351.25
-          },
-          {
-            "seq": 60,
-            "fix": "UKENU",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 85.07,
-            "course": 47.9
-          }
-        ],
-        "DAKDA": [
-          {
-            "seq": 10,
-            "fix": "PUMSO",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "TF",
-            "pathTerminator": "351.28° True",
-            "altitude": "+8000",
-            "distance": 5.3,
-            "course": 351.28
-          },
-          {
-            "seq": 30,
-            "fix": "PCX",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 4.04,
-            "course": 351.81
-          },
-          {
-            "seq": 40,
-            "fix": "ASKAV",
-            "pathTerminator": "TF",
-            "altitude": "+23000",
-            "distance": 23.7,
-            "course": 351.22
-          },
-          {
-            "seq": 50,
-            "fix": "ISRIN",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 9.97,
-            "course": 351.25
-          },
-          {
-            "seq": 60,
-            "fix": "DAKDA",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 53.08,
-            "course": 351.26
-          }
-        ]
-      }
-    },
-    "SID|ISRIN1A|20L": {
-      "title": "SID ISRIN 1A RWY 20L",
-      "chartKey": "RJ01B",
-      "transitions": {
-        "ISRIN": [
-          {
-            "seq": 10,
-            "fix": "LOKOD",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "LOKUL",
-            "pathTerminator": "CF",
-            "altitude": null,
-            "distance": 6.46,
-            "course": 139.01
-          },
-          {
-            "seq": 30,
-            "fix": "OPNIL",
-            "pathTerminator": "CF",
-            "altitude": "+7000",
-            "distance": 10,
-            "course": 76.08
-          },
-          {
-            "seq": 40,
-            "fix": "NIPKO",
-            "pathTerminator": "CF",
-            "altitude": "+8000",
-            "distance": 8.35,
-            "course": 4.99
-          },
-          {
-            "seq": 50,
-            "fix": "PCX",
-            "pathTerminator": "CF",
-            "altitude": null,
-            "distance": 8.23,
-            "course": 4.99
-          },
-          {
-            "seq": 60,
-            "fix": "ISRIN",
-            "pathTerminator": "CF",
-            "altitude": "-18000",
-            "distance": 33.67,
-            "course": 351.22
           }
         ]
       }
@@ -2597,118 +2835,384 @@
         ]
       }
     },
-    "IAC|RNPB|02R": {
-      "title": "IAC RNP B RWY 02R",
-      "chartKey": "RJ02Z",
+    "SID|PUMSO4A|02R": {
+      "title": "SID RNAV PUMSO 4A RWY 02R",
+      "chartKey": "RJ00P",
       "transitions": {
-        "APCH": [
+        "RWY": [
           {
             "seq": 10,
-            "fix": "POPSU",
-            "pathTerminator": "IF",
-            "altitude": "+5500",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 10,
-            "fix": "MOVGI",
-            "pathTerminator": "IF",
-            "altitude": "+4000",
-            "distance": null,
-            "course": null
+            "fix": null,
+            "pathTerminator": "CA",
+            "altitude": "+500",
+            "distance": 2.46,
+            "course": 356.57
           },
           {
             "seq": 20,
-            "fix": "RJ222",
-            "pathTerminator": "TF",
-            "altitude": "+3500",
-            "distance": 9.22,
-            "course": 320.42
-          },
-          {
-            "seq": 20,
-            "fix": "RJ222",
-            "pathTerminator": "TF",
-            "altitude": "+3500",
-            "distance": 6.87,
-            "course": 18.46
-          }
-        ],
-        "FINAL": [
-          {
-            "seq": 10,
-            "fix": "RJ222",
-            "pathTerminator": "IF",
-            "altitude": "+3500",
-            "distance": null,
+            "fix": "MALDU",
+            "pathTerminator": "DF",
+            "altitude": null,
+            "distance": 2.46,
             "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ112",
-            "pathTerminator": "TF",
-            "altitude": "+2000",
-            "distance": 4.83,
-            "course": 350.79
           },
           {
             "seq": 30,
-            "fix": "RJ114",
+            "fix": "UBMIG",
             "pathTerminator": "TF",
-            "altitude": "+920",
-            "distance": 3.4,
-            "course": 350.31
+            "altitude": "-5000",
+            "distance": 7.8,
+            "course": 85.59
           },
           {
             "seq": 40,
-            "fix": "RJ111",
-            "pathTerminator": "TF",
-            "altitude": "+920",
-            "distance": 1.6,
-            "course": 350.31
-          }
-        ],
-        "MA": [
-          {
-            "seq": 10,
-            "fix": "RJ113",
+            "fix": "PUMSO",
             "pathTerminator": "TF",
             "altitude": null,
-            "distance": 2.5,
-            "course": 350.31
-          },
-          {
-            "seq": 20,
-            "fix": "RJ116",
-            "pathTerminator": "TF",
-            "altitude": "+1500",
-            "distance": 2.24,
-            "course": 57.47
-          },
-          {
-            "seq": 30,
-            "fix": "OPSID",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 4.05,
+            "distance": 4,
             "course": 85.53
+          }
+        ],
+        "ADA": [
+          {
+            "seq": 10,
+            "fix": "PUMSO",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "ADA",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 41,
+            "course": 85.36
+          }
+        ],
+        "ISRIN": [
+          {
+            "seq": 10,
+            "fix": "PUMSO",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "BUSVO",
+            "pathTerminator": "TF",
+            "altitude": "+8000",
+            "distance": 5.3,
+            "course": null
+          },
+          {
+            "seq": 30,
+            "fix": "PCX",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 4.04,
+            "course": 351.81
           },
           {
             "seq": 40,
-            "fix": "EVRIR",
+            "fix": "ASKAV",
             "pathTerminator": "TF",
-            "altitude": "@5500",
-            "distance": 16.22,
-            "course": 129.27
+            "altitude": "+23000",
+            "distance": 23.7,
+            "course": 351.22
           },
           {
             "seq": 50,
-            "fix": "EVRIR",
-            "pathTerminator": "HM",
-            "altitude": "@5500",
+            "fix": "ISRIN",
+            "pathTerminator": "351.25° True",
+            "altitude": null,
+            "distance": 9.97,
+            "course": 351.25
+          }
+        ],
+        "IMBAP": [
+          {
+            "seq": 10,
+            "fix": "PUMSO",
+            "pathTerminator": "IF",
+            "altitude": null,
             "distance": null,
-            "course": 224.92
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "BUSVO",
+            "pathTerminator": "351.28° True",
+            "altitude": "+8000",
+            "distance": 5.3,
+            "course": 351.28
+          },
+          {
+            "seq": 30,
+            "fix": "PCX",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 4.04,
+            "course": 351.81
+          },
+          {
+            "seq": 40,
+            "fix": "ASKAV",
+            "pathTerminator": "351.22° True",
+            "altitude": "+23000",
+            "distance": 23.7,
+            "course": 351.22
+          },
+          {
+            "seq": 50,
+            "fix": "ISRIN",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 9.97,
+            "course": 351.25
+          },
+          {
+            "seq": 60,
+            "fix": "IMBAP",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 37.41,
+            "course": 32.87
+          }
+        ],
+        "MUDKA": [
+          {
+            "seq": 10,
+            "fix": "PUMSO",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "BUSVO",
+            "pathTerminator": "TF",
+            "altitude": "+8000",
+            "distance": 5.3,
+            "course": 351.28
+          },
+          {
+            "seq": 30,
+            "fix": "PCX",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 4.04,
+            "course": 351.81
+          },
+          {
+            "seq": 40,
+            "fix": "ASKAV",
+            "pathTerminator": "TF",
+            "altitude": "+23000",
+            "distance": 23.7,
+            "course": 351.22
+          },
+          {
+            "seq": 50,
+            "fix": "ISRIN",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 9.97,
+            "course": 351.25
+          },
+          {
+            "seq": 60,
+            "fix": "TOSAT",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 33.66,
+            "course": 313.93
+          },
+          {
+            "seq": 70,
+            "fix": "MUDKA",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 15.84,
+            "course": 317.48
+          }
+        ],
+        "TISVA": [
+          {
+            "seq": 10,
+            "fix": "PUMSO",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "TISVA",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 36.54,
+            "course": 62.19
+          }
+        ],
+        "UKENU": [
+          {
+            "seq": 10,
+            "fix": "PUMSO",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "BUSVO",
+            "pathTerminator": "TF",
+            "altitude": "+8000",
+            "distance": 5.3,
+            "course": 351.28
+          },
+          {
+            "seq": 30,
+            "fix": "PCX",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 4.04,
+            "course": 351.81
+          },
+          {
+            "seq": 40,
+            "fix": "ASKAV",
+            "pathTerminator": "TF",
+            "altitude": "+23000",
+            "distance": 23.7,
+            "course": 351.22
+          },
+          {
+            "seq": 50,
+            "fix": "ISRIN",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 9.97,
+            "course": 351.25
+          },
+          {
+            "seq": 60,
+            "fix": "UKENU",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 85.07,
+            "course": 47.9
+          }
+        ],
+        "DAKDA": [
+          {
+            "seq": 10,
+            "fix": "PUMSO",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "TF",
+            "pathTerminator": "351.28° True",
+            "altitude": "+8000",
+            "distance": 5.3,
+            "course": 351.28
+          },
+          {
+            "seq": 30,
+            "fix": "PCX",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 4.04,
+            "course": 351.81
+          },
+          {
+            "seq": 40,
+            "fix": "ASKAV",
+            "pathTerminator": "TF",
+            "altitude": "+23000",
+            "distance": 23.7,
+            "course": 351.22
+          },
+          {
+            "seq": 50,
+            "fix": "ISRIN",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 9.97,
+            "course": 351.25
+          },
+          {
+            "seq": 60,
+            "fix": "DAKDA",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 53.08,
+            "course": 351.26
+          }
+        ]
+      }
+    },
+    "SID|ISRIN1A|20L": {
+      "title": "SID ISRIN 1A RWY 20L",
+      "chartKey": "RJ01B",
+      "transitions": {
+        "ISRIN": [
+          {
+            "seq": 10,
+            "fix": "LOKOD",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "LOKUL",
+            "pathTerminator": "CF",
+            "altitude": null,
+            "distance": 6.46,
+            "course": 139.01
+          },
+          {
+            "seq": 30,
+            "fix": "OPNIL",
+            "pathTerminator": "CF",
+            "altitude": "+7000",
+            "distance": 10,
+            "course": 76.08
+          },
+          {
+            "seq": 40,
+            "fix": "NIPKO",
+            "pathTerminator": "CF",
+            "altitude": "+8000",
+            "distance": 8.35,
+            "course": 4.99
+          },
+          {
+            "seq": 50,
+            "fix": "PCX",
+            "pathTerminator": "CF",
+            "altitude": null,
+            "distance": 8.23,
+            "course": 4.99
+          },
+          {
+            "seq": 60,
+            "fix": "ISRIN",
+            "pathTerminator": "CF",
+            "altitude": "-18000",
+            "distance": 33.67,
+            "course": 351.22
           }
         ]
       }
@@ -2853,270 +3357,118 @@
         ]
       }
     },
-    "IAC|RNPL|02R": {
-      "title": "IAC RNP L RWY 02R",
-      "chartKey": "RJ02Y",
+    "IAC|RNPB|02R": {
+      "title": "IAC RNP B RWY 02R",
+      "chartKey": "RJ02Z",
       "transitions": {
         "APCH": [
           {
             "seq": 10,
-            "fix": "GELUT",
+            "fix": "POPSU",
             "pathTerminator": "IF",
-            "altitude": "@6000",
+            "altitude": "+5500",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 10,
+            "fix": "MOVGI",
+            "pathTerminator": "IF",
+            "altitude": "+4000",
             "distance": null,
             "course": null
           },
           {
             "seq": 20,
-            "fix": "RJ047",
+            "fix": "RJ222",
             "pathTerminator": "TF",
-            "altitude": "+4400",
-            "distance": 5,
-            "course": 65.45
+            "altitude": "+3500",
+            "distance": 9.22,
+            "course": 320.42
           },
           {
-            "seq": 30,
-            "fix": "RJ031",
+            "seq": 20,
+            "fix": "RJ222",
             "pathTerminator": "TF",
-            "altitude": "+4000",
-            "distance": 4.46,
-            "course": 65.41
+            "altitude": "+3500",
+            "distance": 6.87,
+            "course": 18.46
           }
         ],
         "FINAL": [
           {
             "seq": 10,
-            "fix": "RJ031",
+            "fix": "RJ222",
             "pathTerminator": "IF",
-            "altitude": "+4000",
+            "altitude": "+3500",
             "distance": null,
             "course": null
           },
           {
             "seq": 20,
-            "fix": "RJ081",
+            "fix": "RJ112",
             "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 4.96,
-            "course": 95.72
+            "altitude": "+2000",
+            "distance": 4.83,
+            "course": 350.79
           },
           {
             "seq": 30,
-            "fix": "RJ048",
+            "fix": "RJ114",
             "pathTerminator": "TF",
-            "altitude": "+1200",
-            "distance": 4.12,
-            "course": 115.8
+            "altitude": "+920",
+            "distance": 3.4,
+            "course": 350.31
+          },
+          {
+            "seq": 40,
+            "fix": "RJ111",
+            "pathTerminator": "TF",
+            "altitude": "+920",
+            "distance": 1.6,
+            "course": 350.31
           }
         ],
         "MA": [
           {
             "seq": 10,
-            "fix": "RJ049",
+            "fix": "RJ113",
             "pathTerminator": "TF",
-            "altitude": "+2000",
-            "distance": 4.74,
-            "course": 109.12
+            "altitude": null,
+            "distance": 2.5,
+            "course": 350.31
           },
           {
             "seq": 20,
-            "fix": "RJ051",
+            "fix": "RJ116",
             "pathTerminator": "TF",
-            "altitude": "-3000",
-            "distance": 8.41,
-            "course": 107.64
+            "altitude": "+1500",
+            "distance": 2.24,
+            "course": 57.47
           },
           {
             "seq": 30,
-            "fix": "EVRIR",
+            "fix": "OPSID",
             "pathTerminator": "TF",
-            "altitude": "@5500",
-            "distance": 9.25,
-            "course": 107.58
+            "altitude": null,
+            "distance": 4.05,
+            "course": 85.53
           },
           {
             "seq": 40,
             "fix": "EVRIR",
+            "pathTerminator": "TF",
+            "altitude": "@5500",
+            "distance": 16.22,
+            "course": 129.27
+          },
+          {
+            "seq": 50,
+            "fix": "EVRIR",
             "pathTerminator": "HM",
             "altitude": "@5500",
             "distance": null,
-            "course": 224.97
-          }
-        ]
-      }
-    },
-    "IAC|RNPM|20L": {
-      "title": "IAC RNP M RWY 20L",
-      "chartKey": "RJ03C",
-      "transitions": {
-        "APCH": [
-          {
-            "seq": 10,
-            "fix": "GELUT",
-            "pathTerminator": "IF",
-            "altitude": "@6000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ946",
-            "pathTerminator": "TF",
-            "altitude": "@4800",
-            "distance": 4.86,
-            "course": 65.45
-          },
-          {
-            "seq": 30,
-            "fix": "RJ031",
-            "pathTerminator": "TF",
-            "altitude": "+3600",
-            "distance": 4.6,
-            "course": 65.41
-          }
-        ],
-        "FINAL": [
-          {
-            "seq": 10,
-            "fix": "RJ031",
-            "pathTerminator": "IF",
-            "altitude": "+3600",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ056",
-            "pathTerminator": "TF",
-            "altitude": "+3600",
-            "distance": 5.73,
-            "course": 98.8
-          },
-          {
-            "seq": 30,
-            "fix": "RJ052",
-            "pathTerminator": "TF",
-            "altitude": "+2000",
-            "distance": 5,
-            "course": 98.76
-          }
-        ],
-        "MA": [
-          {
-            "seq": 10,
-            "fix": "RJ053",
-            "pathTerminator": "DF",
-            "altitude": "+2400",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ249",
-            "pathTerminator": "TF",
-            "altitude": "+4000",
-            "distance": 12.16,
-            "course": 125.11
-          },
-          {
-            "seq": 30,
-            "fix": "RJ249",
-            "pathTerminator": "HM",
-            "altitude": "+4000",
-            "distance": null,
-            "course": 305.06
-          }
-        ]
-      }
-    },
-    "IAC|RNPE|20L": {
-      "title": "IAC RNP E RWY 20L",
-      "chartKey": "RJ00M",
-      "transitions": {
-        "APCH": [
-          {
-            "seq": 10,
-            "fix": "GELUT",
-            "pathTerminator": "IF",
-            "altitude": "@6000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ946",
-            "pathTerminator": "TF",
-            "altitude": "@4800",
-            "distance": 4.86,
-            "course": 65.45
-          },
-          {
-            "seq": 30,
-            "fix": "RJ031",
-            "pathTerminator": "TF",
-            "altitude": "+3000",
-            "distance": 4.6,
-            "course": 65.41
-          }
-        ],
-        "FINAL": [
-          {
-            "seq": 10,
-            "fix": "RJ031",
-            "pathTerminator": "IF",
-            "altitude": "+3000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ107",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 5.17,
-            "course": 70.8
-          },
-          {
-            "seq": 30,
-            "fix": "RJ941",
-            "pathTerminator": "TF",
-            "altitude": "+900",
-            "distance": 4,
-            "course": 98.61
-          }
-        ],
-        "MA": [
-          {
-            "seq": 10,
-            "fix": "RJ942",
-            "pathTerminator": "DF",
-            "altitude": "+1400",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ943",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 5,
-            "course": 125.64
-          },
-          {
-            "seq": 30,
-            "fix": "RJ249",
-            "pathTerminator": "TF",
-            "altitude": "+4000",
-            "distance": 8.94,
-            "course": 137
-          },
-          {
-            "seq": 40,
-            "fix": "RJ249",
-            "pathTerminator": "HM",
-            "altitude": "+4000",
-            "distance": null,
-            "course": 317.05
+            "course": 224.92
           }
         ]
       }
@@ -3241,206 +3593,6 @@
             "altitude": "@5500",
             "distance": null,
             "course": 287.5
-          }
-        ]
-      }
-    },
-    "IAC|RNPG|20L": {
-      "title": "IAC RNP G RWY 20L",
-      "chartKey": "RJ03A",
-      "transitions": {
-        "APCH": [
-          {
-            "seq": 10,
-            "fix": "EVRIR",
-            "pathTerminator": "IF",
-            "altitude": "@5500",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ951",
-            "pathTerminator": "TF",
-            "altitude": "+3100",
-            "distance": 7.73,
-            "course": 308.52
-          },
-          {
-            "seq": 30,
-            "fix": "RJ947",
-            "pathTerminator": "TF",
-            "altitude": "+3000",
-            "distance": 3,
-            "course": 308.56
-          }
-        ],
-        "FINAL": [
-          {
-            "seq": 10,
-            "fix": "RJ947",
-            "pathTerminator": "IF",
-            "altitude": "+3000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ010",
-            "pathTerminator": "TF",
-            "altitude": "+2200",
-            "distance": 5,
-            "course": 305.43
-          },
-          {
-            "seq": 30,
-            "fix": "RJ119*",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 2.5,
-            "course": 284.18
-          },
-          {
-            "seq": 40,
-            "fix": "RJ948",
-            "pathTerminator": "TF",
-            "altitude": "+700",
-            "distance": 2.21,
-            "course": 284.29
-          }
-        ],
-        "MA": [
-          {
-            "seq": 10,
-            "fix": "RJ942",
-            "pathTerminator": "DF",
-            "altitude": "+1300",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ943",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 5,
-            "course": 125.55
-          },
-          {
-            "seq": 30,
-            "fix": "RJ249",
-            "pathTerminator": "TF",
-            "altitude": "+4000",
-            "distance": 8.94,
-            "course": 136.96
-          },
-          {
-            "seq": 40,
-            "fix": "RJ249",
-            "pathTerminator": "HM",
-            "altitude": "+4000",
-            "distance": null,
-            "course": 316.93
-          }
-        ]
-      }
-    },
-    "IAC|RNPA|02R": {
-      "title": "IAC RNP A RWY 02R",
-      "chartKey": "RJ02X",
-      "transitions": {
-        "APCH": [
-          {
-            "seq": 10,
-            "fix": "POPSU",
-            "pathTerminator": "IF",
-            "altitude": "+5500",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 10,
-            "fix": "MOVGI",
-            "pathTerminator": "IF",
-            "altitude": "+4000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ222",
-            "pathTerminator": "TF",
-            "altitude": "+3500",
-            "distance": 9.22,
-            "course": 320.42
-          },
-          {
-            "seq": 20,
-            "fix": "RJ222",
-            "pathTerminator": "TF",
-            "altitude": "+3500",
-            "distance": 6.87,
-            "course": 18.46
-          }
-        ],
-        "FINAL": [
-          {
-            "seq": 10,
-            "fix": "RJ222",
-            "pathTerminator": "IF",
-            "altitude": "+3500",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ112",
-            "pathTerminator": "TF",
-            "altitude": "+2000",
-            "distance": 4.83,
-            "course": 350.79
-          },
-          {
-            "seq": 30,
-            "fix": "RJ114",
-            "pathTerminator": "TF",
-            "altitude": "+920",
-            "distance": 3.4,
-            "course": null
-          },
-          {
-            "seq": 40,
-            "fix": "RJ111",
-            "pathTerminator": "TF",
-            "altitude": "+920",
-            "distance": 1.6,
-            "course": 350.31
-          }
-        ],
-        "MA": [
-          {
-            "seq": 10,
-            "fix": "RJ113",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 2.5,
-            "course": 350.31
-          },
-          {
-            "seq": 30,
-            "fix": "RJ117",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 9.51,
-            "course": 270.55
-          },
-          {
-            "seq": 50,
-            "fix": "RJ018",
-            "pathTerminator": "HM",
-            "altitude": "+5000",
-            "distance": null,
-            "course": 112.1
           }
         ]
       }
@@ -3585,40 +3737,140 @@
         ]
       }
     },
-    "IAC|RNPF|20L": {
-      "title": "IAC RNP F RWY 20L",
-      "chartKey": "RJ03B",
+    "IAC|RNPA|02R": {
+      "title": "IAC RNP A RWY 02R",
+      "chartKey": "RJ02X",
       "transitions": {
         "APCH": [
           {
             "seq": 10,
-            "fix": "GELUT",
+            "fix": "POPSU",
             "pathTerminator": "IF",
-            "altitude": "@6000",
+            "altitude": "+5500",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 10,
+            "fix": "MOVGI",
+            "pathTerminator": "IF",
+            "altitude": "+4000",
             "distance": null,
             "course": null
           },
           {
             "seq": 20,
-            "fix": "RJ946",
+            "fix": "RJ222",
             "pathTerminator": "TF",
-            "altitude": "@4800",
-            "distance": 4.86,
-            "course": 65.45
+            "altitude": "+3500",
+            "distance": 9.22,
+            "course": 320.42
           },
           {
-            "seq": 30,
-            "fix": "RJ031",
+            "seq": 20,
+            "fix": "RJ222",
             "pathTerminator": "TF",
-            "altitude": "+3000",
-            "distance": 4.6,
-            "course": 65.41
+            "altitude": "+3500",
+            "distance": 6.87,
+            "course": 18.46
           }
         ],
         "FINAL": [
           {
             "seq": 10,
-            "fix": "RJ031",
+            "fix": "RJ222",
+            "pathTerminator": "IF",
+            "altitude": "+3500",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ112",
+            "pathTerminator": "TF",
+            "altitude": "+2000",
+            "distance": 4.83,
+            "course": 350.79
+          },
+          {
+            "seq": 30,
+            "fix": "RJ114",
+            "pathTerminator": "TF",
+            "altitude": "+920",
+            "distance": 3.4,
+            "course": null
+          },
+          {
+            "seq": 40,
+            "fix": "RJ111",
+            "pathTerminator": "TF",
+            "altitude": "+920",
+            "distance": 1.6,
+            "course": 350.31
+          }
+        ],
+        "MA": [
+          {
+            "seq": 10,
+            "fix": "RJ113",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 2.5,
+            "course": 350.31
+          },
+          {
+            "seq": 30,
+            "fix": "RJ117",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 9.51,
+            "course": 270.55
+          },
+          {
+            "seq": 50,
+            "fix": "RJ018",
+            "pathTerminator": "HM",
+            "altitude": "+5000",
+            "distance": null,
+            "course": 112.1
+          }
+        ]
+      }
+    },
+    "IAC|RNPG|20L": {
+      "title": "IAC RNP G RWY 20L",
+      "chartKey": "RJ03A",
+      "transitions": {
+        "APCH": [
+          {
+            "seq": 10,
+            "fix": "EVRIR",
+            "pathTerminator": "IF",
+            "altitude": "@5500",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "RJ951",
+            "pathTerminator": "TF",
+            "altitude": "+3100",
+            "distance": 7.73,
+            "course": 308.52
+          },
+          {
+            "seq": 30,
+            "fix": "RJ947",
+            "pathTerminator": "TF",
+            "altitude": "+3000",
+            "distance": 3,
+            "course": 308.56
+          }
+        ],
+        "FINAL": [
+          {
+            "seq": 10,
+            "fix": "RJ947",
             "pathTerminator": "IF",
             "altitude": "+3000",
             "distance": null,
@@ -3626,19 +3878,27 @@
           },
           {
             "seq": 20,
-            "fix": "RJ107",
+            "fix": "RJ010",
             "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 5.17,
-            "course": 70.8
+            "altitude": "+2200",
+            "distance": 5,
+            "course": 305.43
           },
           {
             "seq": 30,
-            "fix": "RJ941",
+            "fix": "RJ119",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 2.5,
+            "course": 284.18
+          },
+          {
+            "seq": 40,
+            "fix": "RJ948",
             "pathTerminator": "TF",
             "altitude": "+700",
-            "distance": 4,
-            "course": 98.61
+            "distance": 2.21,
+            "course": 284.29
           }
         ],
         "MA": [
@@ -3656,7 +3916,7 @@
             "pathTerminator": "TF",
             "altitude": null,
             "distance": 5,
-            "course": 125.64
+            "course": 125.55
           },
           {
             "seq": 30,
@@ -3664,7 +3924,7 @@
             "pathTerminator": "TF",
             "altitude": "+4000",
             "distance": 8.94,
-            "course": 137
+            "course": 136.96
           },
           {
             "seq": 40,
@@ -3672,7 +3932,7 @@
             "pathTerminator": "HM",
             "altitude": "+4000",
             "distance": null,
-            "course": 317.05
+            "course": 316.93
           }
         ]
       }
@@ -3793,138 +4053,6 @@
         ]
       }
     },
-    "STAR|ASALU1A|02R/20L": {
-      "title": "STAR RNAV ASALU 1A RWY 02R/20L",
-      "chartKey": "RJ02T",
-      "transitions": {
-        "KEVUN": [
-          {
-            "seq": 10,
-            "fix": "KEVUN",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "RJ313",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 30.06,
-            "course": 76.3
-          },
-          {
-            "seq": 30,
-            "fix": "RJ307",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 20.74,
-            "course": 64.96
-          },
-          {
-            "seq": 40,
-            "fix": "RJ021",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 5.35,
-            "course": 63.54
-          },
-          {
-            "seq": 50,
-            "fix": "RJ308",
-            "pathTerminator": "TF",
-            "altitude": "@8000",
-            "distance": 18.02,
-            "course": 65.1
-          },
-          {
-            "seq": 60,
-            "fix": "ASALU",
-            "pathTerminator": "TF",
-            "altitude": "@7000",
-            "distance": 4.53,
-            "course": 64.7
-          }
-        ],
-        "TOKIM": [
-          {
-            "seq": 10,
-            "fix": "TOKIM",
-            "pathTerminator": "IF",
-            "altitude": "-23000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "KOSRU",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 33.38,
-            "course": 157.12
-          },
-          {
-            "seq": 30,
-            "fix": "GETVU",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 10,
-            "course": 157.1
-          },
-          {
-            "seq": 40,
-            "fix": "GIMPI",
-            "pathTerminator": "TF",
-            "altitude": "-8000",
-            "distance": 10,
-            "course": 157.07
-          },
-          {
-            "seq": 50,
-            "fix": "RJ017",
-            "pathTerminator": "TF",
-            "altitude": "@7000",
-            "distance": 5.75,
-            "course": 157.06
-          },
-          {
-            "seq": 60,
-            "fix": "SCR",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 7.3,
-            "course": 157.03
-          },
-          {
-            "seq": 70,
-            "fix": "ASALU",
-            "pathTerminator": "TF",
-            "altitude": "@7000",
-            "distance": 6.27,
-            "course": 117.92
-          }
-        ],
-        "RWY": [
-          {
-            "seq": 10,
-            "fix": "ASALU",
-            "pathTerminator": "IF",
-            "altitude": "@7000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "GELUT",
-            "pathTerminator": "TF",
-            "altitude": "@6000",
-            "distance": 7.12,
-            "course": 64.57
-          }
-        ]
-      }
-    },
     "SID|EVSOB2B|02R": {
       "title": "SID EVSOB 2B RWY 02R",
       "chartKey": "RJ02W",
@@ -4008,7 +4136,7 @@
           },
           {
             "seq": 30,
-            "fix": "RJ317*",
+            "fix": "RJ317",
             "pathTerminator": "CF",
             "altitude": "+10000",
             "distance": 13.18,
@@ -4016,7 +4144,7 @@
           },
           {
             "seq": 40,
-            "fix": "RJ318*",
+            "fix": "RJ318",
             "pathTerminator": "CF",
             "altitude": "+14000",
             "distance": 8.8,
@@ -4024,7 +4152,7 @@
           },
           {
             "seq": 50,
-            "fix": "RJ319*",
+            "fix": "RJ319",
             "pathTerminator": "CF",
             "altitude": "+20000",
             "distance": 12.4,
@@ -4193,210 +4321,6 @@
             "altitude": "+4000",
             "distance": 11.28,
             "course": 115.09
-          }
-        ]
-      }
-    },
-    "STAR|MAKTI1B|20L/20R": {
-      "title": "STAR RNAV MAKTI 1B RWY 20L/20R",
-      "chartKey": "RJ02R",
-      "transitions": {
-        "KOLBI": [
-          {
-            "seq": 10,
-            "fix": "KOLBI",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "VUDAV",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 36.48,
-            "course": 80.68
-          },
-          {
-            "seq": 30,
-            "fix": "RJ707",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 32.35,
-            "course": null
-          },
-          {
-            "seq": 40,
-            "fix": "MAKTI",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 27.82,
-            "course": 43.62
-          },
-          {
-            "seq": 50,
-            "fix": "EVRIR",
-            "pathTerminator": "TF",
-            "altitude": "@5500",
-            "distance": 30.29,
-            "course": 44.23
-          }
-        ]
-      }
-    },
-    "STAR|SINAG1B|20L/20R": {
-      "title": "STAR RNAV SINAG 1B RWY 20L/20R",
-      "chartKey": "RJ02R",
-      "transitions": {
-        "MCA": [
-          {
-            "seq": 10,
-            "fix": "MCA",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "SINAG",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 33.9,
-            "course": 212.5
-          },
-          {
-            "seq": 30,
-            "fix": "UMDED",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 27.43,
-            "course": 252.65
-          },
-          {
-            "seq": 40,
-            "fix": "EVRIR",
-            "pathTerminator": "TF",
-            "altitude": "@5500",
-            "distance": 14.27,
-            "course": 251.59
-          }
-        ]
-      }
-    },
-    "SID|EVSOB1D|20L": {
-      "title": "SID EVSOB 1D RWY 20L",
-      "chartKey": "RJ02O",
-      "transitions": {
-        "RWY": [
-          {
-            "seq": 10,
-            "fix": "LOKOD",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "EVSOB",
-            "pathTerminator": "CF",
-            "altitude": null,
-            "distance": 3.89,
-            "course": 139.78
-          }
-        ],
-        "BITAK": [
-          {
-            "seq": 10,
-            "fix": "EVSOB",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "VAMIX",
-            "pathTerminator": "CF",
-            "altitude": null,
-            "distance": 4.81,
-            "course": 218.23
-          },
-          {
-            "seq": 30,
-            "fix": "TIVRO",
-            "pathTerminator": "CF",
-            "altitude": null,
-            "distance": 21.16,
-            "course": 218.23
-          },
-          {
-            "seq": 40,
-            "fix": "BITAK",
-            "pathTerminator": "CF",
-            "altitude": null,
-            "distance": 22.46,
-            "course": 218.23
-          }
-        ],
-        "ESORU": [
-          {
-            "seq": 10,
-            "fix": "EVSOB",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "VAMIX",
-            "pathTerminator": "CF",
-            "altitude": null,
-            "distance": 4.81,
-            "course": 218.23
-          },
-          {
-            "seq": 30,
-            "fix": "RJ317*",
-            "pathTerminator": "CF",
-            "altitude": "+10000",
-            "distance": 13.18,
-            "course": 314.16
-          },
-          {
-            "seq": 40,
-            "fix": "RJ318*",
-            "pathTerminator": "CF",
-            "altitude": "+14000",
-            "distance": 8.8,
-            "course": 314.16
-          },
-          {
-            "seq": 50,
-            "fix": "RJ319*",
-            "pathTerminator": "CF",
-            "altitude": "+20000",
-            "distance": 12.4,
-            "course": 314.15
-          },
-          {
-            "seq": 60,
-            "fix": "PAI",
-            "pathTerminator": "CF",
-            "altitude": null,
-            "distance": 18.33,
-            "course": 314.11
-          },
-          {
-            "seq": 70,
-            "fix": "ESORU",
-            "pathTerminator": "CF",
-            "altitude": null,
-            "distance": 57.8,
-            "course": 233.99
           }
         ]
       }
@@ -4669,6 +4593,210 @@
             "altitude": "@5500",
             "distance": 5.59,
             "course": null
+          }
+        ]
+      }
+    },
+    "STAR|MAKTI1B|20L/20R": {
+      "title": "STAR RNAV MAKTI 1B RWY 20L/20R",
+      "chartKey": "RJ02R",
+      "transitions": {
+        "KOLBI": [
+          {
+            "seq": 10,
+            "fix": "KOLBI",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "VUDAV",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 36.48,
+            "course": 80.68
+          },
+          {
+            "seq": 30,
+            "fix": "RJ707",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 32.35,
+            "course": null
+          },
+          {
+            "seq": 40,
+            "fix": "MAKTI",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 27.82,
+            "course": 43.62
+          },
+          {
+            "seq": 50,
+            "fix": "EVRIR",
+            "pathTerminator": "TF",
+            "altitude": "@5500",
+            "distance": 30.29,
+            "course": 44.23
+          }
+        ]
+      }
+    },
+    "STAR|SINAG1B|20L/20R": {
+      "title": "STAR RNAV SINAG 1B RWY 20L/20R",
+      "chartKey": "RJ02R",
+      "transitions": {
+        "MCA": [
+          {
+            "seq": 10,
+            "fix": "MCA",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "SINAG",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 33.9,
+            "course": 212.5
+          },
+          {
+            "seq": 30,
+            "fix": "UMDED",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 27.43,
+            "course": 252.65
+          },
+          {
+            "seq": 40,
+            "fix": "EVRIR",
+            "pathTerminator": "TF",
+            "altitude": "@5500",
+            "distance": 14.27,
+            "course": 251.59
+          }
+        ]
+      }
+    },
+    "SID|EVSOB1D|20L": {
+      "title": "SID EVSOB 1D RWY 20L",
+      "chartKey": "RJ02O",
+      "transitions": {
+        "RWY": [
+          {
+            "seq": 10,
+            "fix": "LOKOD",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "EVSOB",
+            "pathTerminator": "CF",
+            "altitude": null,
+            "distance": 3.89,
+            "course": 139.78
+          }
+        ],
+        "BITAK": [
+          {
+            "seq": 10,
+            "fix": "EVSOB",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "VAMIX",
+            "pathTerminator": "CF",
+            "altitude": null,
+            "distance": 4.81,
+            "course": 218.23
+          },
+          {
+            "seq": 30,
+            "fix": "TIVRO",
+            "pathTerminator": "CF",
+            "altitude": null,
+            "distance": 21.16,
+            "course": 218.23
+          },
+          {
+            "seq": 40,
+            "fix": "BITAK",
+            "pathTerminator": "CF",
+            "altitude": null,
+            "distance": 22.46,
+            "course": 218.23
+          }
+        ],
+        "ESORU": [
+          {
+            "seq": 10,
+            "fix": "EVSOB",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "VAMIX",
+            "pathTerminator": "CF",
+            "altitude": null,
+            "distance": 4.81,
+            "course": 218.23
+          },
+          {
+            "seq": 30,
+            "fix": "RJ317",
+            "pathTerminator": "CF",
+            "altitude": "+10000",
+            "distance": 13.18,
+            "course": 314.16
+          },
+          {
+            "seq": 40,
+            "fix": "RJ318",
+            "pathTerminator": "CF",
+            "altitude": "+14000",
+            "distance": 8.8,
+            "course": 314.16
+          },
+          {
+            "seq": 50,
+            "fix": "RJ319",
+            "pathTerminator": "CF",
+            "altitude": "+20000",
+            "distance": 12.4,
+            "course": 314.15
+          },
+          {
+            "seq": 60,
+            "fix": "PAI",
+            "pathTerminator": "CF",
+            "altitude": null,
+            "distance": 18.33,
+            "course": 314.11
+          },
+          {
+            "seq": 70,
+            "fix": "ESORU",
+            "pathTerminator": "CF",
+            "altitude": null,
+            "distance": 57.8,
+            "course": 233.99
           }
         ]
       }

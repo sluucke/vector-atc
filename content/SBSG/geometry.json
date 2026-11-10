@@ -1,6 +1,6 @@
 {
   "icao": "SBSG",
-  "syncedAt": "2026-09-10",
+  "syncedAt": "2026-11-10",
   "fixes": {
     "DAKER": {
       "lat": -6.1117027777777775,
@@ -78,6 +78,10 @@
       "lat": -5.643,
       "lon": -35.527
     },
+    "NTL": {
+      "lat": -5.908333333333334,
+      "lon": -35.248666666666665
+    },
     "OBGOD": {
       "lat": -5.283672222222222,
       "lon": -35.983758333333334
@@ -154,6 +158,10 @@
       "lat": -5.880922222222223,
       "lon": -35.53208333333333
     },
+    "SGA": {
+      "lat": -5.771811111111111,
+      "lon": -35.36868055555556
+    },
     "SGA11": {
       "lat": -5.773033333333333,
       "lon": -35.353347222222226
@@ -199,7 +207,7 @@
     "12": {
       "thr": {
         "lat": -5.767633333333333,
-        "lon": -35.37994166666667
+        "lon": -35.37994444444445
       }
     },
     "30": {
@@ -354,7 +362,7 @@
           },
           {
             "seq": 30,
-            "fix": "SGA11*",
+            "fix": "SGA11",
             "pathTerminator": "CF",
             "altitude": "@314",
             "distance": 5,
@@ -877,82 +885,6 @@
         ]
       }
     },
-    "IAC|RNPZ|12": {
-      "title": "IAC RNP Z RWY 12",
-      "chartKey": "SG00X",
-      "transitions": {
-        "APCH": [
-          {
-            "seq": 10,
-            "fix": "SG123",
-            "pathTerminator": "IF",
-            "altitude": "+4000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "SG122",
-            "pathTerminator": "RF",
-            "altitude": "+1600",
-            "distance": 7.76,
-            "course": null
-          }
-        ],
-        "FINAL": [
-          {
-            "seq": 10,
-            "fix": "SG122",
-            "pathTerminator": "IF",
-            "altitude": "+1600",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "SG121",
-            "pathTerminator": "RF",
-            "altitude": "+1600",
-            "distance": 3.49,
-            "course": null
-          },
-          {
-            "seq": 30,
-            "fix": "RWY12",
-            "pathTerminator": "TF",
-            "altitude": "@323",
-            "distance": 4,
-            "course": 99.24
-          }
-        ],
-        "MA": [
-          {
-            "seq": 10,
-            "fix": null,
-            "pathTerminator": "VA",
-            "altitude": "+2000",
-            "distance": null,
-            "course": 99.23
-          },
-          {
-            "seq": 20,
-            "fix": "NIMPI",
-            "pathTerminator": "DF",
-            "altitude": "+3500",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 30,
-            "fix": "NIMPI",
-            "pathTerminator": "HM",
-            "altitude": "+3500",
-            "distance": null,
-            "course": 190.46
-          }
-        ]
-      }
-    },
     "IAC|RNP|30": {
       "title": "IAC RNP RWY 30",
       "chartKey": "SG00E",
@@ -1374,6 +1306,82 @@
             "seq": 10,
             "fix": null,
             "pathTerminator": "CA",
+            "altitude": "+2000",
+            "distance": null,
+            "course": 99.23
+          },
+          {
+            "seq": 20,
+            "fix": "NIMPI",
+            "pathTerminator": "DF",
+            "altitude": "+3500",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 30,
+            "fix": "NIMPI",
+            "pathTerminator": "HM",
+            "altitude": "+3500",
+            "distance": null,
+            "course": 190.46
+          }
+        ]
+      }
+    },
+    "IAC|RNPZ|12": {
+      "title": "IAC RNP Z RWY 12",
+      "chartKey": "SG00X",
+      "transitions": {
+        "APCH": [
+          {
+            "seq": 10,
+            "fix": "SG123",
+            "pathTerminator": "IF",
+            "altitude": "+4000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "SG122",
+            "pathTerminator": "RF",
+            "altitude": "+1600",
+            "distance": 7.76,
+            "course": null
+          }
+        ],
+        "FINAL": [
+          {
+            "seq": 10,
+            "fix": "SG122",
+            "pathTerminator": "IF",
+            "altitude": "+1600",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "SG121",
+            "pathTerminator": "RF",
+            "altitude": "+1600",
+            "distance": 3.49,
+            "course": null
+          },
+          {
+            "seq": 30,
+            "fix": "RWY12",
+            "pathTerminator": "TF",
+            "altitude": "@323",
+            "distance": 4,
+            "course": 99.24
+          }
+        ],
+        "MA": [
+          {
+            "seq": 10,
+            "fix": null,
+            "pathTerminator": "VA",
             "altitude": "+2000",
             "distance": null,
             "course": 99.23

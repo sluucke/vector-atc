@@ -98,9 +98,11 @@ function parseCodingTable(rows: string[][]): ParsedTable {
       continue;
     }
 
-    // Coordinate rows: "GEDEX", "S 13:08:30.75W 38:12:28.40"
+    // Coordinate rows: "GEDEX", "S 13:08:30.75W 38:12:28.40". Navaids carry
+    // their type first ("VOR/DME FSA"); conventional procedures are flown on
+    // them, so without this their legs have nowhere to start or end.
     const coord = joined.match(
-      /^([A-Z0-9]{2,6})\s+([NS])\s*(\d{1,3}:\d{2}:\d{2}(?:\.\d+)?)\s*([EW])\s*(\d{1,3}:\d{2}:\d{2}(?:\.\d+)?)/
+      /^(?:(?:D?VOR(?:\/DME)?|VORTAC|NDB(?:\/DME)?|DME|TACAN)\s+)?([A-Z0-9]{2,6})\s+([NS])\s*(\d{1,3}:\d{2}:\d{2}(?:\.\d+)?)\s*([EW])\s*(\d{1,3}:\d{2}:\d{2}(?:\.\d+)?)/
     );
     if (coord) {
       const ident = coord[1];
@@ -148,7 +150,8 @@ function parseCodingTable(rows: string[][]): ParsedTable {
 
     (current.transitions[transition] ??= []).push({
       seq: Number(first),
-      fix: fixIdent === "N/A" ? null : fixIdent,
+      // "BH007*" marks a fly-over fix; the asterisk is not part of the name.
+      fix: fixIdent === "N/A" ? null : fixIdent.replace(/\*/g, ""),
       pathTerminator,
       altitude,
       distance: distance ? Number(distance) : null,

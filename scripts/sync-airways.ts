@@ -167,7 +167,7 @@ function parseRoutes(pages: { lines: Item[][]; route: string }[]) {
 
       // Navaids are filed by their identifier ("LET"), not their name
       // ("LETICIA"), which the AIP prints on the next line.
-      const navaid = text.match(/^(?:VOR\/DME|VORTAC|VOR|NDB|DME)\s+([A-Z]{2,3})$/);
+      const navaid = text.match(/^(?:D?VOR\/DME|VORTAC|D?VOR|NDB\/DME|NDB|DME)\s+([A-Z]{2,3})$/);
       if (navaid && pendingName) {
         pendingName = navaid[1];
         continue;
@@ -216,6 +216,23 @@ function parseSignificantPoints(text: string, points: Record<string, GeoPoint>) 
   }
 }
 
+/**
+ * ENR 4.1 lists every VOR, DME and NDB. A row carries the identifier and the
+ * latitude on one line and the longitude on the next:
+ *   "Luziania   LUZ  113.100 MHZ  H24  161539S ..."
+ *   "VOR/DME         CH 78X            0475816W ..."
+ * Conventional procedures are flown on these navaids, and the coding tables
+ * name them without giving their position.
+ */
+function parseNavaids(lines: Item[][], navaids: Record<string, GeoPoint>) {
+  for (let i = 0; i < lines.length - 1; i++) {
+    const ident = lines[i].find((it) => /^[A-Z]{2,3}$/.test(it.s) && it.x > 140 && it.x < 180);
+    const lat = lines[i].find((it) => /^\d{6}(?:\.\d+)?[NS]$/.test(it.s));
+    const lon = lines[i + 1].find((it) => /^\d{7}(?:\.\d+)?[EW]$/.test(it.s));
+    if (ident && lat && lon) navaids[ident.s] ??= coordinate(lat.s, lon.s);
+  }
+}
+
 async function loadAip(): Promise<Buffer> {
   const local = process.argv[2];
   if (local) return fs.readFileSync(local);
@@ -231,6 +248,7 @@ const doc = await getDocument({ data: new Uint8Array(buffer), useSystemFonts: tr
 
 const routePages: { lines: Item[][]; route: string }[] = [];
 const points: Record<string, GeoPoint> = {};
+const navaids: Record<string, GeoPoint> = {};
 
 for (let p = 1; p <= doc.numPages; p++) {
   const lines = await pageLines(doc, p);
@@ -244,6 +262,9 @@ for (let p = 1; p <= doc.numPages; p++) {
     routePages.push({ lines, route });
     continue;
   }
+  if (/ENR 4\.1 - \d+/.test(head)) {
+    parseNavaids(lines, navaids);
+  }
   if (/ENR 4\.4 - \d+/.test(head)) {
     parseSignificantPoints(lines.map((l) => l.map((i) => i.s).join(" ")).join(" "), points);
   }
@@ -251,6 +272,7 @@ for (let p = 1; p <= doc.numPages; p++) {
 
 const parsed = parseRoutes(routePages);
 for (const [name, point] of Object.entries(parsed.points)) points[name] ??= point;
+for (const [ident, point] of Object.entries(navaids)) points[ident] ??= point;
 
 const segments = Object.values(parsed.routes).flat();
 const db: AirwayDatabase = {
@@ -270,6 +292,7 @@ fs.writeFileSync(out, JSON.stringify(db) + "\n");
 const withAllocation = segments.filter((s) => s.odd || s.even).length;
 console.log(
   `${Object.keys(db.routes).length} aerovias, ${segments.length} trechos ` +
-    `(${withAllocation} com sentido de nível), ${Object.keys(db.points).length} pontos.`
+    `(${withAllocation} com sentido de nível), ${Object.keys(db.points).length} pontos ` +
+    `(${Object.keys(navaids).length} auxílios-rádio).`
 );
 console.log(`Gravado em ${out} (${(fs.statSync(out).size / 1024).toFixed(0)} KB).`);

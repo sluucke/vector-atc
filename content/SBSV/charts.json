@@ -1,6 +1,6 @@
 {
   "icao": "SBSV",
-  "syncedAt": "2026-09-09",
+  "syncedAt": "2026-11-10",
   "source": "https://aisweb.decea.mil.br/api/?area=cartas&icaoCode=SBSV",
   "charts": [
     {

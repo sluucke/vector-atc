@@ -1,6 +1,6 @@
 {
   "icao": "SBSP",
-  "syncedAt": "2026-09-09",
+  "syncedAt": "2026-11-10",
   "source": "https://aisweb.decea.mil.br/api/?area=cartas&icaoCode=SBSP",
   "charts": [
     {
@@ -8,8 +8,8 @@
       "type": "ADC",
       "name": "SBSP ADC",
       "code": "",
-      "amdt": "2608A1",
-      "date": "2026-08-06",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBSP/adc-sbsp-adc-sbsp-adc.pdf"
     },
     {
@@ -179,8 +179,8 @@
       "type": "SID",
       "name": "RNAV BAIAN 3A RWY 17R/17L",
       "code": "SP02K",
-      "amdt": "2508A1",
-      "date": "2025-08-07",
+      "amdt": "2610A1",
+      "date": "2026-10-01",
       "file": "/charts/SBSP/sid-sp02k-rnav-baian-3a-rwy-17r-17l.pdf"
     },
     {
@@ -197,8 +197,8 @@
       "type": "SID",
       "name": "RNAV SEDLO 1A RWY 35R/35L",
       "code": "SP02J",
-      "amdt": "2608A1",
-      "date": "2026-08-06",
+      "amdt": "2610A1",
+      "date": "2026-10-01",
       "file": "/charts/SBSP/sid-sp02j-rnav-sedlo-1a-rwy-35r-35l.pdf"
     },
     {
@@ -206,8 +206,8 @@
       "type": "SID",
       "name": "RNAV UBRAM 1A RWY 17R/17L",
       "code": "SP02A",
-      "amdt": "2508A1",
-      "date": "2025-08-07",
+      "amdt": "2610A1",
+      "date": "2026-10-01",
       "file": "/charts/SBSP/sid-sp02a-rnav-ubram-1a-rwy-17r-17l.pdf"
     },
     {
@@ -215,8 +215,8 @@
       "type": "SID",
       "name": "RNAV UBRAM 1B RWY 35R/35L",
       "code": "SP02B",
-      "amdt": "2508A1",
-      "date": "2025-08-07",
+      "amdt": "2610A1",
+      "date": "2026-10-01",
       "file": "/charts/SBSP/sid-sp02b-rnav-ubram-1b-rwy-35r-35l.pdf"
     },
     {
@@ -224,8 +224,8 @@
       "type": "SID",
       "name": "RNAV UGTIX 1B RWY 35R / 35L",
       "code": "SP02F",
-      "amdt": "2508A1",
-      "date": "2025-08-07",
+      "amdt": "2610A1",
+      "date": "2026-10-01",
       "file": "/charts/SBSP/sid-sp02f-rnav-ugtix-1b-rwy-35r-35l.pdf"
     },
     {
@@ -233,8 +233,8 @@
       "type": "SID",
       "name": "RNAV UGTIX 2A RWY 17R/17L",
       "code": "SP02E",
-      "amdt": "2508A1",
-      "date": "2025-08-07",
+      "amdt": "2610A1",
+      "date": "2026-10-01",
       "file": "/charts/SBSP/sid-sp02e-rnav-ugtix-2a-rwy-17r-17l.pdf"
     },
     {
@@ -242,8 +242,8 @@
       "type": "SID",
       "name": "RNAV UTKOM 1A RWY 17R/17L",
       "code": "SP02L",
-      "amdt": "2508A1",
-      "date": "2025-08-07",
+      "amdt": "2610A1",
+      "date": "2026-10-01",
       "file": "/charts/SBSP/sid-sp02l-rnav-utkom-1a-rwy-17r-17l.pdf"
     },
     {

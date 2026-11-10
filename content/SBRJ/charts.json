@@ -1,6 +1,6 @@
 {
   "icao": "SBRJ",
-  "syncedAt": "2026-09-09",
+  "syncedAt": "2026-11-10",
   "source": "https://aisweb.decea.mil.br/api/?area=cartas&icaoCode=SBRJ",
   "charts": [
     {
@@ -8,8 +8,8 @@
       "type": "ADC",
       "name": "SBRJ ADC",
       "code": "",
-      "amdt": "2605A1",
-      "date": "2026-05-14",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBRJ/adc-sbrj-adc-sbrj-adc.pdf"
     },
     {
@@ -53,8 +53,8 @@
       "type": "IAC",
       "name": "RNP E RWY 20L",
       "code": "RJ00M",
-      "amdt": "2309A1",
-      "date": "2023-09-07",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBRJ/iac-rj00m-rnp-e-rwy-20l.pdf"
     },
     {
@@ -62,8 +62,8 @@
       "type": "IAC",
       "name": "RNP F RWY 20L",
       "code": "RJ03B",
-      "amdt": "2113A1",
-      "date": "2021-12-30",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBRJ/iac-rj03b-rnp-f-rwy-20l.pdf"
     },
     {
@@ -80,8 +80,8 @@
       "type": "IAC",
       "name": "RNP L RWY 02R",
       "code": "RJ02Y",
-      "amdt": "2409A1",
-      "date": "2024-09-05",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBRJ/iac-rj02y-rnp-l-rwy-02r.pdf"
     },
     {
@@ -89,8 +89,8 @@
       "type": "IAC",
       "name": "RNP M RWY 20L",
       "code": "RJ03C",
-      "amdt": "2406A1",
-      "date": "2024-06-13",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBRJ/iac-rj03c-rnp-m-rwy-20l.pdf"
     },
     {
@@ -161,8 +161,8 @@
       "type": "PDC",
       "name": "SBRJ PDC",
       "code": "",
-      "amdt": "2605A1",
-      "date": "2026-05-14",
+      "amdt": "2610A1",
+      "date": "2026-10-01",
       "file": "/charts/SBRJ/pdc-sbrj-pdc-sbrj-pdc.pdf"
     },
     {
@@ -215,8 +215,8 @@
       "type": "SID",
       "name": "RNAV EVKOX 2B RWY 02R",
       "code": "RJ03F",
-      "amdt": "2508A1",
-      "date": "2025-08-07",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBRJ/sid-rj03f-rnav-evkox-2b-rwy-02r.pdf"
     },
     {
@@ -224,8 +224,8 @@
       "type": "SID",
       "name": "RNAV EVKOX 2C RWY 20L",
       "code": "RJ02U",
-      "amdt": "2508A1",
-      "date": "2025-08-07",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBRJ/sid-rj02u-rnav-evkox-2c-rwy-20l.pdf"
     },
     {
@@ -274,15 +274,6 @@
       "file": "/charts/SBRJ/sid-rj02w-sid-evsob-2b-rwy-02r.pdf"
     },
     {
-      "key": "RJ02T",
-      "type": "STAR",
-      "name": "RNAV ASALU 1A RWY 02R/20L",
-      "code": "RJ02T",
-      "amdt": "2112A1",
-      "date": "2021-12-02",
-      "file": "/charts/SBRJ/star-rj02t-rnav-asalu-1a-rwy-02r-20l.pdf"
-    },
-    {
       "key": "RJ02V",
       "type": "STAR",
       "name": "RNAV ASALU 1B RWY 02R",
@@ -299,6 +290,15 @@
       "amdt": "2105A1",
       "date": "2021-05-20",
       "file": "/charts/SBRJ/star-rj02p-rnav-asalu-1c-rwy-20l-20r.pdf"
+    },
+    {
+      "key": "RJ02T",
+      "type": "STAR",
+      "name": "RNAV GELUT 1A - KOXUN 1A RWY 02R/20L",
+      "code": "RJ02T",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBRJ/star-rj02t-rnav-gelut-1a-koxun-1a-rwy-02r-20l.pdf"
     },
     {
       "key": "RJ02R",

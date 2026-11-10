@@ -1,6 +1,6 @@
 {
   "icao": "SBBH",
-  "syncedAt": "2026-09-11",
+  "syncedAt": "2026-11-10",
   "fixes": {
     "ANDEM": {
       "lat": -20.112594444444447,
@@ -487,7 +487,7 @@
           },
           {
             "seq": 30,
-            "fix": "BH007*",
+            "fix": "BH007",
             "pathTerminator": "CF",
             "altitude": null,
             "distance": 2.04,
@@ -1057,7 +1057,7 @@
           },
           {
             "seq": 30,
-            "fix": "BH001*",
+            "fix": "BH001",
             "pathTerminator": "TF",
             "altitude": null,
             "distance": 2.85,
@@ -1391,7 +1391,7 @@
           },
           {
             "seq": 30,
-            "fix": "BH054*",
+            "fix": "BH054",
             "pathTerminator": "TF",
             "altitude": "+4350",
             "distance": 2,
@@ -1906,408 +1906,6 @@
             "altitude": null,
             "distance": 22.3,
             "course": 16.89
-          }
-        ]
-      }
-    },
-    "STAR|UMDIR1B|31": {
-      "title": "STAR RNAV UMDIR 1B RWY 31",
-      "chartKey": "BH01B",
-      "transitions": {
-        "AROVA": [
-          {
-            "seq": 10,
-            "fix": "AROVA",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "KIBAP",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 26.16,
-            "course": 10.76
-          },
-          {
-            "seq": 30,
-            "fix": "UMDIR",
-            "pathTerminator": "TF",
-            "altitude": "-10000",
-            "distance": 34.64,
-            "course": 40.1
-          }
-        ],
-        "KIBAP": [
-          {
-            "seq": 10,
-            "fix": "KIBAP",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "UMDIR",
-            "pathTerminator": "TF",
-            "altitude": "-10000",
-            "distance": 34.64,
-            "course": 40.1
-          }
-        ],
-        "RWY": [
-          {
-            "seq": 10,
-            "fix": "UMDIR",
-            "pathTerminator": "IF",
-            "altitude": "-10000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "BH041",
-            "pathTerminator": "TF",
-            "altitude": "@8000",
-            "distance": 15.27,
-            "course": 52.39
-          },
-          {
-            "seq": 30,
-            "fix": "OGRET",
-            "pathTerminator": "TF",
-            "altitude": "@8000",
-            "distance": 12.87,
-            "course": 52.29
-          }
-        ]
-      }
-    },
-    "STAR|UTNUL1A|13": {
-      "title": "STAR RNAV UTNUL 1A RWY 13",
-      "chartKey": "BH00Z",
-      "transitions": {
-        "AROVA": [
-          {
-            "seq": 10,
-            "fix": "AROVA",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "KIBAP",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 26.16,
-            "course": 10.76
-          },
-          {
-            "seq": 30,
-            "fix": "UTNUL",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 19.32,
-            "course": 35.65
-          }
-        ],
-        "KIBAP": [
-          {
-            "seq": 10,
-            "fix": "KIBAP",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "UTNUL",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 19.32,
-            "course": 35.65
-          }
-        ],
-        "RWY": [
-          {
-            "seq": 10,
-            "fix": "UTNUL",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "BH053",
-            "pathTerminator": "TF",
-            "altitude": "+13000",
-            "distance": 17.12,
-            "course": 14.32
-          },
-          {
-            "seq": 30,
-            "fix": "BH052",
-            "pathTerminator": "TF",
-            "altitude": "-11000",
-            "distance": 10.1,
-            "course": 13.95
-          },
-          {
-            "seq": 40,
-            "fix": "BH051",
-            "pathTerminator": "TF",
-            "altitude": "+9000",
-            "distance": 5.04,
-            "course": 21.95
-          },
-          {
-            "seq": 50,
-            "fix": "ERVIM",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 8.38,
-            "course": 21.91
-          },
-          {
-            "seq": 60,
-            "fix": null,
-            "pathTerminator": "VM",
-            "altitude": null,
-            "distance": null,
-            "course": 286.96
-          }
-        ]
-      }
-    },
-    "STAR|UTBID1B|31": {
-      "title": "STAR RNAV UTBID 1B RWY 31",
-      "chartKey": "BH01F",
-      "transitions": {
-        "GEVMI": [
-          {
-            "seq": 10,
-            "fix": "GEVMI",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "EKINU",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 104.15,
-            "course": 185.26
-          },
-          {
-            "seq": 30,
-            "fix": "UTBID",
-            "pathTerminator": "TF",
-            "altitude": "+15000",
-            "distance": 46.18,
-            "course": 164.68
-          }
-        ],
-        "VULAD": [
-          {
-            "seq": 10,
-            "fix": "VULAD",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "UTBID",
-            "pathTerminator": "TF",
-            "altitude": "+15000",
-            "distance": 74,
-            "course": 98.18
-          }
-        ],
-        "REINA": [
-          {
-            "seq": 10,
-            "fix": "REINA",
-            "pathTerminator": "IF",
-            "altitude": null,
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "UTBID",
-            "pathTerminator": "TF",
-            "altitude": "+15000",
-            "distance": 73.33,
-            "course": 137.03
-          }
-        ],
-        "RWY": [
-          {
-            "seq": 10,
-            "fix": "UTBID",
-            "pathTerminator": "IF",
-            "altitude": "+15000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "BH058",
-            "pathTerminator": "TF",
-            "altitude": "-12000",
-            "distance": 14.11,
-            "course": 134.2
-          },
-          {
-            "seq": 30,
-            "fix": "VASIX",
-            "pathTerminator": "TF",
-            "altitude": "@10000",
-            "distance": 8.01,
-            "course": 134.19
-          },
-          {
-            "seq": 40,
-            "fix": "BH048",
-            "pathTerminator": "TF",
-            "altitude": "@8000",
-            "distance": 8.56,
-            "course": 169.58
-          },
-          {
-            "seq": 50,
-            "fix": "BH044",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 4.56,
-            "course": 169.92
-          },
-          {
-            "seq": 60,
-            "fix": "BH052",
-            "pathTerminator": "TF",
-            "altitude": "@8000",
-            "distance": 18.1,
-            "course": 158.74
-          },
-          {
-            "seq": 70,
-            "fix": "BH041",
-            "pathTerminator": "TF",
-            "altitude": "@8000",
-            "distance": 17.63,
-            "course": 110.81
-          },
-          {
-            "seq": 80,
-            "fix": "OGRET",
-            "pathTerminator": "TF",
-            "altitude": "@8000",
-            "distance": 12.87,
-            "course": 52.29
-          }
-        ]
-      }
-    },
-    "SID|TIPLI2A|31": {
-      "title": "SID RNAV TIPLI 2A RWY 31",
-      "chartKey": "BH01Q",
-      "transitions": {
-        "RWY": [
-          {
-            "seq": 10,
-            "fix": "IVSAM",
-            "pathTerminator": "CF",
-            "altitude": null,
-            "distance": 10.27,
-            "course": 290.77
-          },
-          {
-            "seq": 20,
-            "fix": "PUMAT",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 6.79,
-            "course": 290.81
-          },
-          {
-            "seq": 30,
-            "fix": "BH013",
-            "pathTerminator": "TF",
-            "altitude": "-7000",
-            "distance": 7.22,
-            "course": null
-          },
-          {
-            "seq": 40,
-            "fix": "BH049",
-            "pathTerminator": "TF",
-            "altitude": "-8000",
-            "distance": 6.4,
-            "course": 331.43
-          },
-          {
-            "seq": 50,
-            "fix": "TIPLI",
-            "pathTerminator": "TF",
-            "altitude": "-9000",
-            "distance": 18.65,
-            "course": 1.62
-          }
-        ],
-        "PABES": [
-          {
-            "seq": 10,
-            "fix": "TIPLI",
-            "pathTerminator": "IF",
-            "altitude": "-9000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "EDSUX",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 17.53,
-            "course": 23.9
-          },
-          {
-            "seq": 30,
-            "fix": "PABES",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 60.27,
-            "course": 31.63
-          }
-        ],
-        "GIMPO": [
-          {
-            "seq": 10,
-            "fix": "TIPLI",
-            "pathTerminator": "IF",
-            "altitude": "-9000",
-            "distance": null,
-            "course": null
-          },
-          {
-            "seq": 20,
-            "fix": "GIMPO",
-            "pathTerminator": "TF",
-            "altitude": null,
-            "distance": 14.73,
-            "course": 342.57
           }
         ]
       }
@@ -3234,6 +2832,408 @@
             "altitude": "@7000",
             "distance": 6.57,
             "course": 134.11
+          }
+        ]
+      }
+    },
+    "STAR|UMDIR1B|31": {
+      "title": "STAR RNAV UMDIR 1B RWY 31",
+      "chartKey": "BH01B",
+      "transitions": {
+        "AROVA": [
+          {
+            "seq": 10,
+            "fix": "AROVA",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "KIBAP",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 26.16,
+            "course": 10.76
+          },
+          {
+            "seq": 30,
+            "fix": "UMDIR",
+            "pathTerminator": "TF",
+            "altitude": "-10000",
+            "distance": 34.64,
+            "course": 40.1
+          }
+        ],
+        "KIBAP": [
+          {
+            "seq": 10,
+            "fix": "KIBAP",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "UMDIR",
+            "pathTerminator": "TF",
+            "altitude": "-10000",
+            "distance": 34.64,
+            "course": 40.1
+          }
+        ],
+        "RWY": [
+          {
+            "seq": 10,
+            "fix": "UMDIR",
+            "pathTerminator": "IF",
+            "altitude": "-10000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "BH041",
+            "pathTerminator": "TF",
+            "altitude": "@8000",
+            "distance": 15.27,
+            "course": 52.39
+          },
+          {
+            "seq": 30,
+            "fix": "OGRET",
+            "pathTerminator": "TF",
+            "altitude": "@8000",
+            "distance": 12.87,
+            "course": 52.29
+          }
+        ]
+      }
+    },
+    "STAR|UTNUL1A|13": {
+      "title": "STAR RNAV UTNUL 1A RWY 13",
+      "chartKey": "BH00Z",
+      "transitions": {
+        "AROVA": [
+          {
+            "seq": 10,
+            "fix": "AROVA",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "KIBAP",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 26.16,
+            "course": 10.76
+          },
+          {
+            "seq": 30,
+            "fix": "UTNUL",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 19.32,
+            "course": 35.65
+          }
+        ],
+        "KIBAP": [
+          {
+            "seq": 10,
+            "fix": "KIBAP",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "UTNUL",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 19.32,
+            "course": 35.65
+          }
+        ],
+        "RWY": [
+          {
+            "seq": 10,
+            "fix": "UTNUL",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "BH053",
+            "pathTerminator": "TF",
+            "altitude": "+13000",
+            "distance": 17.12,
+            "course": 14.32
+          },
+          {
+            "seq": 30,
+            "fix": "BH052",
+            "pathTerminator": "TF",
+            "altitude": "-11000",
+            "distance": 10.1,
+            "course": 13.95
+          },
+          {
+            "seq": 40,
+            "fix": "BH051",
+            "pathTerminator": "TF",
+            "altitude": "+9000",
+            "distance": 5.04,
+            "course": 21.95
+          },
+          {
+            "seq": 50,
+            "fix": "ERVIM",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 8.38,
+            "course": 21.91
+          },
+          {
+            "seq": 60,
+            "fix": null,
+            "pathTerminator": "VM",
+            "altitude": null,
+            "distance": null,
+            "course": 286.96
+          }
+        ]
+      }
+    },
+    "STAR|UTBID1B|31": {
+      "title": "STAR RNAV UTBID 1B RWY 31",
+      "chartKey": "BH01F",
+      "transitions": {
+        "GEVMI": [
+          {
+            "seq": 10,
+            "fix": "GEVMI",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "EKINU",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 104.15,
+            "course": 185.26
+          },
+          {
+            "seq": 30,
+            "fix": "UTBID",
+            "pathTerminator": "TF",
+            "altitude": "+15000",
+            "distance": 46.18,
+            "course": 164.68
+          }
+        ],
+        "VULAD": [
+          {
+            "seq": 10,
+            "fix": "VULAD",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "UTBID",
+            "pathTerminator": "TF",
+            "altitude": "+15000",
+            "distance": 74,
+            "course": 98.18
+          }
+        ],
+        "REINA": [
+          {
+            "seq": 10,
+            "fix": "REINA",
+            "pathTerminator": "IF",
+            "altitude": null,
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "UTBID",
+            "pathTerminator": "TF",
+            "altitude": "+15000",
+            "distance": 73.33,
+            "course": 137.03
+          }
+        ],
+        "RWY": [
+          {
+            "seq": 10,
+            "fix": "UTBID",
+            "pathTerminator": "IF",
+            "altitude": "+15000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "BH058",
+            "pathTerminator": "TF",
+            "altitude": "-12000",
+            "distance": 14.11,
+            "course": 134.2
+          },
+          {
+            "seq": 30,
+            "fix": "VASIX",
+            "pathTerminator": "TF",
+            "altitude": "@10000",
+            "distance": 8.01,
+            "course": 134.19
+          },
+          {
+            "seq": 40,
+            "fix": "BH048",
+            "pathTerminator": "TF",
+            "altitude": "@8000",
+            "distance": 8.56,
+            "course": 169.58
+          },
+          {
+            "seq": 50,
+            "fix": "BH044",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 4.56,
+            "course": 169.92
+          },
+          {
+            "seq": 60,
+            "fix": "BH052",
+            "pathTerminator": "TF",
+            "altitude": "@8000",
+            "distance": 18.1,
+            "course": 158.74
+          },
+          {
+            "seq": 70,
+            "fix": "BH041",
+            "pathTerminator": "TF",
+            "altitude": "@8000",
+            "distance": 17.63,
+            "course": 110.81
+          },
+          {
+            "seq": 80,
+            "fix": "OGRET",
+            "pathTerminator": "TF",
+            "altitude": "@8000",
+            "distance": 12.87,
+            "course": 52.29
+          }
+        ]
+      }
+    },
+    "SID|TIPLI2A|31": {
+      "title": "SID RNAV TIPLI 2A RWY 31",
+      "chartKey": "BH01Q",
+      "transitions": {
+        "RWY": [
+          {
+            "seq": 10,
+            "fix": "IVSAM",
+            "pathTerminator": "CF",
+            "altitude": null,
+            "distance": 10.27,
+            "course": 290.77
+          },
+          {
+            "seq": 20,
+            "fix": "PUMAT",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 6.79,
+            "course": 290.81
+          },
+          {
+            "seq": 30,
+            "fix": "BH013",
+            "pathTerminator": "TF",
+            "altitude": "-7000",
+            "distance": 7.22,
+            "course": null
+          },
+          {
+            "seq": 40,
+            "fix": "BH049",
+            "pathTerminator": "TF",
+            "altitude": "-8000",
+            "distance": 6.4,
+            "course": 331.43
+          },
+          {
+            "seq": 50,
+            "fix": "TIPLI",
+            "pathTerminator": "TF",
+            "altitude": "-9000",
+            "distance": 18.65,
+            "course": 1.62
+          }
+        ],
+        "PABES": [
+          {
+            "seq": 10,
+            "fix": "TIPLI",
+            "pathTerminator": "IF",
+            "altitude": "-9000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "EDSUX",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 17.53,
+            "course": 23.9
+          },
+          {
+            "seq": 30,
+            "fix": "PABES",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 60.27,
+            "course": 31.63
+          }
+        ],
+        "GIMPO": [
+          {
+            "seq": 10,
+            "fix": "TIPLI",
+            "pathTerminator": "IF",
+            "altitude": "-9000",
+            "distance": null,
+            "course": null
+          },
+          {
+            "seq": 20,
+            "fix": "GIMPO",
+            "pathTerminator": "TF",
+            "altitude": null,
+            "distance": 14.73,
+            "course": 342.57
           }
         ]
       }

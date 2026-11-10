@@ -1,6 +1,6 @@
 {
   "icao": "SBBR",
-  "syncedAt": "2026-09-09",
+  "syncedAt": "2026-11-10",
   "source": "https://aisweb.decea.mil.br/api/?area=cartas&icaoCode=SBBR",
   "charts": [
     {
@@ -103,39 +103,39 @@
       "file": "/charts/SBBR/atcsmac-sbwr-tma-brasilia.pdf"
     },
     {
-      "key": "BR04G",
-      "type": "IAC",
-      "name": "IAC ILS U OR LOC U RWY 11L",
-      "code": "BR04G",
-      "amdt": "2401A1",
-      "date": "2024-01-25",
-      "file": "/charts/SBBR/iac-br04g-iac-ils-u-or-loc-u-rwy-11l.pdf"
-    },
-    {
       "key": "BR04F",
       "type": "IAC",
-      "name": "ILS T LOC T RWY 11R",
+      "name": "ILS T OR LOC T RWY 11R",
       "code": "BR04F",
-      "amdt": "2410A1",
-      "date": "2024-10-03",
-      "file": "/charts/SBBR/iac-br04f-ils-t-loc-t-rwy-11r.pdf"
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBBR/iac-br04f-ils-t-or-loc-t-rwy-11r.pdf"
     },
     {
       "key": "BR04R",
       "type": "IAC",
       "name": "ILS T RWY 29R",
       "code": "BR04R",
-      "amdt": "2510A1",
-      "date": "2025-10-02",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br04r-ils-t-rwy-29r.pdf"
+    },
+    {
+      "key": "BR04G",
+      "type": "IAC",
+      "name": "ILS U OR LOC U RWY 11L",
+      "code": "BR04G",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBBR/iac-br04g-ils-u-or-loc-u-rwy-11l.pdf"
     },
     {
       "key": "BR04B",
       "type": "IAC",
       "name": "ILS U RWY 29L",
       "code": "BR04B",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br04b-ils-u-rwy-29l.pdf"
     },
     {
@@ -143,8 +143,8 @@
       "type": "IAC",
       "name": "ILS V RWY 11R",
       "code": "BR04C",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br04c-ils-v-rwy-11r.pdf"
     },
     {
@@ -152,8 +152,8 @@
       "type": "IAC",
       "name": "ILS W OR LOC W RWY 11L",
       "code": "BR01P",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br01p-ils-w-or-loc-w-rwy-11l.pdf"
     },
     {
@@ -161,8 +161,8 @@
       "type": "IAC",
       "name": "ILS W OR LOC W RWY 29L",
       "code": "BR04E",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br04e-ils-w-or-loc-w-rwy-29l.pdf"
     },
     {
@@ -170,8 +170,8 @@
       "type": "IAC",
       "name": "ILS X OR LOC X RWY 11R",
       "code": "BR01O",
-      "amdt": "2507A1",
-      "date": "2025-07-10",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br01o-ils-x-or-loc-x-rwy-11r.pdf"
     },
     {
@@ -179,8 +179,8 @@
       "type": "IAC",
       "name": "ILS X OR LOC X RWY 29L",
       "code": "BR02N",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br02n-ils-x-or-loc-x-rwy-29l.pdf"
     },
     {
@@ -188,8 +188,8 @@
       "type": "IAC",
       "name": "ILS Y OR LOC Y RWY 29R",
       "code": "BR04S",
-      "amdt": "2508A1",
-      "date": "2025-08-07",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br04s-ils-y-or-loc-y-rwy-29r.pdf"
     },
     {
@@ -197,8 +197,8 @@
       "type": "IAC",
       "name": "ILS Y RWY 11L",
       "code": "BR02B",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br02b-ils-y-rwy-11l.pdf"
     },
     {
@@ -206,8 +206,8 @@
       "type": "IAC",
       "name": "ILS Z RWY 11R",
       "code": "BR02C",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br02c-ils-z-rwy-11r.pdf"
     },
     {
@@ -215,8 +215,8 @@
       "type": "IAC",
       "name": "ILS Z RWY 29L",
       "code": "BR02E",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br02e-ils-z-rwy-29l.pdf"
     },
     {
@@ -224,8 +224,8 @@
       "type": "IAC",
       "name": "RNP V RWY 11R",
       "code": "BR00B",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br00b-rnp-v-rwy-11r.pdf"
     },
     {
@@ -233,8 +233,8 @@
       "type": "IAC",
       "name": "RNP V RWY 29L",
       "code": "BR04D",
-      "amdt": "2506A1",
-      "date": "2025-06-12",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br04d-rnp-v-rwy-29l.pdf"
     },
     {
@@ -242,8 +242,8 @@
       "type": "IAC",
       "name": "RNP W RWY 11L",
       "code": "BR00A",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br00a-rnp-w-rwy-11l.pdf"
     },
     {
@@ -251,8 +251,8 @@
       "type": "IAC",
       "name": "RNP W RWY 29L (AR)",
       "code": "BR03Z",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br03z-rnp-w-rwy-29l-ar.pdf"
     },
     {
@@ -260,8 +260,8 @@
       "type": "IAC",
       "name": "RNP X RWY 11L (AR)",
       "code": "BR03X",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br03x-rnp-x-rwy-11l-ar.pdf"
     },
     {
@@ -269,8 +269,8 @@
       "type": "IAC",
       "name": "RNP X RWY 29L",
       "code": "BR03R",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br03r-rnp-x-rwy-29l.pdf"
     },
     {
@@ -278,8 +278,8 @@
       "type": "IAC",
       "name": "RNP Y RWY 11R (AR)",
       "code": "BR03Y",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br03y-rnp-y-rwy-11r-ar.pdf"
     },
     {
@@ -287,8 +287,8 @@
       "type": "IAC",
       "name": "RNP Y RWY 29R",
       "code": "BR00D",
-      "amdt": "2510A1",
-      "date": "2025-10-02",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br00d-rnp-y-rwy-29r.pdf"
     },
     {
@@ -296,8 +296,8 @@
       "type": "IAC",
       "name": "RNP Z RWY 11L",
       "code": "BR02A",
-      "amdt": "2207A1",
-      "date": "2022-07-14",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br02a-rnp-z-rwy-11l.pdf"
     },
     {
@@ -305,8 +305,8 @@
       "type": "IAC",
       "name": "RNP Z RWY 29R (AR)",
       "code": "BR04A",
-      "amdt": "2510A1",
-      "date": "2025-10-02",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br04a-rnp-z-rwy-29r-ar.pdf"
     },
     {
@@ -314,8 +314,8 @@
       "type": "IAC",
       "name": "VOR Y RWY 11L",
       "code": "BR01V",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br01v-vor-y-rwy-11l.pdf"
     },
     {
@@ -323,8 +323,8 @@
       "type": "IAC",
       "name": "VOR Y RWY 29R",
       "code": "BR01Y",
-      "amdt": "2410A1",
-      "date": "2024-10-03",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br01y-vor-y-rwy-29r.pdf"
     },
     {
@@ -332,8 +332,8 @@
       "type": "IAC",
       "name": "VOR Z RWY 11R",
       "code": "BR01W",
-      "amdt": "2504A1",
-      "date": "2025-04-17",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/iac-br01w-vor-z-rwy-11r.pdf"
     },
     {
@@ -377,8 +377,8 @@
       "type": "SID",
       "name": "ANPAX 2A - LIXEM 1A RWY 29L",
       "code": "BR00I",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00i-anpax-2a-lixem-1a-rwy-29l.pdf"
     },
     {
@@ -386,8 +386,8 @@
       "type": "SID",
       "name": "FSA 3A - OTAFO 1A RWY 11L",
       "code": "BR00G",
-      "amdt": "2507A1",
-      "date": "2025-07-10",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00g-fsa-3a-otafo-1a-rwy-11l.pdf"
     },
     {
@@ -395,8 +395,8 @@
       "type": "SID",
       "name": "IRITU 1A RWY 11L",
       "code": "BR00H",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00h-iritu-1a-rwy-11l.pdf"
     },
     {
@@ -404,8 +404,8 @@
       "type": "SID",
       "name": "KOGLI 1B - UKENA 2A RWY 29R",
       "code": "BR03T",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br03t-kogli-1b-ukena-2a-rwy-29r.pdf"
     },
     {
@@ -413,8 +413,8 @@
       "type": "SID",
       "name": "KOTVU 1A RWY 11R",
       "code": "BR02P",
-      "amdt": "2511A1",
-      "date": "2025-10-30",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02p-kotvu-1a-rwy-11r.pdf"
     },
     {
@@ -422,8 +422,8 @@
       "type": "SID",
       "name": "LUZ 1A RWY 29L",
       "code": "BR02M",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02m-luz-1a-rwy-29l.pdf"
     },
     {
@@ -431,8 +431,8 @@
       "type": "SID",
       "name": "LUZ 2D RWY 11R",
       "code": "BR02Q",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02q-luz-2d-rwy-11r.pdf"
     },
     {
@@ -440,8 +440,8 @@
       "type": "SID",
       "name": "MIBIS 1A RWY 11R",
       "code": "BR00K",
-      "amdt": "2502A1",
-      "date": "2025-02-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00k-mibis-1a-rwy-11r.pdf"
     },
     {
@@ -449,8 +449,8 @@
       "type": "SID",
       "name": "NIRDI 1A RWY 11L",
       "code": "BR03A",
-      "amdt": "2511A1",
-      "date": "2025-10-30",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br03a-nirdi-1a-rwy-11l.pdf"
     },
     {
@@ -458,26 +458,26 @@
       "type": "SID",
       "name": "OMNI RWY 11L/11R / 29L/29R",
       "code": "",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-omni-rwy-11l-11r-29l-29r-omni-rwy-11l-11r-29l-29r.pdf"
     },
     {
-      "key": "BR04l",
+      "key": "BR04I",
       "type": "SID",
       "name": "RNAV ARSOP 1B RWY 29R",
-      "code": "BR04l",
-      "amdt": "2511A1",
-      "date": "2025-10-30",
-      "file": "/charts/SBBR/sid-br04l-rnav-arsop-1b-rwy-29r.pdf"
+      "code": "BR04I",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBBR/sid-br04i-rnav-arsop-1b-rwy-29r.pdf"
     },
     {
       "key": "BR02Z",
       "type": "SID",
       "name": "RNAV BOBEM 2A - SAVPU 1A RWY 29R",
       "code": "BR02Z",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02z-rnav-bobem-2a-savpu-1a-rwy-29r.pdf"
     },
     {
@@ -485,8 +485,8 @@
       "type": "SID",
       "name": "RNAV ESBUX 6A RWY 11L",
       "code": "BR00O",
-      "amdt": "2406A1",
-      "date": "2024-06-13",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00o-rnav-esbux-6a-rwy-11l.pdf"
     },
     {
@@ -494,8 +494,8 @@
       "type": "SID",
       "name": "RNAV GAXON 2A RWY 29L",
       "code": "BR00W",
-      "amdt": "2511A1",
-      "date": "2025-10-30",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00w-rnav-gaxon-2a-rwy-29l.pdf"
     },
     {
@@ -503,8 +503,8 @@
       "type": "SID",
       "name": "RNAV KOTVU 1B RWY 11L",
       "code": "BR00X",
-      "amdt": "2412A1",
-      "date": "2024-11-28",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00x-rnav-kotvu-1b-rwy-11l.pdf"
     },
     {
@@ -512,8 +512,8 @@
       "type": "SID",
       "name": "RNAV LIVEV 2B RWY 11R",
       "code": "BR02T",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02t-rnav-livev-2b-rwy-11r.pdf"
     },
     {
@@ -521,8 +521,8 @@
       "type": "SID",
       "name": "RNAV MOVDO 1B RWY 29R",
       "code": "BR02X",
-      "amdt": "2511A1",
-      "date": "2025-10-30",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02x-rnav-movdo-1b-rwy-29r.pdf"
     },
     {
@@ -530,8 +530,8 @@
       "type": "SID",
       "name": "RNAV OPVIX 1A RWY 29L",
       "code": "BR00T",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00t-rnav-opvix-1a-rwy-29l.pdf"
     },
     {
@@ -539,8 +539,8 @@
       "type": "SID",
       "name": "RNAV PAPID 2A RWY 11L",
       "code": "BR00M",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00m-rnav-papid-2a-rwy-11l.pdf"
     },
     {
@@ -548,35 +548,35 @@
       "type": "SID",
       "name": "RNAV SEMDU 2A RWY 11L",
       "code": "BR00V",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00v-rnav-semdu-2a-rwy-11l.pdf"
+    },
+    {
+      "key": "BR00P",
+      "type": "SID",
+      "name": "RNAV TINSI 5A - UGTAK 1A RWY 29L",
+      "code": "BR00P",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
+      "file": "/charts/SBBR/sid-br00p-rnav-tinsi-5a-ugtak-1a-rwy-29l.pdf"
     },
     {
       "key": "BR02U",
       "type": "SID",
       "name": "RNAV TIPTU 1A - UMSUB 1A RWY 11R",
       "code": "BR02U",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02u-rnav-tiptu-1a-umsub-1a-rwy-11r.pdf"
-    },
-    {
-      "key": "BR00P",
-      "type": "SID",
-      "name": "RNAV UGTAK 1A -TINSI 5A RWY 29L",
-      "code": "BR00P",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
-      "file": "/charts/SBBR/sid-br00p-rnav-ugtak-1a-tinsi-5a-rwy-29l.pdf"
     },
     {
       "key": "BR00U",
       "type": "SID",
       "name": "RNAV UMDEB 1A RWY 29L",
       "code": "BR00U",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br00u-rnav-umdeb-1a-rwy-29l.pdf"
     },
     {
@@ -584,8 +584,8 @@
       "type": "SID",
       "name": "RNAV UTGOG 1B RWY 11R",
       "code": "BR02S",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02s-rnav-utgog-1b-rwy-11r.pdf"
     },
     {
@@ -593,8 +593,8 @@
       "type": "SID",
       "name": "RNAV UTMUM 1A RWY 29R",
       "code": "BR02V",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02v-rnav-utmum-1a-rwy-29r.pdf"
     },
     {
@@ -602,8 +602,8 @@
       "type": "SID",
       "name": "RNAV UTPAS 2C RWY 29R",
       "code": "BR04L",
-      "amdt": "2511A1",
-      "date": "2025-10-30",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br04l-rnav-utpas-2c-rwy-29r.pdf"
     },
     {
@@ -611,8 +611,8 @@
       "type": "SID",
       "name": "RNAV UTPAS 6B RWY 29R",
       "code": "BR02Y",
-      "amdt": "2606A1",
-      "date": "2026-06-11",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02y-rnav-utpas-6b-rwy-29r.pdf"
     },
     {
@@ -620,8 +620,8 @@
       "type": "SID",
       "name": "RNAV VUTMI 1B RWY 11R",
       "code": "BR03S",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br03s-rnav-vutmi-1b-rwy-11r.pdf"
     },
     {
@@ -629,26 +629,26 @@
       "type": "SID",
       "name": "UTGEN 1A RWY 29R",
       "code": "BR02R",
-      "amdt": "2503A1",
-      "date": "2025-03-20",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/sid-br02r-utgen-1a-rwy-29r.pdf"
     },
     {
       "key": "BR01J",
       "type": "STAR",
-      "name": "RNAV EDVIV 2B - MOPDA 2B RWY 29L/29R",
+      "name": "RNAV EDVIV 2B - MOPDA 2B RWY 29L 29R",
       "code": "BR01J",
-      "amdt": "2606A1",
-      "date": "2026-06-11",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/star-br01j-rnav-edviv-2b-mopda-2b-rwy-29l-29r.pdf"
     },
     {
       "key": "BR01D",
       "type": "STAR",
-      "name": "RNAV EROPO 1A RWY 11L/11R",
+      "name": "RNAV EROPO 1A RWY 11L 11R",
       "code": "BR01D",
-      "amdt": "2606A1",
-      "date": "2026-06-11",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/star-br01d-rnav-eropo-1a-rwy-11l-11r.pdf"
     },
     {
@@ -656,8 +656,8 @@
       "type": "STAR",
       "name": "RNAV EROPO 1B RWY 29L/29R",
       "code": "BR01E",
-      "amdt": "2606A1",
-      "date": "2026-06-11",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/star-br01e-rnav-eropo-1b-rwy-29l-29r.pdf"
     },
     {
@@ -665,62 +665,62 @@
       "type": "STAR",
       "name": "RNAV EVPUK 1A RWY 11L/11R",
       "code": "BR01L",
-      "amdt": "2606A1",
-      "date": "2026-06-11",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/star-br01l-rnav-evpuk-1a-rwy-11l-11r.pdf"
     },
     {
       "key": "BR01M",
       "type": "STAR",
-      "name": "RNAV EVPUK 1B RWY 29L/29R",
+      "name": "RNAV EVPUK 1B RWY 29L 29R",
       "code": "BR01M",
-      "amdt": "2606A1",
-      "date": "2026-06-11",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/star-br01m-rnav-evpuk-1b-rwy-29l-29r.pdf"
     },
     {
       "key": "BR01I",
       "type": "STAR",
-      "name": "RNAV IRULA 1A RWY 11L/11R",
+      "name": "RNAV IRULA 1A RWY 11L 11R",
       "code": "BR01I",
-      "amdt": "2606A1",
-      "date": "2026-06-11",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/star-br01i-rnav-irula-1a-rwy-11l-11r.pdf"
     },
     {
       "key": "BR01F",
       "type": "STAR",
-      "name": "RNAV KOGNO 2A - SIPIG 2A RWY 11L/11R",
+      "name": "RNAV KOGNO 2A - SIPIG 2A RWY 11L 11R",
       "code": "BR01F",
-      "amdt": "2606A1",
-      "date": "2026-06-11",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/star-br01f-rnav-kogno-2a-sipig-2a-rwy-11l-11r.pdf"
     },
     {
       "key": "BR01H",
       "type": "STAR",
-      "name": "RNAV MOLTI 1B RWY 29L/29R",
+      "name": "RNAV MOLTI 1B RWY 29L 29R",
       "code": "BR01H",
-      "amdt": "2606A1",
-      "date": "2026-06-11",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/star-br01h-rnav-molti-1b-rwy-29l-29r.pdf"
     },
     {
       "key": "BR00Z",
       "type": "STAR",
-      "name": "RNAV PAJEM 2B RWY 29L/29R",
+      "name": "RNAV PAJEM 2B RWY 29L 29R",
       "code": "BR00Z",
-      "amdt": "2607A1",
-      "date": "2026-07-09",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/star-br00z-rnav-pajem-2b-rwy-29l-29r.pdf"
     },
     {
       "key": "BR00Y",
       "type": "STAR",
-      "name": "RNAV PAJEM 4A RWY 11L/11R",
+      "name": "RNAV PAJEM 4A RWY 11L 11R",
       "code": "BR00Y",
-      "amdt": "2607A1",
-      "date": "2026-07-09",
+      "amdt": "2611A1",
+      "date": "2026-10-29",
       "file": "/charts/SBBR/star-br00y-rnav-pajem-4a-rwy-11l-11r.pdf"
     },
     {
