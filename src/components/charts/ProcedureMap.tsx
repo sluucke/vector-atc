@@ -14,7 +14,8 @@ import {
 import L, { type LatLngExpression, type LatLngBoundsExpression } from "leaflet";
 import { Frame, Minus, Plus } from "lucide-react";
 import "leaflet/dist/leaflet.css";
-import type { AirportGeometry, Procedure } from "@/lib/types";
+import { reciprocal } from "@/lib/ops/runway";
+import type { AirportGeometry, GeoPoint, Procedure } from "@/lib/types";
 import type { AirportTraffic, LiveFlight } from "@/lib/ivao/types";
 
 const SID_COLOR = "#22d3ee";
@@ -154,62 +155,97 @@ export default function ProcedureMap({
   const focused =
     flights.find((f) => f.callsign === focusCallsign?.toUpperCase()) ?? null;
 
-  const { paths, runway, bounds } = useMemo(() => {
+  const { paths, runways, aerodrome, bounds } = useMemo(() => {
     const geo = procedure.geometryKey
       ? geometry.procedures[procedure.geometryKey]
       : null;
 
-    const runwayEnds = Object.entries(geometry.runwayPoints)
-      .filter(([ident]) => ident !== "17" && ident !== "35")
-      .map(([, p]) => p.thr)
-      .filter((p): p is NonNullable<typeof p> => Boolean(p));
+    // Where the runway "X" physically begins. Coding tables publish either the
+    // threshold of X or the departure end of its reciprocal — the same spot —
+    // and some aerodromes (SBBR) publish only departure ends.
+    const startOf = (rwy: string): GeoPoint | null =>
+      geometry.runwayPoints[rwy]?.thr ??
+      geometry.runwayPoints[reciprocal(rwy)]?.der ??
+      null;
 
-    const start = geometry.runwayPoints[procedure.runway]?.thr;
+    const runways: [number, number][][] = [];
+    const seen = new Set<string>();
+    for (const rwy of Object.keys(geometry.runwayPoints)) {
+      const key = [rwy, reciprocal(rwy)].sort().join("/");
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const a = startOf(rwy);
+      const b = startOf(reciprocal(rwy));
+      if (a && b) runways.push([[a.lat, a.lon], [b.lat, b.lon]]);
+    }
+    const ends = runways.flat();
+    const aerodrome: [number, number] | null = ends.length
+      ? [
+          ends.reduce((s, p) => s + p[0], 0) / ends.length,
+          ends.reduce((s, p) => s + p[1], 0) / ends.length,
+        ]
+      : null;
+
+    /** A leg's fix, or a runway end when the table names one ("RW29R"). */
+    const pointOf = (ident: string): GeoPoint | null => {
+      const rwy = ident.match(/^RWY?(\d{2}[LRC]?)$/)?.[1];
+      return rwy ? startOf(rwy) : (geometry.fixes[ident] ?? null);
+    };
+
+    const procedureRunway = procedure.runway.split("/")[0];
+    // A departure starts where the runway ends.
+    const departureEnd = startOf(reciprocal(procedureRunway));
+
+    const label = (leg: { altitude: string | null; distance: number | null }) =>
+      [
+        leg.altitude && `${leg.altitude.replace("+", "≥").replace("-", "≤")}ft`,
+        leg.distance && `${leg.distance}NM`,
+      ]
+        .filter(Boolean)
+        .join(" · ");
+
+    const resolved = Object.entries(geo?.transitions ?? {}).map(([name, legs]) => ({
+      name,
+      fixes: legs.flatMap((leg) => {
+        const at = leg.fix ? pointOf(leg.fix) : null;
+        return at && leg.fix ? [{ ident: leg.fix, ...at, label: label(leg) }] : [];
+      }),
+    }));
+    const common = resolved.find((t) => t.name === "RWY");
+    const commonFirst = common?.fixes[0] ?? null;
+    const commonLast = common?.fixes[common.fixes.length - 1] ?? null;
+
     const paths: Plotted[] = [];
-
-    for (const [name, legs] of Object.entries(geo?.transitions ?? {})) {
-      const fixes = legs
-        .filter((leg) => leg.fix && geometry.fixes[leg.fix])
-        .map((leg) => ({
-          ident: leg.fix as string,
-          ...geometry.fixes[leg.fix as string],
-          label: [
-            leg.altitude && `${leg.altitude.replace("+", "≥").replace("-", "≤")}ft`,
-            leg.distance && `${leg.distance}NM`,
-          ]
-            .filter(Boolean)
-            .join(" · "),
-        }));
+    for (const { name, fixes } of resolved) {
       if (fixes.length === 0) continue;
+      const isCommon = name === "RWY";
+      const points: [number, number][] = fixes.map((f) => [f.lat, f.lon]);
 
-      const common = name === "RWY";
-      const legPoints = fixes.map((f) => [f.lat, f.lon] as [number, number]);
-      // A SID's first leg climbs on runway heading with no coded fix, so the
-      // line only makes sense if it starts at the threshold.
-      const points: LatLngExpression[] =
-        common && procedure.type === "SID" && start
-          ? [[start.lat, start.lon] as [number, number], ...legPoints]
-          : legPoints;
+      if (procedure.type === "SID") {
+        // The common segment climbs out of the runway; each transition picks
+        // up where the common segment ends.
+        if (isCommon && departureEnd) points.unshift([departureEnd.lat, departureEnd.lon]);
+        if (!isCommon && commonLast && fixes[0].ident !== commonLast.ident) {
+          points.unshift([commonLast.lat, commonLast.lon]);
+        }
+      } else if (!isCommon && commonFirst && fixes[fixes.length - 1].ident !== commonFirst.ident) {
+        // An arrival's transitions feed the common segment.
+        points.push([commonFirst.lat, commonFirst.lon]);
+      }
 
-      paths.push({ name, points, fixes, common });
+      paths.push({ name, points, fixes, common: isCommon });
     }
 
-    const all = paths.flatMap((p) => p.points as [number, number][]);
-    const runwayLine =
-      runwayEnds.length === 2
-        ? (runwayEnds.map((p) => [p.lat, p.lon]) as [number, number][])
-        : null;
-
+    const all = [...paths.flatMap((p) => p.points as [number, number][]), ...ends];
     return {
       paths,
-      runway: runwayLine,
+      runways,
+      aerodrome,
       bounds: all.length > 0 ? (all as LatLngBoundsExpression) : null,
     };
   }, [procedure, geometry]);
 
-  const center: LatLngExpression = runway
-    ? [(runway[0][0] + runway[1][0]) / 2, (runway[0][1] + runway[1][1]) / 2]
-    : [0, 0];
+  const center: LatLngExpression = aerodrome ?? [0, 0];
 
   if (paths.length === 0) {
     return (
@@ -246,11 +282,29 @@ export default function ProcedureMap({
         />
         <FitBounds bounds={bounds} />
 
-        {runway && (
+        {runways.map((line, i) => (
           <Polyline
-            positions={runway}
-            pathOptions={{ color: "#e2e8f0", weight: 5, opacity: 0.9 }}
+            key={i}
+            positions={line}
+            pathOptions={{ color: "#e2e8f0", weight: 6, opacity: 0.95, lineCap: "butt" }}
           />
+        ))}
+
+        {aerodrome && (
+          <CircleMarker
+            center={aerodrome}
+            radius={14}
+            pathOptions={{ color: "#e2e8f0", weight: 1.5, opacity: 0.7, fillOpacity: 0.06 }}
+          >
+            <Tooltip
+              permanent
+              direction="bottom"
+              offset={[0, 14]}
+              className="!bg-raised !border-0 !text-ink !font-mono !text-[11px] !font-semibold !shadow-lg !px-1.5 !py-0.5"
+            >
+              {icao}
+            </Tooltip>
+          </CircleMarker>
         )}
 
         {paths.map((path) => (

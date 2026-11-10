@@ -70,8 +70,27 @@ export function getChart(icao: string, key: string): Chart | null {
   return getCharts(icao).find((c) => c.key === key) ?? null;
 }
 
+/**
+ * The aerodrome's coded geometry. A coding table sometimes names a fix it
+ * does not position (a navaid or an en-route point shared with the airway
+ * network); those are filled from the national AIP points so the procedure can
+ * still be drawn end to end.
+ */
 export function getGeometry(icao: string): AirportGeometry | null {
-  return readJson<AirportGeometry>(icao, "geometry.json");
+  const geometry = readJson<AirportGeometry>(icao, "geometry.json");
+  const national = getAirways()?.points;
+  if (!geometry || !national) return geometry;
+
+  for (const procedure of Object.values(geometry.procedures)) {
+    for (const legs of Object.values(procedure.transitions)) {
+      for (const leg of legs) {
+        if (leg.fix && !geometry.fixes[leg.fix] && national[leg.fix]) {
+          geometry.fixes[leg.fix] = national[leg.fix];
+        }
+      }
+    }
+  }
+  return geometry;
 }
 
 export function getAllAirports(): AirportMeta[] {
