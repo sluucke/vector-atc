@@ -2,12 +2,18 @@
   <img src="docs/images/icon.svg" width="72" height="72" alt="Vector ATC" />
 </p>
 
+
 <h1 align="center">Vector ATC</h1>
+
 
 Console operacional para controladores da rede [IVAO](https://ivao.aero) no
 Brasil. Reúne em uma tela as cartas oficiais do DECEA, os procedimentos SID e
 STAR desenhados no mapa, a pista em uso, METAR, nível de transição, NOTAM e o
 tráfego ao vivo da rede ligado ao plano de voo de cada aeronave.
+
+[![XERJ Corpus Hub contributor](https://hub.xerj.org/contributors/sluucke/badge.svg)](https://hub.xerj.org/contributors/sluucke)
+
+
 
 **Produção:** [vectoratc.vercel.app](https://vectoratc.vercel.app)
 
