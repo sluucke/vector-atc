@@ -11,8 +11,6 @@ Brasil. Reúne em uma tela as cartas oficiais do DECEA, os procedimentos SID e
 STAR desenhados no mapa, a pista em uso, METAR, nível de transição, NOTAM e o
 tráfego ao vivo da rede ligado ao plano de voo de cada aeronave.
 
-[![XERJ Corpus Hub contributor](https://hub.xerj.org/contributors/sluucke/badge.svg)](https://hub.xerj.org/contributors/sluucke)
-
 
 
 **Produção:** [vectoratc.vercel.app](https://vectoratc.vercel.app)
